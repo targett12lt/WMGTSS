@@ -24,19 +24,20 @@ class LectureDay(models.Model):
     Description = models.CharField(max_length=500)  # Is 500 sufficient, test this
     Date = models.DateTimeField('Lecture Date')  # Not in original design, need to add to report/documentation
     LD_Img = models.ImageField(upload_to='LectureDayImgs') # Changed from a CharField to an Image field
-    RelatedLectures = models.ManyToManyField()  # Check how to get a list here again
 
 
 class SlidePack(models.Model):
-    LectureDayFK = models.ForeignKey(LectureDay, on_delete=CASCADE)  # Creating a many-to-one relationship with the LectureDay object
+    LectureDayFK = models.ForeignKey(LectureDay, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureDay object
     DownloadLink = models.CharField(max_length=200)  # Link to the file
     ProcSlidePack = models.CharField(max_length=200)  # Location of the slidepack
 
+
 class VersionHistory(models.Model):
-    SlidePackFK = models.ForeignKey(SlidePack, on_delete=CASCADE)  # Creating a many-to-one relationship with the SlidePack object
+    SlidePackFK = models.ForeignKey(SlidePack, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the SlidePack object
     ModDate = models.DateTimeField('Modification Date')
     VersionNum = models.IntegerField()
     Comment = models.CharField(max_length=300)
+
 
 # class Question(models.Model):
 #     question_text = models.CharField(max_length=200)

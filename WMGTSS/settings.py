@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'LectureBoard.apps.LectureboardConfig',  # Adding LectureBoard Application
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
