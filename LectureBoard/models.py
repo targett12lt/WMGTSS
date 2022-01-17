@@ -13,23 +13,48 @@ from django.core.files.storage import FileSystemStorage
 class LectureBoard(models.Model):
     # Course_Identifier needs to be added here to support multiple modules per student 
     Course_Title = models.CharField(max_length=50)
-    Course_Description = models.CharField(max_length=500)
+    Course_Description = models.CharField(max_length=2000)
     Course_Tutor = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.Course_Title
+
+    def description(self):
+        return self.Course_Description
+
+    def tutor(self):
+        return self.Course_Tutor
 
 
 class LectureDay(models.Model):
-    LectureBoardFK = models.ForeignKey(LectureBoard, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureBoard object
-    # LD_id = models.AutoField(primary_key=True)  # Creating auto-incrementing ID for the lecture day, shouldn't be needed as Django creates this itself - will delete later.
+    ModuleLectureBoard = models.ForeignKey(LectureBoard, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureBoard object
     Title = models.CharField(max_length=200)
-    Description = models.CharField(max_length=500)  # Is 500 sufficient, test this
+    Description = models.CharField(max_length=2000)
     Date = models.DateTimeField('Lecture Date')  # Not in original design, need to add to report/documentation
     LD_Img = models.ImageField(upload_to='LectureDayImgs') # Changed from a CharField to an Image field
 
+    def __str__(self):
+        return self.Title   #Returns the title of the Lecture Day
+
+    def description(self):
+        return self.Description
+
+    def get_img(self):
+        return self.LD_Img
+
+    def lecture_date(self):
+        return self.lecture_date
 
 class SlidePack(models.Model):
     LectureDayFK = models.ForeignKey(LectureDay, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureDay object
     DownloadLink = models.CharField(max_length=200)  # Link to the file
     ProcSlidePack = models.CharField(max_length=200)  # Location of the slidepack
+
+    def __str__(self):
+        return self.DownloadLink
+
+    def processed_deck(self):
+        return self.ProcSlidePack
 
 
 class VersionHistory(models.Model):
