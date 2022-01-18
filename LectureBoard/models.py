@@ -1,33 +1,33 @@
-from tkinter import CASCADE
 from django.db import models
 from django.core.files.storage import FileSystemStorage
 
 # Create your models here.
 
-# class LectureBoards(models.Model):  # Add this later, as this is dependent on what modules the student does
+# class LectureBoard(models.Model):  # Add this later, as this is dependent on what modules the student does
 # Need to add a new requirement that the LectureBoard MUST be able to provide functionality to view more than one module's lectures 
 # The lecture board must be able to show the appropriate modules to a student based upon their course.
 #     Modules = models.  # Need to have a list of modules that the student does
 
 
-class LectureBoard(models.Model):
+class ModuleBoard(models.Model):
     # Course_Identifier needs to be added here to support multiple modules per student 
-    Course_Title = models.CharField(max_length=50)
-    Course_Description = models.CharField(max_length=2000)
-    Course_Tutor = models.CharField(max_length=100)
+    Module_Code = models.CharField(max_length=10, default='WM000')
+    Module_Title = models.CharField(max_length=50)
+    Module_Description = models.CharField(max_length=2000)
+    Module_Tutor = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.Course_Title
+        return self.Module_Title
 
     def description(self):
-        return self.Course_Description
+        return self.Module_Description
 
     def tutor(self):
-        return self.Course_Tutor
+        return self.Module_Tutor
 
 
 class LectureDay(models.Model):
-    ModuleLectureBoard = models.ForeignKey(LectureBoard, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureBoard object
+    ModuleLectureBoard = models.ForeignKey(ModuleBoard, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureBoard object
     Title = models.CharField(max_length=200)
     Description = models.CharField(max_length=2000)
     Date = models.DateTimeField('Lecture Date')  # Not in original design, need to add to report/documentation
