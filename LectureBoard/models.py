@@ -27,6 +27,19 @@ class LectureBoard(models.Model):
 
 
 class LectureDay(models.Model):
+    '''
+    This class represents a given LectureDay for a module (relationship can be identified using the FK).
+    
+    Each University Module has a MANY-TO-ONE relationship with the LectureDay object.
+    
+    Attributes:
+    * ModuleLectureBoard (int) - Uses FK to create a many-to-one relationship with the LectureBoard object
+    * id (int) - Used to identify the LectureDay
+    * Title (char) - The title of the LectureDay, has a max length 200
+    * Description (char) - This contains the description about the LectureDay, has a max length 2000
+    * Date (datetime) - This stores the date/time that a LectureDay was presented
+    * LD_Img(img) - Stores and hosts the LectureDay cover image using Django's FileSystemStorage class
+    '''
     ModuleLectureBoard = models.ForeignKey(LectureBoard, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureBoard object
     Title = models.CharField(max_length=200)
     Description = models.CharField(max_length=2000)

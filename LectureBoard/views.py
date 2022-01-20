@@ -4,9 +4,7 @@ from .models import LectureBoard, LectureDay, SlidePack
 
 # Create your views here.
 def LectureBoardView(request):
-    # module_lecture_days = ModuleBoard.objects.order_by('-Module Title')[:5]
-    # output = ', '.join([q.Module_Title for q in module_lecture_days])
-    # return HttpResponse(output)
+    '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
     ModulesEnrolled = LectureBoard.objects.all()
     print('ModulesEnrolled:', ModulesEnrolled)
     context = {
@@ -28,10 +26,29 @@ def ModuleBoardView(request, req_Module_Code):
 
 
 def LectureDayView(request, req_Module_Code,lecture_id):
-    Module_PK = list(LectureBoard.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
-    # LectureInfo = 
-    return HttpResponse('You have requested ' + req_Module_Code + ', in particular lecture ' + str(lecture_id))
-    # recent_lecture = LectureDay.objects.get(id__exact=lecture_id)
-    # return HttpResponse(recent_lecture.Title + ': ' + recent_lecture.Description)
+    '''Provides a view for each lecture day.
+    
+    Parameters:
+    * request - django HTTP request framework requirement
+    * req_Module_Code - This is the University Academic Module (i.e. WM393).
+    '''
+    
+    # On this view, need to get LectureDay content: Title, Description and Date
+    # Then need to get the slidepack informaiton, so: DownloadLink, ProcSlidePack
+    # And finally can get the Version history for the slidepack (ModDate, VersionNum - this needs to be updated to autoincrement and the comment)
+    
+    # To get lecture day information, need to know the ID of the lecture day, this is in the URL
+    LectureDayInfo = LectureDay.objects.filter(id=lecture_id)
+    
+    # Gettting the slide pack information:
+    SlidePackInfo = SlidePack.objects.filter(LectureDayFK = lecture_id)
+
+    context = {
+        'LectureDayInfo': LectureDayInfo,
+        'SlidePackInfo': SlidePackInfo
+    }
+    return render(request, 'LectureBoard/LectureDay.html', context)
+        
+
 
 

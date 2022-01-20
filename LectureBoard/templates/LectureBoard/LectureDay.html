@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>Module Page</title>
+    </head>
+    <body>
+        {% if SlidePackInfo %}
+            {% for SlidePackData in SlidePackInfo %}
+            <LecturePack>
+                <BrowserSlides>
+                    {{SlidePackData.ProcSlidePack}}
+                </BrowserSlides>
+                <DownloadLink><a href= {SlidePackData.DownloadLink}>Download</a></DownloadLink>
+            </LecturePack>
+            {% endfor %}
+        {% else %}
+            <p>The slide pack couldn't be found :(</p>
+        {% endif %}
+        {% if LectureDayInfo %}
+            <ul>
+            {% for LecDayItem in LectureDayInfo %}
+                <LD_Title>Title: {{LecDayItem.Title}}</LD_Title><br>
+                <LD_Date>Date: {{LecDayItem.Date}}</LD_Date><br>
+                <LD_Description>Description: {{LecDayItem.Description}}</LD_Description><br>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Oh no something went wrong!</p>
+        {% endif %}
+    </body>
+</html>
