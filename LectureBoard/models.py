@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage
 #     Modules = models.  # Need to have a list of modules that the student does
 
 
-class ModuleBoard(models.Model):  # Need to change the name of this to 'LectureBoard'
+class LectureBoard(models.Model):
     # Course_Identifier needs to be added here to support multiple modules per student 
     Module_Code = models.CharField(max_length=10, default='WM000')
     Module_Title = models.CharField(max_length=50)
@@ -27,7 +27,7 @@ class ModuleBoard(models.Model):  # Need to change the name of this to 'LectureB
 
 
 class LectureDay(models.Model):
-    ModuleLectureBoard = models.ForeignKey(ModuleBoard, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureBoard object
+    ModuleLectureBoard = models.ForeignKey(LectureBoard, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureBoard object
     Title = models.CharField(max_length=200)
     Description = models.CharField(max_length=2000)
     Date = models.DateTimeField('Lecture Date')  # Not in original design, need to add to report/documentation
