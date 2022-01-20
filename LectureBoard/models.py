@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage
 #     Modules = models.  # Need to have a list of modules that the student does
 
 
-class ModuleBoard(models.Model):
+class ModuleBoard(models.Model):  # Need to change the name of this to 'LectureBoard'
     # Course_Identifier needs to be added here to support multiple modules per student 
     Module_Code = models.CharField(max_length=10, default='WM000')
     Module_Title = models.CharField(max_length=50)

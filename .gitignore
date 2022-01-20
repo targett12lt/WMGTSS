@@ -1,1 +1,5 @@
 *.pyc
+/__pycache__
+/LectureDayImgs
+LectureBoard/migrations
+db.sqlite3

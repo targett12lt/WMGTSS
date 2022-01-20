@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Module Page</title>
+    </head>
+    <body>
+        {% if LectureList %}
+            <ul>
+            {% for LectureDay in LectureList %}
+                <!-- <li><a href="{% url 'ModuleBoard' LectureDay.id %}">{{ LectureDay.Title }}</a></li> --> 
+                <!-- ^^ Should be like this ideally but needs to be able to use two variables rather than one -->
+                <li><a href="/LectureBoard/{{Module_Code}}/{{ LectureDay.id }}/">{{ LectureDay.Title }}</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No lectures are available for this module yet :(</p>
+        {% endif %}
+    </body>
+</html>

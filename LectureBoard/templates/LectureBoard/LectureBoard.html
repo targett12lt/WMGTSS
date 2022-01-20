@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Lecture Board - Your Modules</title>
+    </head>
+    <body>
+        {% if ModulesEnrolled %}
+            <ul>
+            {% for Module in ModulesEnrolled %}
+                <li><a href="/LectureBoard/{{Module.Module_Code}}/">{{ Module.Module_Title}}</a></li>
+                <description>{{Module.Module_Description}}</description>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>You have not been enrolled into any modules yet, 
+                please contact your Apprentice Tutor for support on this :(</p>
+        {% endif %}
+    </body>
+</html>
