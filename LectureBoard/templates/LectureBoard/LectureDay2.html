@@ -1,0 +1,59 @@
+{% extends "layout.html" %} {% block content %}
+<style>
+    .carousel-control-prev-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff0' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+    }
+    
+    .carousel-control-next-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff0' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+        $slide_desc = $('#slide_desc')
+        $('#lecturecarousel').on('slid.bs.carousel', function(e) {
+            $slide_desc.text(e.relatedTarget.childNodes[1].alt);
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="col-3">
+        <ul class="list-group">
+            <li class="list-group-item">ID: {{ lecture.id }}</li>
+            <li class="list-group-item">Date: {{ lecture.date }}</li>
+            <li class="list-group-item">Desc: {{ lecture.description }}</li>
+            <li class="list-group-item">Slides: {{ lecture.slides|length }}</li>
+        </ul>
+    </div>
+    <div class="col-9">
+        <div class="card">
+            <div class="card-body">
+                <div id="lecturecarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+                    <div class="carousel-inner">
+                        {% for slide in lecture.slides %}
+                        <div class="carousel-item {{ 'active' if loop.index == 1 }}">
+                            <img class="d-block w-100" src="{{ url_for('static', filename=lecture.folder ~ '/' ~ slide.file) }}" alt="{{ slide.description }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#lecturecarousel" role="button" data-slide="prev">
+                        <span style="color:brown" class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#lecturecarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                <div id="slide_desc" class="card-footer">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

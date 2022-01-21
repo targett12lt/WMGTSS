@@ -31,6 +31,7 @@ def LectureDayView(request, req_Module_Code,lecture_id):
     Parameters:
     * request - django HTTP request framework requirement
     * req_Module_Code - This is the University Academic Module (i.e. WM393).
+    * lecture_id = Auto-incrementing integer ID, PK for the lecture days, used to locate the lecture day and slidepack info
     '''
     
     # On this view, need to get LectureDay content: Title, Description and Date
