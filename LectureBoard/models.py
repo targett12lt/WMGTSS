@@ -11,10 +11,10 @@ from django.core.files.storage import FileSystemStorage
 
 class LectureBoard(models.Model):
     # Course_Identifier needs to be added here to support multiple modules per student 
-    Module_Code = models.CharField(max_length=10, default='WM000')
+    Module_Code = models.CharField(max_length=10)
     Module_Title = models.CharField(max_length=50)
-    Module_Description = models.CharField(max_length=2000)
-    Module_Tutor = models.CharField(max_length=100)
+    Module_Description = models.CharField(max_length=2000, blank=True)
+    Module_Tutor = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.Module_Title
@@ -42,9 +42,9 @@ class LectureDay(models.Model):
     '''
     ModuleLectureBoard = models.ForeignKey(LectureBoard, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureBoard object
     Title = models.CharField(max_length=200)
-    Description = models.CharField(max_length=2000)
-    Date = models.DateTimeField('Lecture Date')  # Not in original design, need to add to report/documentation
-    LD_Img = models.ImageField(upload_to='LectureDayImgs') # Changed from a CharField to an Image field
+    Description = models.CharField(max_length=2000, blank=True)
+    Date = models.DateTimeField('Lecture Date', blank=True)  # Not in original design, need to add to report/documentation
+    LD_Img = models.ImageField(upload_to='LectureDayImgs', blank=True) # Changed from a CharField to an Image field
 
     def __str__(self):
         return self.Title   #Returns the title of the Lecture Day
@@ -73,8 +73,8 @@ class SlidePack(models.Model):
 class VersionHistory(models.Model):
     SlidePackFK = models.ForeignKey(SlidePack, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the SlidePack object
     ModDate = models.DateTimeField('Modification Date')
-    VersionNum = models.IntegerField()
-    Comment = models.CharField(max_length=300)
+    VersionNum = models.AutoField(primary_key=True)
+    Comment = models.CharField(max_length=300, blank=True)
 
 
 # class Question(models.Model):
