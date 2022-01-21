@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import Http404
 from django.shortcuts import render
 from .models import LectureBoard, LectureDay, SlidePack
 
@@ -38,16 +38,19 @@ def LectureDayView(request, req_Module_Code,lecture_id):
     # Then need to get the slidepack informaiton, so: DownloadLink, ProcSlidePack
     # And finally can get the Version history for the slidepack (ModDate, VersionNum - this needs to be updated to autoincrement and the comment)
     
-    # To get lecture day information, need to know the ID of the lecture day, this is in the URL
-    LectureDayInfo = LectureDay.objects.filter(id=lecture_id)
-    
-    # Gettting the slide pack information:
-    SlidePackInfo = SlidePack.objects.filter(LectureDayFK = lecture_id)
+    try:
+        # Checking if LectureDay exists and getting data:
+        LectureDayInfo = LectureDay.objects.get(id=lecture_id)  # Getting information about the lecture day using the ID from URL
+        SlidePackInfo = SlidePack.objects.get(LectureDayFK = lecture_id)  # Getting slidepack info using lecture_id from URL as Foreign Key
+        
+        # Packaging all data from DB into context to load into HTML template:
+        context = {
+            'LectureDayInfo': LectureDayInfo,
+            'SlidePackInfo': SlidePackInfo
+        }
+    except LectureDay.DoesNotExist:
+        raise Http404('This lecture day does not exist for ' + req_Module_Code)
 
-    context = {
-        'LectureDayInfo': LectureDayInfo,
-        'SlidePackInfo': SlidePackInfo
-    }
     return render(request, 'LectureBoard/LectureDay.html', context)
         
 
