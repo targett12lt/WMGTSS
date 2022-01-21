@@ -6,7 +6,7 @@
         {% if ModulesEnrolled %}
             <ul>
             {% for Module in ModulesEnrolled %}
-                <li><a href="/LectureBoard/{{Module.Module_Code}}/">{{ Module.Module_Title}}</a></li>
+                <li><a href="{% url 'ModuleBoard' Module.Module_Code %}">{{ Module.Module_Title}}</a></li>
                 <description>{{Module.Module_Description}}</description>
             {% endfor %}
             </ul>
