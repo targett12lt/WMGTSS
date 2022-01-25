@@ -1,0 +1,35 @@
+.navbar {
+    color:white;
+    font-size: 24;
+    max-height: 90px;
+}
+
+.navbar_appname {
+    font-size: 40pt;
+    color: white;
+    text-align: right;
+}
+
+.icons {
+    font-size: 50pt;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 15px;
+}
+
+.notification {
+    font-size: 45pt;
+    padding-left: 20px;
+    /* padding-right: 20px; */
+
+}
+
+.profile_navbar {
+    padding-left: 50px;
+    padding-right: 20px;
+}
+
+.dropdown_sizing {
+    font-size: 24;
+    color: green;
+}

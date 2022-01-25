@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.views import generic
 from django.shortcuts import render, get_object_or_404
 from .models import LectureBoard, LectureDay, SlidePack
 
@@ -12,6 +13,16 @@ def LectureBoardView(request):
     }
     return render(request, 'LectureBoard/LectureBoard.html', context)
     # Needs further work as just shows all modules currently, not what a student is registered to
+
+# class LectureBoardView(generic.ListView):
+#     template_name = 'LectureBoard/LectureBoard.html'
+#     context_object_name = 'ModulesEnrolled'
+
+#     def get_queryset(self):
+#         '''Gets all the Modules that a student is subscribed to'''
+#         return LectureBoard.objects.all()
+
+
 
 def ModuleBoardView(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
@@ -27,8 +38,6 @@ def ModuleBoardView(request, req_Module_Code):
         '\n\nPlease contact your system administrator for further support.\n\n')
     
     return render(request, 'LectureBoard/ModuleBoard.html', context)
-
-
 
 
 def LectureDayView(request, req_Module_Code,lecture_id):

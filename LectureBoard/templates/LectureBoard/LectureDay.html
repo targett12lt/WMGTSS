@@ -2,6 +2,11 @@
     <head>
         <title>Module Page</title>
     </head>
+
+{% extends "LectureBoard/layout.html" %} 
+
+{% block content %}
+
     <body>
         {% if SlidePackInfo %}
             <LecturePack>
@@ -23,4 +28,7 @@
             <p>Oh no something went wrong!</p>
         {% endif %}
     </body>
+
+{% endblock content %}
+
 </html>
