@@ -1,21 +1,6 @@
 <html>
     <head>
         <title>Lecture Board - Your Modules</title>
-
-            <!-- Bootstrap Icon Library -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-        
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-        <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-        <!-- Popper JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-        <!-- Latest compiled JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </head>
 
 {% extends "LectureBoard/layout.html" %} 
@@ -35,7 +20,7 @@
                           <button class="btn text-left" type="button" data-toggle="collapse" data-target="#collapse{{forloop.counter}}" aria-expanded="true" aria-controls="#collapse{{forloop.counter}}">
                             {{Module.Module_Code}}: {{Module.Module_Title}}
                           </button>
-                          <a href="{% url 'ModuleBoard' Module.Module_Code %}" type="button" style="float:right" class="btn btn-primary">Lets Learn!</a>
+                          <a href="{% url 'ModuleBoard' Module.Module_Code %}" type="button" style="float:right" class="btn btn-primary">Go to Module</a>
                         </h2>
                       </div>
                   
