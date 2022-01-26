@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <title>Module Page</title>
+    </head>
+
+{% extends "LectureBoard/layout.html" %} 
+
+{% block content %}
+
+    <body>
+        {% if SlidePackInfo %}
+            <LecturePack>
+                <BrowserSlides>
+                    {{SlidePackInfo.ProcSlidePack}}
+                </BrowserSlides>
+                <DownloadLink><a href= {{SlidePackInfo.DownloadLink}}>Download</a></DownloadLink>  <!-- Download link broken, needs fixing...-->
+            </LecturePack>
+        {% else %}
+            <p>The slide pack couldn't be found :(</p>
+        {% endif %}
+        {% if LectureDayInfo %}
+            <ul>
+                <LD_Title>Title: {{LectureDayInfo.Title}}</LD_Title><br>
+                <LD_Date>Date: {{LectureDayInfo.Date}}</LD_Date><br>
+                <LD_Description>Description: {{LectureDayInfo.Description}}</LD_Description><br>
+            </ul>
+        {% else %}
+            <p>Oh no something went wrong!</p>
+        {% endif %}
+    </body>
+
+{% endblock content %}
+
+</html>

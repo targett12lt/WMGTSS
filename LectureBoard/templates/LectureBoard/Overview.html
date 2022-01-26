@@ -20,7 +20,7 @@
                           <button class="btn text-left" type="button" data-toggle="collapse" data-target="#collapse{{forloop.counter}}" aria-expanded="true" aria-controls="#collapse{{forloop.counter}}">
                             {{Module.Module_Code}}: {{Module.Module_Title}}
                           </button>
-                          <a href="{% url 'ModuleBoard' Module.Module_Code %}" type="button" style="float:right" class="btn btn-primary">Go to Module</a>
+                          <a href="{% url 'ModuleBoard_StudentView' Module.Module_Code %}" type="button" style="float:right" class="btn btn-primary">Go to Module</a>
                         </h2>
                       </div>
                   

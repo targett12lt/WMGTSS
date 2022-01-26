@@ -11,7 +11,7 @@
         {% if LectureList %}
             <ul>
             {% for LectureDay in LectureList %}
-                <li><a href="{% url 'LectureDay_StudentView' Module_Code LectureDay.id %}">{{ LectureDay.Title}}</a></li>
+                <li><a href="{% url 'LectureDay_EditView' Module_Code LectureDay.id %}">{{ LectureDay.Title}}</a></li>
             {% endfor %}
             </ul>
         {% else %}
