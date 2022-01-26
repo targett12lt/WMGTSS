@@ -21,7 +21,9 @@
                           <button class="btn text-left" type="button" data-toggle="collapse" data-target="#collapse{{forloop.counter}}" aria-expanded="true" aria-controls="#collapse{{forloop.counter}}">
                             {{Module.Module_Code}}: {{Module.Module_Title}}
                           </button>
-                          <a href="{% url 'ModuleBoard_EditView' Module.Module_Code %}" type="button" style="float:right" class="btn btn-primary">Go to Module</a>
+                          <a href="{% url 'ModuleBoard_StudentView' Module.Module_Code %}" type="button" style="float:right" class="btn btn-primary editingButtons">View as a Student</a>
+                          <a href="{% url 'ModuleBoard_EditView' Module.Module_Code %}"type="button" style="float:right; background-color:#e7e7e7; color:black;" class="btn btn-primary">Edit</a>
+                          <a type="button" style="float:right; background-color:#f44336;" class="btn btn-primary">Delete</a>
                         </h2>
                       </div>
                   
