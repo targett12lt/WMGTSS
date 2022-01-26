@@ -63,6 +63,7 @@ class LectureDay(models.Model):
         return self.lecture_date
 
 class SlidePackMethods():
+#    This could be changed to this location: http://www.learningaboutelectronics.com/Articles/How-to-restrict-the-size-of-file-uploads-with-Python-in-Django.php
     '''
     Stores the SlidePack methods, includes the following methods:
     * validate_file_extension - Ensures that only the correct file types are uploaded
@@ -71,11 +72,18 @@ class SlidePackMethods():
     '''
 
     def validate_file_extension(value):
-        '''Validates the file is a PPTX or PPT File format. The file should be passed to the fuction using the 'value parameter.'''
+        '''Validates the file is a PPTX or PPT File format. The file should be passed to the fuction using the 'value' parameter.'''
         ext = os.path.splitext(value.name)[1]
         allowed_extensions = ['.pptx', '.ppt']
         if not ext in allowed_extensions:
             raise ValidationError(u'File type not allowed - Please choose another file!')
+
+    def validate_file_size(value):
+        '''Validates that the file is under 50 MB - this is the maximum file size which can be uploaded. The file is passed to the function using the 'value' parameter.'''
+        file_size = value.size
+
+        if file_size > 52428800:  # 50MB in Bytes
+            raise ValidationError(u"This file has exceeded the 50MB size limit - Please choose another file!")
 
     def convert_file_to_pdf():
         '''Converts the PPT/PPTX file to PDF format so that it can be viewed in the BootStrap Browser Front-end'''
@@ -88,8 +96,8 @@ class SlidePackMethods():
 
 class SlidePack(models.Model):
     LectureDayFK = models.ForeignKey(LectureDay, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureDay object
-    OriginalFile = models.FileField(upload_to='content/SlidePacks/original', blank=True, validators=[SlidePackMethods.validate_file_extension])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
-    OnlineSlidePack = models.FileField(upload_to='content/SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser - AGAIN THIS NEEDS TO BE MADE DYNAMIC TOO
+    OriginalFile = models.FileField(upload_to='LectureBoard/content/SlidePacks/original', blank=True, validators=[SlidePackMethods.validate_file_extension, SlidePackMethods.validate_file_size])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
+    OnlineSlidePack = models.FileField(upload_to='LectureBoard/content/SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser - AGAIN THIS NEEDS TO BE MADE DYNAMIC TOO
 
 
 class VersionHistory(models.Model):
