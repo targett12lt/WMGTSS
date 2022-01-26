@@ -11,19 +11,13 @@
 }
 
 .icons {
-    font-size: 50pt;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 15px;
-}
-
-.notification {
     font-size: 45pt;
-    padding-left: 20px;
-    /* padding-right: 20px; */
-
+    padding-left: 10px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    color: white;
 }
-
 .profile_navbar {
     padding-left: 50px;
     padding-right: 20px;
