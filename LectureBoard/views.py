@@ -70,8 +70,8 @@ def LectureDay_StudentView(request, req_Module_Code,lecture_id):
     # And finally can get the Version history for the slidepack (ModDate, VersionNum - this needs to be updated to autoincrement and the comment)
     
     # Checking if LectureDay exists and getting data:
-    LectureDayInfo = get_object_or_404(LectureDay, id=lecture_id)  # Getting information about the lecture day using the ID from URL
-    SlidePackInfo = SlidePack.objects.get(LectureDayFK = lecture_id)  # Getting slidepack info using lecture_id from URL as Foreign Key
+    LectureDayInfo = get_object_or_404(LectureDay_FK, id=lecture_id)  # Getting information about the lecture day using the ID from URL
+    SlidePackInfo = SlidePack.objects.get(LectureDay = lecture_id)  # Getting slidepack info using lecture_id from URL as Foreign Key
     
     # Packaging all data from DB into context to load into HTML template:
     context = {
@@ -95,8 +95,8 @@ def LectureDay_EditView(request, req_Module_Code,lecture_id):
     # And finally can get the Version history for the slidepack (ModDate, VersionNum - this needs to be updated to autoincrement and the comment)
     
     # Checking if LectureDay exists and getting data:
-    LectureDayInfo = get_object_or_404(LectureDay, id=lecture_id)  # Getting information about the lecture day using the ID from URL
-    SlidePackInfo = SlidePack.objects.get(LectureDayFK = lecture_id)  # Getting slidepack info using lecture_id from URL as Foreign Key
+    LectureDayInfo = get_object_or_404(LectureDay_FK, id=lecture_id)  # Getting information about the lecture day using the ID from URL
+    SlidePackInfo = SlidePack.objects.get(LectureDay = lecture_id)  # Getting slidepack info using lecture_id from URL as Foreign Key
     
     # Packaging all data from DB into context to load into HTML template:
     context = {

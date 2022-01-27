@@ -15,8 +15,6 @@ class Module(models.Model):
     '''
     This class represents a given (university) Module.
     
-    Each Module has a ONE-TO-MANY relationship with a users enrolled modules.
-    
     Attributes:
     * id (int) - Used to identify the Module
     * Module_Code (char) - The code of the University Module, has a max length of 10.
@@ -127,7 +125,7 @@ class SlidePack(models.Model):
     (set using the 'upload_to' argument), after the PPT/PPTX file has been processed (so it can be viewed in Browser).
     '''
     
-    LectureDayFK = models.ForeignKey(LectureDay, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureDay object
+    LectureDay_FK = models.OneToOneField(LectureDay, on_delete=models.CASCADE, primary_key=True)  # Creating a one-to-one relationship with the LectureDay object
     OriginalFile = models.FileField(upload_to='LectureBoard/content/SlidePacks/original', blank=True, validators=[SlidePackMethods.validate_file_extension, SlidePackMethods.validate_file_size])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
     OnlineSlidePack = models.FileField(upload_to='LectureBoard/content/SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser - AGAIN THIS NEEDS TO BE MADE DYNAMIC TOO
 
