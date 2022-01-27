@@ -1,12 +1,12 @@
 from django.http import Http404
 from django.views import generic
 from django.shortcuts import render, get_object_or_404
-from .models import LectureBoard, LectureDay, SlidePack
+from .models import Module, LectureDay, SlidePack
 
 # Create your views here.
 def Overview_StudentModules(request):
     '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
-    ModulesEnrolled = LectureBoard.objects.all()
+    ModulesEnrolled = Module.objects.all()
     print('ModulesEnrolled:', ModulesEnrolled)
     context = {
         'ModulesEnrolled':ModulesEnrolled
@@ -16,7 +16,7 @@ def Overview_StudentModules(request):
 
 def Overview_EditModules(request):
     '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
-    ModulesEnrolled = LectureBoard.objects.all()
+    ModulesEnrolled = Module.objects.all()
     print('ModulesEnrolled:', ModulesEnrolled)
     context = {
         'ModulesEnrolled':ModulesEnrolled
@@ -28,13 +28,13 @@ def Overview_EditModules(request):
 def ModuleBoard_StudentView(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
     try:
-        ModuleCheck = LectureBoard.objects.get(Module_Code = req_Module_Code)  # Checking module exists
-        Module_PK = list(LectureBoard.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
+        ModuleCheck = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
+        Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
         LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
         output = ', '.join(q.Title for q in LectureList)
         context = {'LectureList': LectureList,
                     'Module_Code': req_Module_Code}
-    except LectureBoard.DoesNotExist:
+    except Module.DoesNotExist:
         raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
         '\n\nPlease contact your system administrator for further support.\n\n')
     
@@ -43,13 +43,13 @@ def ModuleBoard_StudentView(request, req_Module_Code):
 def ModuleBoard_EditView(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
     try:
-        ModuleCheck = LectureBoard.objects.get(Module_Code = req_Module_Code)  # Checking module exists
-        Module_PK = list(LectureBoard.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
+        ModuleCheck = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
+        Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
         LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
         output = ', '.join(q.Title for q in LectureList)
         context = {'LectureList': LectureList,
                     'Module_Code': req_Module_Code}
-    except LectureBoard.DoesNotExist:
+    except Module.DoesNotExist:
         raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
         '\n\nPlease contact your system administrator for further support.\n\n')
     
