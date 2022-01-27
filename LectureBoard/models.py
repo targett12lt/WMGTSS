@@ -2,6 +2,7 @@ import os
 from django.db import models
 from django.core.files.storage import FileSystemStorage
 from django.forms import ValidationError
+from django.urls import reverse
 
 # Create your models here.
 
@@ -40,6 +41,12 @@ class Module(models.Model):
     def tutor(self):
         return self.Module_Tutor
 
+    def get_absolute_url_view_only(self):
+        return reverse('ModuleBoard_StudentView', args=[str(self.Module_Code)])
+    
+    def get_absolute_url_edit(self):
+        return reverse('ModuleBoard_EditView', args=[str(self.Module_Code)])    
+
 
 class LectureDay(models.Model):
     '''
@@ -77,8 +84,17 @@ class LectureDay(models.Model):
 
     def lecture_date(self):
         return self.lecture_date
+    
+    def get_absolute_url_view_only(self):
+        '''For student/view-only site'''
+        return reverse('LectureDay_StudentView', args=[str(self.get_module_code()), int(self.id)])
 
-class SlidePackMethods():
+    def get_absolute_url_edit(self):
+        '''For editing/lecture site'''
+        return reverse('LectureDay_EditView', args=[str(self.Module_Code), int(self.id)])
+
+
+class Data_Validators():
 #    This could be changed to this location: http://www.learningaboutelectronics.com/Articles/How-to-restrict-the-size-of-file-uploads-with-Python-in-Django.php
     '''
     Stores the SlidePack methods, includes the following methods:
@@ -101,14 +117,6 @@ class SlidePackMethods():
         if file_size > 52428800:  # 50MB in Bytes
             raise ValidationError(u"This file has exceeded the 50MB size limit - Please choose another file!")
 
-    def convert_file_to_pdf():
-        '''Converts the PPT/PPTX file to PDF format so that it can be viewed in the BootStrap Browser Front-end'''
-        print('Hello World!')
-
-    def update_ver_history():
-        '''Updates the version history for a given slide pack, allowing the user to provide a description and automatically increments the Version number'''
-        print("Hello again from the version history :)")
-
 
 class SlidePack(models.Model):
     '''
@@ -118,16 +126,37 @@ class SlidePack(models.Model):
     
     Attributes:
     * LectureDayFK (int) - Uses FK to create a one-to-one relationship with the Module object.
-    * id (int) - Used to identify the SlidePack.
+    * SlidePack_id (int) - Used to identify the SlidePack.
     * OriginalFile (file) - Usees Django file management system to upload and store PPT/PPTX Files in a designated folder 
     (set using the 'upload_to' argument).
     * OnlineSlidePack (file) - Usees Django file management system to store PDF Files in a designated folder 
     (set using the 'upload_to' argument), after the PPT/PPTX file has been processed (so it can be viewed in Browser).
     '''
     
-    LectureDay_FK = models.OneToOneField(LectureDay, on_delete=models.CASCADE, primary_key=True)  # Creating a one-to-one relationship with the LectureDay object
+    LectureDay_FK = models.OneToOneField(LectureDay, on_delete=models.CASCADE)  # Creating a one-to-one relationship with the LectureDay object
     OriginalFile = models.FileField(upload_to='LectureBoard/content/SlidePacks/original', blank=True, validators=[SlidePackMethods.validate_file_extension, SlidePackMethods.validate_file_size])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
     OnlineSlidePack = models.FileField(upload_to='LectureBoard/content/SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser - AGAIN THIS NEEDS TO BE MADE DYNAMIC TOO
+    SlidePack_id = models.AutoField(verbose_name="ID", primary_key=True)
+
+    def identifier(self):
+        '''Returns the SlidePack Identifier'''
+        return self.SlidePack_id
+    
+    def original_file(self):
+        '''Returns the file that the user originally uploaded'''
+        return self.OriginalFile
+    
+    def online_slide_pack(self):
+        '''Returns the processed slide pack, which is used for online viewing'''
+        return self.OnlineSlidePack
+
+    def paired_lectureday(self):
+        '''Returns the LectureDay object of the SlidePack'''
+        return self.LectureDay_FK
+    
+    def convert_file_to_pdf():
+        '''Converts the PPT/PPTX file to PDF format so that it can be viewed in the BootStrap Browser Front-end'''
+        print('Hello World!')
 
 
 class VersionHistory(models.Model):
@@ -149,4 +178,20 @@ class VersionHistory(models.Model):
     ModDate = models.DateTimeField('Modification Date')
     VersionNum = models.AutoField(primary_key=True)
     Comment = models.CharField(max_length=300, blank=True)
+
+    def identifier(self):
+        return self.VersionNum
+    
+    def paired_slidePack(self):
+        return self.SlidePackFK
+    
+    def date_modified(self):
+        return self.ModDate
+
+    def comment(self):
+        return self.Comment
+
+    def update_ver_history():
+        '''Updates the version history for a given slide pack, allowing the user to provide a description and automatically increments the Version number'''
+        print("Hello again from the version history :)")
 

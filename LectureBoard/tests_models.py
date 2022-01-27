@@ -1,13 +1,15 @@
+from django.forms import ValidationError
 from django.test import TestCase
 from django.utils import timezone
-from tables import Description
-from .models import Module, LectureDay, SlidePack, VersionHistory
+from django.core.files import File
+import mock
+from .models import Module, LectureDay, SlidePack, VersionHistory, Data_Validators
 
 
 class Module_ModelTests(TestCase):
     '''
     Creates a test object for Module model, ensures that all data is
-    correctly populated and that empty query sets are returned correctly.
+    populated and that field names, types, and limits are correct.
     '''
     @classmethod
     def setUp(object):
@@ -15,7 +17,7 @@ class Module_ModelTests(TestCase):
         Module_Description="Creating a Module with all fields populated", Module_Tutor="Example")
 
     
-    def test_create_LectureDay_with_all_information(self):
+    def test_check_LectureDay_with_all_information(self):
         '''Checks that LectureDay object has been created with correct information, using class methods'''
         TestModule = Module.objects.get(Module_Code="WM001")
         self.assertEqual(TestModule.__str__(), "WM001")
@@ -98,15 +100,18 @@ class Module_ModelTests(TestCase):
 
 class LectureDay_ModelTests(TestCase):
     '''
-    Creates a test object for Module model, ensures that all data is
-    correctly populated and that empty query sets are returned correctly.
+    Creates a test object for LectureDay model, ensures that all data is
+    populated and that field names, types, and limits are correct.
+
+    No need to test if can exist without Module, Parent-Child relationship means
+    it will automatically be deleted if parent is.
     '''
     date_time = timezone.now()  # Getting a datetime value to test with 
 
     @classmethod
     def setUp(object):
         module = Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
-        Module_Description="Creating a Module with all fields populated", Module_Tutor="Example")
+        Module_Description="Object to test LD object", Module_Tutor="Example")
         
         LectureDay.objects.create(ModuleLectureBoard = module, 
         Title="LectureDay Testing", Description="Object to test LD object",
@@ -114,7 +119,7 @@ class LectureDay_ModelTests(TestCase):
 
     
 
-    def test_create_Lectureday_with_all_information(self):
+    def test_check_Lectureday_with_all_information(self):
         '''Checks that Module object has been created with correct information, using class methods'''
         TestLectureDay = LectureDay.objects.get(Module_Code="WM001")
         self.assertEqual(TestLectureDay.__str__(), "LectureDay Testing")
@@ -170,56 +175,151 @@ class LectureDay_ModelTests(TestCase):
         self.assertEqual(blank, True)
     
     def test_get_absolute_url_view_only(self):
-        '''Tests to ensure that the URL has been defined for the Module'''
+        '''Tests to ensure that the URL has been defined for the LectureDay'''
         lectureday = LectureDay.objects.get(id=1)
         # This will also fail if it hasn't been defined:
-        self.assertEqual(lectureday.get_absolute_url_view_only(), '/LectureBoard/WM001/')
+        self.assertEqual(lectureday.get_absolute_url_view_only(), '/LectureBoard/WM001/1/')
         
     def test_get_absolute_url_edit(self):
-        '''Tests to ensure that the URL has been defined for the Module fir editing'''
+        '''Tests to ensure that the URL has been defined for the LectureDay for editing'''
         lectureday = LectureDay.objects.get(id=1)
         # This will also fail if it hasn't been defined:
-        self.assertEqual(lectureday.get_absolute_url_edit(), '/LectureBoard/WM001/')
+        self.assertEqual(lectureday.get_absolute_url_edit(), '/LectureBoard/WM001/1/edit/')
 
 
 class SlidePack_ModelTests(TestCase):
     '''
-    Creates a test object for Module model, ensures that all data is
-    correctly populated and that empty query sets are returned correctly.
+    Creates a test object for SlidePack model, ensures that all data is
+    populated and that field names, types, and limits are correct.
+
+    No need to test if can exist without LectureDay, Parent-Child relationship means
+    it will automatically be deleted if parent is.
     '''
-    date_time = timezone.now()  # Getting a date_time value to test with
 
     @classmethod
     def setUp(object):
         module = Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
-        Module_Description="Creating a Module with all fields populated", Module_Tutor="Example")
+        Module_Description="Object to test SP object", Module_Tutor="Example")
         
-        LectureDay.objects.create(ModuleLectureBoard = module, 
-        Title="LectureDay Testing", Description="Object to test LD object",
-        Date = LectureDay_ModelTests.date_time)
-    
+        lectureday = LectureDay.objects.create(ModuleLectureBoard = module, 
+        Title="LectureDay Testing", Description="Object to test SP object",
+        Date = timezone.now())
+
+        SlidePack.objects.create(LectureDay_FK = lectureday)           
 
     def test_create_Lectureday_with_all_information(self):
         '''Checks that Module object has been created with correct information, using class methods'''
-        TestLectureDay = LectureDay.objects.get(Module_Code="WM001")
-        self.assertEqual(TestLectureDay.__str__(), "LectureDay Testing")
-        self.assertEqual(TestLectureDay.description(), "Creating a Module with all fields populated")
-        self.assertEqual(TestLectureDay.lecture_date(), "01/01/2022 12:05:00")
+        TestSlidePack = SlidePack.objects.get(LectureDay_FK = LectureDay.objects.get(id=1))
+        self.assertEqual(TestSlidePack.identifier(), 1)
 
-    def test_ModuleLectureBoard_label(self):
-        '''Tests that the ModuleLectureBoard label hasn't changed'''
-        lectureday = LectureDay.objects.get(id=1)
-        field_label = lectureday._meta.get_field('ModuleLectureBoard').verbose_name
-        self.assertEqual(field_label, 'ModuleLectureBoard')
+    def test_LectureDayFK_label(self):
+        '''Tests that the LectureDay_FK label hasn't changed'''
+        slidepack = SlidePack.objects.get(SlidePack_id=1)
+        field_label = slidepack._meta.get_field('LectureDay_FK').verbose_name
+        self.assertEqual(field_label, 'LectureDay FK')
+    
+    def test_SlidePackID_label(self):
+        '''Tests that the SlidePackID label hasn't changed'''
+        slidepack = SlidePack.objects.get(SlidePack_id=1)
+        field_label = slidepack._meta.get_field('SlidePack_id').verbose_name
+        self.assertEqual(field_label, 'ID')
+    
+    def test_OriginalFile_label(self):
+        '''Tests that the OriginalFile label hasn't changed'''
+        slidepack = SlidePack.objects.get(SlidePack_id=1)
+        field_label = slidepack._meta.get_field('OriginalFile').verbose_name
+        self.assertEqual(field_label, 'OriginalFile')
+    
+    def test_OriginalFile_blank(self):
+        '''Tests that the Original File field allows no input'''
+        slidepack = SlidePack.objects.get(SlidePack_id=1)
+        blank = slidepack._meta.get_field('OriginalFile').blank
+        self.assertEqual(blank, True)
+
+    def test_OnlineSlidePack_label(self):
+        '''Tests that the OnlineSlidePack label hasn't changed'''
+        slidepack = SlidePack.objects.get(SlidePack_id=1)
+        field_label = slidepack._meta.get_field('OnlineSlidePack').verbose_name
+        self.assertEqual(field_label, 'OnlineSlidePack')
+    
+    def test_OnlineSlidePack_blank(self):
+        '''Tests that the OnlineSlidePack label hasn't changed'''
+        slidepack = SlidePack.objects.get(SlidePack_id=1)
+        blank = slidepack._meta.get_field('OnlineSlidePack').blank
+        self.assertEqual(blank, True)
+
+    def test_upload_original_file(self):
+        '''Creates a mock file to be used in the OriginalFile field'''
+        # Creating mock files to add to filefields:
+        original_mock_file = mock.MagicMock(spec=File)
+        original_mock_file.name = 'testing.pptx'
+        # Getting file model:
+        file_model = SlidePack(OriginalFile=original_mock_file)
+        # Testing:
+        self.assertEqual(file_model.OriginalFile.name, original_mock_file.name)
+    
+    def test_upload_processed_file(self):
+        '''Creates a mock file to be used in the OnlineSlidePack field'''
+        # Creating mock files to add to filefields:
+        processed_mock_file = mock.MagicMock(spec=File)
+        processed_mock_file.name = 'testing.pptx'
+        # Getting file model:
+        file_model = SlidePack(OnlineSlidePack=processed_mock_file)
+        # Testing:
+        self.assertEqual(file_model.OnlineSlidePack.name, processed_mock_file.name)
 
     def test_check_file_type(self):
-        pass
+        '''Checking that the validator blocks incorrect file types when 
+        supplied with file type which is not a .PPT/.PPTX'''
+        wrong_file_type = False
+        mock_file = mock.MagicMock(spec=File)
+        mock_file.name = 'testing.txt'
+        try:
+            Data_Validators.validate_file_extension(mock_file)
+            wrong_file_type = False
+        except ValidationError:
+            wrong_file_type = True
+        self.assertTrue(wrong_file_type)
 
-    def test_check_file_size(self)@
+    def wip_test_check_file_size(self):
+        '''Checking that the validator only allows files under 50 MB to be 
+        uploaded
+        
+        NOT SURE HOW TO DO THIS YET, NEEDS TO BE FIXED
+        '''
         pass
 
 
 class VersionHistory_ModelTests(TestCase):
+    """
+    Creates a test object for SlidePack model, ensures that all data is
+    populated and that field names, types, and limits are correct.
+
+    No need to test if can exist without SlidePack, Parent-Child relationship means
+    it will automatically be deleted if parent is.
+    """
+    @classmethod
+    def setUp(object):
+        # Getting variables ready to create all objects required:
+        current_time = timezone.now()
+        mock_file = mock.MagicMock(spec=File)
+        mock_file.name = 'testing.pptx'
+        processed_mock_file = mock.MagicMock(spec=File)
+        processed_mock_file.name = 'testing.pdf'
+        
+        module = Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
+        Module_Description="Object to test SP object", Module_Tutor="Example")
+        
+        lectureday = LectureDay.objects.create(ModuleLectureBoard = module, 
+        Title="LectureDay Testing", Description="Object to test SP object",
+        Date = current_time)
+
+        slidepack = SlidePack.objects.create(LectureDay_FK = lectureday, 
+        Original_File=mock_file, OnlineSlidePack= processed_mock_file)
+
+        VersionHistory.objects.create(SlidePackFK = slidepack, 
+        ModDate = current_time, Comment = "Testing Comment")
+
 
     def example_func(self):
         print("Hello world")
