@@ -1,5 +1,4 @@
 import os
-from xml.dom import ValidationErr
 from django.db import models
 from django.core.files.storage import FileSystemStorage
 from django.forms import ValidationError
@@ -12,14 +11,29 @@ from django.forms import ValidationError
 #     Modules = models.  # Need to have a list of modules that the student does
 
 
-class LectureBoard(models.Model):
-    # Course_Identifier needs to be added here to support multiple modules per student 
+class Module(models.Model):
+    '''
+    This class represents a given (university) Module.
+    
+    Each Module has a ONE-TO-MANY relationship with a users enrolled modules.
+    
+    Attributes:
+    * id (int) - Used to identify the Module
+    * Module_Code (char) - The code of the University Module, has a max length of 10.
+    * Module_Title (char) - The title of the Module, has a max length 50.
+    * Module_Description (char) - This contains the description about the Module, has a max length 2000.
+    * Module_Tutor (char) - This says who is teaching the Module, has a max length 100.
+    '''
+
     Module_Code = models.CharField(max_length=10)
     Module_Title = models.CharField(max_length=50)
     Module_Description = models.CharField(max_length=2000, blank=True)
     Module_Tutor = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
+        return self.Module_Code
+    
+    def title(self):
         return self.Module_Title
 
     def description(self):
@@ -36,7 +50,7 @@ class LectureDay(models.Model):
     Each University Module has a MANY-TO-ONE relationship with the LectureDay object.
     
     Attributes:
-    * ModuleLectureBoard (int) - Uses FK to create a many-to-one relationship with the LectureBoard object
+    * ModuleLectureBoard (int) - Uses FK to create a many-to-one relationship with the Module object
     * id (int) - Used to identify the LectureDay
     * Title (char) - The title of the LectureDay, has a max length 200
     * Description (char) - This contains the description about the LectureDay, has a max length 2000
@@ -44,7 +58,7 @@ class LectureDay(models.Model):
     * LD_Img(img) - Stores and hosts the LectureDay cover image using Django's FileSystemStorage class
     '''
 
-    ModuleLectureBoard = models.ForeignKey(LectureBoard, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureBoard object
+    ModuleLectureBoard = models.ForeignKey(Module, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the Module object
     Title = models.CharField(max_length=200)
     Description = models.CharField(max_length=2000, blank=True)
     Date = models.DateTimeField('Lecture Date', blank=True)  # Not in original design, need to add to report/documentation
@@ -52,6 +66,10 @@ class LectureDay(models.Model):
 
     def __str__(self):
         return self.Title   #Returns the title of the Lecture Day
+    
+    def get_module_code(self):
+        # NEED TO DO THIS
+        return "Hello world!"
 
     def description(self):
         return self.Description
@@ -95,12 +113,40 @@ class SlidePackMethods():
 
 
 class SlidePack(models.Model):
+    '''
+    This class represents a given SlidePack for a LectureDay (relationship can be identified using the FK).
+    
+    Each Lecture Day has a ONE-TO-ONE relationship with the SlidePack object.
+    
+    Attributes:
+    * LectureDayFK (int) - Uses FK to create a one-to-one relationship with the Module object.
+    * id (int) - Used to identify the SlidePack.
+    * OriginalFile (file) - Usees Django file management system to upload and store PPT/PPTX Files in a designated folder 
+    (set using the 'upload_to' argument).
+    * OnlineSlidePack (file) - Usees Django file management system to store PDF Files in a designated folder 
+    (set using the 'upload_to' argument), after the PPT/PPTX file has been processed (so it can be viewed in Browser).
+    '''
+    
     LectureDayFK = models.ForeignKey(LectureDay, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the LectureDay object
     OriginalFile = models.FileField(upload_to='LectureBoard/content/SlidePacks/original', blank=True, validators=[SlidePackMethods.validate_file_extension, SlidePackMethods.validate_file_size])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
     OnlineSlidePack = models.FileField(upload_to='LectureBoard/content/SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser - AGAIN THIS NEEDS TO BE MADE DYNAMIC TOO
 
 
 class VersionHistory(models.Model):
+    '''
+    This class represents a given SlidePack's 'Version History' (relationship can be identified using the FK).
+    
+    Each SlidePack Day has a ONE-TO-MANY relationship with the Version History objects.
+    
+    Attributes:
+    * SlidePackFK (int) - Uses FK to create a one-to-one relationship with the Module object.
+    * ModDate (date time) - Stores the time when the file was modified/updated.
+    * VersionNum (int) - Used to identify a version of the SlidePack, 
+    automatically increases by +1 each time a new file is uploaded (used as PK).
+    * Comment (char) - Allows a comment to be made about the new version of the 
+    SlidePack with a maximum length of 300 (can be left blank).
+    '''
+    
     SlidePackFK = models.ForeignKey(SlidePack, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the SlidePack object
     ModDate = models.DateTimeField('Modification Date')
     VersionNum = models.AutoField(primary_key=True)
