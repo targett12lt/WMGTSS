@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.utils import timezone
 from django.core.files import File
 import mock
+from sqlalchemy import false
 from .models import Module, LectureDay, SlidePack, VersionHistory, Data_Validators
 
 
@@ -297,6 +298,21 @@ class SlidePack_ModelTests(TestCase):
         '''
         pass
 
+    def test_delete__slidepacks(self):
+        '''Deletes both the original slidepack and the processed slidepack created for testing'''
+        slidepack_testing = SlidePack.objects.get(SlidePack_id = 1)
+        SlidePack.delete(slidepack_testing)
+        success = False
+        if bool(slidepack_testing.OriginalFile) == False:
+            if bool(slidepack_testing.OnlineSlidePack) == False:
+                success = True
+        return success
+
+    def test_delete_processed_slidepack(self):
+        '''Deletes the processed (PDF) slidepack which was mocked for testing
+        
+        NOT SURE HOW TO DO THIS YET, NEEDS TO BE FIXED'''
+        pass
 
 class VersionHistory_ModelTests(TestCase):
     """

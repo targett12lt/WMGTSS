@@ -73,8 +73,7 @@ class LectureDay(models.Model):
         return self.Title   #Returns the title of the Lecture Day
     
     def get_module_code(self):
-        # NEED TO DO THIS
-        return 'WM001'
+        return self.ModuleLectureBoard.Module_Code
 
     def description(self):
         return self.Description
@@ -154,9 +153,15 @@ class SlidePack(models.Model):
         '''Returns the LectureDay object of the SlidePack'''
         return self.LectureDay_FK
     
-    def convert_file_to_pdf():
+    def convert_file_to_pdf(self):
         '''Converts the PPT/PPTX file to PDF format so that it can be viewed in the BootStrap Browser Front-end'''
         print ('Hello World!')
+    
+    def delete(self):
+        '''Deletes the original (OriginalFile) PPT/PPTX file and processed PDF file (OnlineSlidePack)'''
+        self.OriginalFile.storage.delete(self.OriginalFile.name)
+        self.OnlineSlidePack.storage.delete(self.OnlineSlidePack.name)
+
 
 
 class VersionHistory(models.Model):
