@@ -153,15 +153,26 @@ class SlidePack(models.Model):
         '''Returns the LectureDay object of the SlidePack'''
         return self.LectureDay_FK
     
-    def convert_file_to_pdf(self):
+    def get_Module_Code(self):
+        '''Returns the module Code for the LectureDay'''
+        return self.LectureDay_FK.get_module_code()
+
+    def get_absolute_url_view_only(self):
+        '''For student/view-only site'''
+        return reverse('LectureDay_StudentView', args=[str(self.get_module_code()), int(self.id)])
+
+    def get_absolute_url_edit(self):
+        '''For editing/lecture site'''
+        return reverse('LectureDay_EditView', args=[str(self.get_module_code()), int(self.id)])
+
+    def delete(self):
+        '''Deletes the original (OriginalFile) PPT/PPTX and processed PDF'''
+        self.OriginalFile.delete()
+        self.OnlineSlidePack.delete()
+        
+    def convert_file_to_pdf():
         '''Converts the PPT/PPTX file to PDF format so that it can be viewed in the BootStrap Browser Front-end'''
         print ('Hello World!')
-    
-    def delete(self):
-        '''Deletes the original (OriginalFile) PPT/PPTX file and processed PDF file (OnlineSlidePack)'''
-        self.OriginalFile.storage.delete(self.OriginalFile.name)
-        self.OnlineSlidePack.storage.delete(self.OnlineSlidePack.name)
-
 
 
 class VersionHistory(models.Model):

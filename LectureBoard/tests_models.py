@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.utils import timezone
 from django.core.files import File
 import mock
+import tempfile
 from sqlalchemy import false
 from .models import Module, LectureDay, SlidePack, VersionHistory, Data_Validators
 
@@ -107,9 +108,11 @@ class LectureDay_ModelTests(TestCase):
     No need to test if can exist without Module, Parent-Child relationship means
     it will automatically be deleted if parent is.
     '''
+    
     current_time = timezone.now()  # Getting a datetime value to test with 
-
+    
     @classmethod
+    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(object):
         module = Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
         Module_Description="Object to test LD object", Module_Tutor="Example")
@@ -300,7 +303,7 @@ class SlidePack_ModelTests(TestCase):
 
     def test_delete__slidepacks(self):
         '''Deletes both the original slidepack and the processed slidepack created for testing'''
-        slidepack_testing = SlidePack.objects.get(SlidePack_id = 1)
+        slidepack_testing = SlidePack.objects.get(SlidePack_id = 2)
         SlidePack.delete(slidepack_testing)
         success = False
         if bool(slidepack_testing.OriginalFile) == False:
@@ -308,11 +311,6 @@ class SlidePack_ModelTests(TestCase):
                 success = True
         return success
 
-    def test_delete_processed_slidepack(self):
-        '''Deletes the processed (PDF) slidepack which was mocked for testing
-        
-        NOT SURE HOW TO DO THIS YET, NEEDS TO BE FIXED'''
-        pass
 
 class VersionHistory_ModelTests(TestCase):
     """
