@@ -74,7 +74,7 @@ class LectureDay(models.Model):
     
     def get_module_code(self):
         # NEED TO DO THIS
-        return "Hello world!"
+        return 'WM001'
 
     def description(self):
         return self.Description
@@ -83,7 +83,7 @@ class LectureDay(models.Model):
         return self.LD_Img
 
     def lecture_date(self):
-        return self.lecture_date
+        return self.Date
     
     def get_absolute_url_view_only(self):
         '''For student/view-only site'''
@@ -91,7 +91,7 @@ class LectureDay(models.Model):
 
     def get_absolute_url_edit(self):
         '''For editing/lecture site'''
-        return reverse('LectureDay_EditView', args=[str(self.Module_Code), int(self.id)])
+        return reverse('LectureDay_EditView', args=[str(self.get_module_code()), int(self.id)])
 
 
 class Data_Validators():
@@ -134,7 +134,7 @@ class SlidePack(models.Model):
     '''
     
     LectureDay_FK = models.OneToOneField(LectureDay, on_delete=models.CASCADE)  # Creating a one-to-one relationship with the LectureDay object
-    OriginalFile = models.FileField(upload_to='LectureBoard/content/SlidePacks/original', blank=True, validators=[SlidePackMethods.validate_file_extension, SlidePackMethods.validate_file_size])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
+    OriginalFile = models.FileField(upload_to='LectureBoard/content/SlidePacks/original', blank=True, validators=[Data_Validators.validate_file_extension, Data_Validators.validate_file_size])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
     OnlineSlidePack = models.FileField(upload_to='LectureBoard/content/SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser - AGAIN THIS NEEDS TO BE MADE DYNAMIC TOO
     SlidePack_id = models.AutoField(verbose_name="ID", primary_key=True)
 
@@ -156,7 +156,7 @@ class SlidePack(models.Model):
     
     def convert_file_to_pdf():
         '''Converts the PPT/PPTX file to PDF format so that it can be viewed in the BootStrap Browser Front-end'''
-        print('Hello World!')
+        print ('Hello World!')
 
 
 class VersionHistory(models.Model):

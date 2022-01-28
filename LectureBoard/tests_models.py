@@ -17,8 +17,8 @@ class Module_ModelTests(TestCase):
         Module_Description="Creating a Module with all fields populated", Module_Tutor="Example")
 
     
-    def test_check_LectureDay_with_all_information(self):
-        '''Checks that LectureDay object has been created with correct information, using class methods'''
+    def test_check_Module_with_all_information(self):
+        '''Checks that Module object has been created with correct information, using class methods'''
         TestModule = Module.objects.get(Module_Code="WM001")
         self.assertEqual(TestModule.__str__(), "WM001")
         self.assertEqual(TestModule.title(), "TEST 1")
@@ -106,7 +106,7 @@ class LectureDay_ModelTests(TestCase):
     No need to test if can exist without Module, Parent-Child relationship means
     it will automatically be deleted if parent is.
     '''
-    date_time = timezone.now()  # Getting a datetime value to test with 
+    current_time = timezone.now()  # Getting a datetime value to test with 
 
     @classmethod
     def setUp(object):
@@ -115,16 +115,16 @@ class LectureDay_ModelTests(TestCase):
         
         LectureDay.objects.create(ModuleLectureBoard = module, 
         Title="LectureDay Testing", Description="Object to test LD object",
-        Date = LectureDay_ModelTests.date_time)
+        Date = LectureDay_ModelTests.current_time)
 
     
 
     def test_check_Lectureday_with_all_information(self):
-        '''Checks that Module object has been created with correct information, using class methods'''
-        TestLectureDay = LectureDay.objects.get(Module_Code="WM001")
+        '''Checks that LectureDay object has been created with correct information, using class methods'''
+        TestLectureDay = LectureDay.objects.get(Title="LectureDay Testing")
         self.assertEqual(TestLectureDay.__str__(), "LectureDay Testing")
-        self.assertEqual(TestLectureDay.description(), "Creating a Module with all fields populated")
-        self.assertEqual(TestLectureDay.lecture_date(), "01/01/2022 12:05:00")
+        self.assertEqual(TestLectureDay.description(), "Object to test LD object")
+        self.assertEqual(TestLectureDay.lecture_date(), self.current_time)
 
     def test_ModuleLectureBoard_label(self):
         '''Tests that the ModuleLectureBoard label hasn't changed'''
@@ -195,6 +195,12 @@ class SlidePack_ModelTests(TestCase):
     No need to test if can exist without LectureDay, Parent-Child relationship means
     it will automatically be deleted if parent is.
     '''
+    # Class Variables:
+    current_time = timezone.now()
+    mock_file = mock.MagicMock(spec=File)
+    mock_file.name = 'testing.pptx'
+    processed_mock_file = mock.MagicMock(spec=File)
+    processed_mock_file.name = 'testing.pdf'
 
     @classmethod
     def setUp(object):
@@ -203,9 +209,18 @@ class SlidePack_ModelTests(TestCase):
         
         lectureday = LectureDay.objects.create(ModuleLectureBoard = module, 
         Title="LectureDay Testing", Description="Object to test SP object",
-        Date = timezone.now())
+        Date = SlidePack_ModelTests.current_time)
 
-        SlidePack.objects.create(LectureDay_FK = lectureday)           
+        SlidePack.objects.create(LectureDay_FK = lectureday)
+
+        #Creating SlidePack Object with Files attached:
+        lectureday2 = LectureDay.objects.create(ModuleLectureBoard = module, 
+        Title="LectureDay Testing2", Description="Object to test SP object2",
+        Date = SlidePack_ModelTests.current_time)
+        
+        SlidePack.objects.create(LectureDay_FK = lectureday2,
+        OriginalFile=SlidePack_ModelTests.mock_file, 
+        OnlineSlidePack=SlidePack_ModelTests.processed_mock_file)         
 
     def test_create_Lectureday_with_all_information(self):
         '''Checks that Module object has been created with correct information, using class methods'''
@@ -213,7 +228,7 @@ class SlidePack_ModelTests(TestCase):
         self.assertEqual(TestSlidePack.identifier(), 1)
 
     def test_LectureDayFK_label(self):
-        '''Tests that the LectureDay_FK label hasn't changed'''
+        '''Tests that the SlidePackFK label hasn't changed'''
         slidepack = SlidePack.objects.get(SlidePack_id=1)
         field_label = slidepack._meta.get_field('LectureDay_FK').verbose_name
         self.assertEqual(field_label, 'LectureDay FK')
@@ -250,23 +265,16 @@ class SlidePack_ModelTests(TestCase):
 
     def test_upload_original_file(self):
         '''Creates a mock file to be used in the OriginalFile field'''
-        # Creating mock files to add to filefields:
-        original_mock_file = mock.MagicMock(spec=File)
-        original_mock_file.name = 'testing.pptx'
-        # Getting file model:
-        file_model = SlidePack(OriginalFile=original_mock_file)
+        file_model = SlidePack(OriginalFile=self.mock_file)
         # Testing:
-        self.assertEqual(file_model.OriginalFile.name, original_mock_file.name)
+        self.assertEqual(file_model.OriginalFile.name, self.mock_file.name)
     
     def test_upload_processed_file(self):
         '''Creates a mock file to be used in the OnlineSlidePack field'''
-        # Creating mock files to add to filefields:
-        processed_mock_file = mock.MagicMock(spec=File)
-        processed_mock_file.name = 'testing.pptx'
         # Getting file model:
-        file_model = SlidePack(OnlineSlidePack=processed_mock_file)
+        file_model = SlidePack(OnlineSlidePack=self.processed_mock_file)
         # Testing:
-        self.assertEqual(file_model.OnlineSlidePack.name, processed_mock_file.name)
+        self.assertEqual(file_model.OnlineSlidePack.name, self.processed_mock_file.name)
 
     def test_check_file_type(self):
         '''Checking that the validator blocks incorrect file types when 
@@ -298,29 +306,49 @@ class VersionHistory_ModelTests(TestCase):
     No need to test if can exist without SlidePack, Parent-Child relationship means
     it will automatically be deleted if parent is.
     """
+    # Class Variables:
+    current_time = timezone.now()
+    mock_file = mock.MagicMock(spec=File)
+    mock_file.name = 'testing.pptx'
+    processed_mock_file = mock.MagicMock(spec=File)
+    processed_mock_file.name = 'testing.pdf'
+
     @classmethod
-    def setUp(object):
-        # Getting variables ready to create all objects required:
-        current_time = timezone.now()
-        mock_file = mock.MagicMock(spec=File)
-        mock_file.name = 'testing.pptx'
-        processed_mock_file = mock.MagicMock(spec=File)
-        processed_mock_file.name = 'testing.pdf'
-        
+    def setUp(object):       
         module = Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
         Module_Description="Object to test SP object", Module_Tutor="Example")
         
         lectureday = LectureDay.objects.create(ModuleLectureBoard = module, 
         Title="LectureDay Testing", Description="Object to test SP object",
-        Date = current_time)
+        Date = VersionHistory_ModelTests.current_time)
 
         slidepack = SlidePack.objects.create(LectureDay_FK = lectureday, 
-        Original_File=mock_file, OnlineSlidePack= processed_mock_file)
+        OriginalFile=VersionHistory_ModelTests.mock_file, 
+        OnlineSlidePack= VersionHistory_ModelTests.processed_mock_file)
 
         VersionHistory.objects.create(SlidePackFK = slidepack, 
-        ModDate = current_time, Comment = "Testing Comment")
+        ModDate = VersionHistory_ModelTests.current_time, 
+        Comment = "Testing Comment")
 
 
-    def example_func(self):
-        print("Hello world")
+    def test_check_VersionHistory_has_all_information(self):
+        '''Checks that the VersionHistory object has been created with correct 
+        information, using the class method'''
+        TestVersionHistory = VersionHistory.objects.get(SlidePackFK = SlidePack.objects.get(SlidePack_id=1))
+        self.assertEqual(TestVersionHistory.identifier(), 1)
+        self.assertEqual(TestVersionHistory.date_modified(), self.current_time)
+        self.assertEqual(TestVersionHistory.comment(), "Testing Comment")
+
+    # def test_OriginalFile_label(self):
+    #     '''Tests that the OriginalFile label hasn't changed'''
+    #     slidepack = SlidePack.objects.get(SlidePack_id=1)
+    #     field_label = slidepack._meta.get_field('OriginalFile').verbose_name
+    #     self.assertEqual(field_label, 'OriginalFile')
+      
+    # def test_OriginalFile_blank(self):
+    #     '''Tests that the OriginalFile field can be blank'''
+    #     slidepack = SlidePack.objects.get(SlidePack_id=1)
+    #     blank = slidepack._meta.get_field('OriginalFile').blank
+    #     self.assertEqual(blank, True)
+
 
