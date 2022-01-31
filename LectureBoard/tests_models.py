@@ -112,7 +112,6 @@ class LectureDay_ModelTests(TestCase):
     current_time = timezone.now()  # Getting a datetime value to test with 
     
     @classmethod
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(object):
         module = Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
         Module_Description="Object to test LD object", Module_Tutor="Example")

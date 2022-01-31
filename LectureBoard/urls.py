@@ -10,7 +10,7 @@ urlpatterns = [
     # Example: /LectureBoard/WM393/1, this is for viewing an invidual lecture day
     path('<str:req_Module_Code>/<int:lecture_id>/', views.LectureDay_StudentView, name='LectureDay_StudentView'),
 
-    # ADMIN:
+    # EDITING:
     # Example: LectureBoard/Tutor/, this is where a lecturer can view/edit/delete all their modules
     path('Modules/edit/', views.Overview_EditModules, name='LectureBoard_Edit'), 
     # Example: LectureBoard/Tutor/WM393/, this is to view/edit/delete an invidual Module Board
@@ -19,3 +19,5 @@ urlpatterns = [
     path('<str:req_Module_Code>/<int:lecture_id>/edit/', views.LectureDay_EditView, name='LectureDay_EditView'),
 
 ]
+
+

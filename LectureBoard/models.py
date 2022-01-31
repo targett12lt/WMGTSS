@@ -67,7 +67,7 @@ class LectureDay(models.Model):
     Title = models.CharField(max_length=200)
     Description = models.CharField(max_length=2000, blank=True)
     Date = models.DateTimeField('Lecture Date', blank=True)  # Not in original design, need to add to report/documentation
-    LD_Img = models.ImageField(upload_to='content/LectureDayImgs', blank=True) # Changed from a CharField to an Image field
+    LD_Img = models.ImageField(upload_to='LectureDayImgs', blank=True) # Changed from a CharField to an Image field
 
     def __str__(self):
         return self.Title   #Returns the title of the Lecture Day
@@ -133,8 +133,8 @@ class SlidePack(models.Model):
     '''
     
     LectureDay_FK = models.OneToOneField(LectureDay, on_delete=models.CASCADE)  # Creating a one-to-one relationship with the LectureDay object
-    OriginalFile = models.FileField(upload_to='LectureBoard/content/SlidePacks/original', blank=True, validators=[Data_Validators.validate_file_extension, Data_Validators.validate_file_size])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
-    OnlineSlidePack = models.FileField(upload_to='LectureBoard/content/SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser - AGAIN THIS NEEDS TO BE MADE DYNAMIC TOO
+    OriginalFile = models.FileField(upload_to='SlidePacks/original', blank=True, validators=[Data_Validators.validate_file_extension, Data_Validators.validate_file_size])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
+    OnlineSlidePack = models.FileField(upload_to='SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser - AGAIN THIS NEEDS TO BE MADE DYNAMIC TOO
     SlidePack_id = models.AutoField(verbose_name="ID", primary_key=True)
 
     def identifier(self):

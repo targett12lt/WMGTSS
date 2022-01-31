@@ -28,12 +28,13 @@ def Overview_EditModules(request):
 def ModuleBoard_StudentView(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
     try:
-        ModuleCheck = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
-        Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
-        LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
-        output = ', '.join(q.Title for q in LectureList)
-        context = {'LectureList': LectureList,
-                    'Module_Code': req_Module_Code}
+        if request.method == 'GET':
+            print('Method is GET')
+            ModuleCheck = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
+            Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
+            LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
+            context = {'LectureList': LectureList,
+                        'Module_Code': req_Module_Code}
     except Module.DoesNotExist:
         raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
         '\n\nPlease contact your system administrator for further support.\n\n')
@@ -81,7 +82,7 @@ def LectureDay_StudentView(request, req_Module_Code,lecture_id):
 
     return render(request, 'LectureBoard/LectureDay.html', context)
         
-def LectureDay_EditView(request, req_Module_Code,lecture_id):
+def LectureDay_EditView(request, req_Module_Code, lecture_id):
     '''Provides a view for each lecture day.
     
     Parameters:

@@ -13,7 +13,12 @@
                 <BrowserSlides>
                     {{SlidePackInfo.ProcSlidePack}}
                 </BrowserSlides>
-                <DownloadLink><a href= {{SlidePackInfo.DownloadLink}}>Download</a></DownloadLink>  <!-- Download link broken, needs fixing...-->
+                <DownloadLink>
+                    <a href= "{{ SlidePackInfo.OriginalFile.url }}"
+                    download = "{{ SlidePackInfo.OriginalFile.url }}"
+                    class="">
+                    Download</a>
+                </DownloadLink>  <!-- Download link broken, needs fixing...-->
             </LecturePack>
         {% else %}
             <p>The slide pack couldn't be found :(</p>
