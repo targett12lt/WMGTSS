@@ -11,8 +11,10 @@ urlpatterns = [
     path('<str:req_Module_Code>/<int:lecture_id>/', views.LectureDay_StudentView, name='LectureDay_StudentView'),
 
     # EDITING:
-    # Example: LectureBoard/Tutor/, this is where a lecturer can view/edit/delete all their modules
+    # Example: LectureBoard/Modules/edit, this is where a lecturer can view/edit/delete all their modules
     path('Modules/edit/', views.Overview_EditModules, name='LectureBoard_Edit'), 
+    # Example: LectureBoard/Modules/new, this is where a lecturer can view/edit/delete all their modules
+    path('Modules/new/', views.Overview_NewModule, name='LectureBoard_New'), 
     # Example: LectureBoard/Tutor/WM393/, this is to view/edit/delete an invidual Module Board
     path('<str:req_Module_Code>/edit/', views.ModuleBoard_EditView, name='ModuleBoard_EditView'),
     # Example: LectureBoard/Tutor/WM393/1, this is to view/edit/delete an invidual lecture day
