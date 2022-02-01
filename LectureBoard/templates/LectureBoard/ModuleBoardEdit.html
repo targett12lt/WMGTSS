@@ -8,18 +8,13 @@
 {% block content %}
 
     <body>
-        <h2>FOR LECTURERS</h2>
-        {% if LectureList %}
-            <ul>
-            {% for LectureDay in LectureList %}
-                <li><a href="{% url 'LectureDay_EditView' Module_Code LectureDay.id %}">{{ LectureDay.Title}}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>No lectures are available for this module yet :(</p>
-        {% endif %}
+        <h2>Module Edit</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">Save</button>
+        </form>
     </body>
-
 {% endblock content %}
 
 </html>

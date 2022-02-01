@@ -34,9 +34,9 @@
           <!-- Creating Gallery items dynamically from LectureList -->
           <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
               {% if LectureDay.LD_Img %}
-              <a href="{% url 'LectureDay_StudentView' Module_Info.Module_Code LectureDay.id %}"><div class="bg-light rounded shadow-sm "><img src="{{ LectureDay.LD_Img.url }}" alt="" class="img-fluid card-img-top slide_preview rounded-lg"></a>
+              <a href="{% url 'LectureDay_StudentView' Module_Info.Module_Code LectureDay.id %}"><div class="bg-light rounded shadow-sm img-fluid"><img src="{{ LectureDay.LD_Img.url }}" alt="" class="img-fluid card-img-top slide_preview rounded"></a>
               {% else %}
-                <a href="{% url 'LectureDay_StudentView' Module_Info.Module_Code LectureDay.id %}"><div class="bg-light rounded shadow-sm"><img src="{% static 'img/forgotten_ld_img.jpg' %}" alt="" class="img-fluid card-img-top slide_preview rounded-lg"></a>
+                <a href="{% url 'LectureDay_StudentView' Module_Info.Module_Code LectureDay.id %}"><div class="bg-light rounded shadow-sm img-fluid"><img src="{% static 'img/forgotten_ld_img.jpg' %}" alt="" class="img-fluid card-img-top slide_preview rounded"></a>
               {% endif %}
               <div class="p-4">
                 <h5> <a href="{% url 'LectureDay_StudentView' Module_Info.Module_Code LectureDay.id %}" class="text-dark">{{ LectureDay.Title}}</a></h5>

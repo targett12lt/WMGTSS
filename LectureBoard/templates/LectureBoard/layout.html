@@ -41,31 +41,20 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <!-- Container wrapper -->
     <div class="container-fluid">
-      <!-- Toggle button -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-  
+      <!-- Toggle  -->
+
       <!-- Collapsible wrapper -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="navbar-collapse" id="navbarSupportedContent">
         <!-- Navbar brand -->
-        <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'Overview'%}">
+        <a class="navbar-brand mt-2 mt-lg-0 brand_image" href="{% url 'Overview'%}">
           <img
             src="{% static 'img/wmg_logo_no_bg.png' %}"
-            height="70"
+            height="60pt"
             alt="WMGTSS Logo"
             loading="lazy"
           />
         </a>
-        <i class="bi bi-search icons" style="padding-right: 20px;"></i>
+        <a href="#" class="bi bi-search icons" style="padding-right: 20px;"></a>
         <!-- Application Name -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <name class="navbar_appname">WMGTSS</name>
@@ -86,7 +75,7 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-        <i class="fas fa-bell icons"></i> 
+        <i class="fas fa-bell icons" style="color: white;"></i> 
             <span class="badge rounded-pill badge-notification bg-danger"
             style="font-size: 18pt;">12</span>
         </a>
