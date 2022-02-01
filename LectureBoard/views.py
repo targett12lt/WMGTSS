@@ -28,13 +28,12 @@ def Overview_EditModules(request):
 def ModuleBoard_StudentView(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
     try:
-        if request.method == 'GET':
-            print('Method is GET')
-            ModuleCheck = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
-            Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
-            LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
-            context = {'LectureList': LectureList,
-                        'Module_Code': req_Module_Code}
+        Module_Info = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
+        Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
+        LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
+        context = {'LectureList': LectureList,
+                    'Module_Info': Module_Info}
+        print('Module Code:', req_Module_Code)
     except Module.DoesNotExist:
         raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
         '\n\nPlease contact your system administrator for further support.\n\n')

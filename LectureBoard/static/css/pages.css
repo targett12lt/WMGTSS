@@ -1,3 +1,26 @@
 body {
-    background-color: #ff0000;
+    background-color:white;
   }
+
+.slide_preview {
+    height: 250px;
+    object-fit:fill;
+}
+
+.ld_text {
+  overflow:hidden;
+  text-overflow: ellipsis;
+  text-align: justify;
+  white-space: nowrap;
+}
+
+.gradient {
+  background: linear-gradient(to right, #390e72, #5f65a0, #ee9f6a);
+}
+
+.ld_banner {
+  padding-top: 1%;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-bottom: 3%;
+}
