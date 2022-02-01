@@ -15,10 +15,12 @@
       <div class="text-white p-5 shadow-sm rounded gradient">
         <h1 class="display-4">{{ Module_Info.Module_Code }}: {{Module_Info.Module_Title}}</h1>
         <div class="row">
-          <div class="text-center align-center"  style="align-items:center !important;justify-content:center !important;background-color: black;width: 50px;height: 50px;border-radius: 50px">
-            <p style="padding-top: 25%" >{{ Module_Info.Module_Tutor.0 }}</p>
-          <h5 class="lead row">{{Module_Info.Module_Tutor}}</h5></div>
-        <p class="lead">{{ Module_Info.Module_Description }}</p>
+          <profile_img class="text-center align-center user_profile">
+          <div style="padding-top: 25%;" >{{ Module_Info.Module_Tutor.0 }}</div>
+          </profile_img>
+          <p class="lead align-center text-center" style="padding:1%;">{{Module_Info.Module_Tutor}}</p>
+        </div>
+        <p class="lead">{{ Module_Info.Module_Description }}</p> 
       </div>
     </div>
 
