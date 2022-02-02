@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,7 +59,7 @@ ROOT_URLCONF = 'WMGTSS.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [str(BASE_DIR.joinpath('templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,4 +137,8 @@ MEDIA_URL = '/media/'
 
 # Path where the media is stored:
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Configuring Login Settings:
+LOGIN_REDIRECT_URL = '/LectureBoard/'   # Needs updating to homepage
+LOGIN_URL = '/login/'
 
