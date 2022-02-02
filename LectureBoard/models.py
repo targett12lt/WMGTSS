@@ -1,5 +1,6 @@
 import os
 from django.db import models
+from django.contrib.auth.models import User, Group
 from django.core.files.storage import FileSystemStorage
 from django.forms import ValidationError
 from django.urls import reverse
@@ -27,7 +28,8 @@ class Module(models.Model):
     Module_Code = models.CharField(max_length=10)
     Module_Title = models.CharField(max_length=50)
     Module_Description = models.CharField(max_length=2000, blank=True)
-    Module_Tutor = models.CharField(max_length=100, blank=True)
+    # Module_Tutor = models.CharField(max_length=100, blank=True)  # OLD Char field, where lecturer did not own module
+    Module_Tutor = models.ForeignKey(User, verbose_name='Module Tutor', on_delete=models.CASCADE)  # Using Djano's built in user method so they own it.
 
     def __str__(self):
         return self.Module_Code
