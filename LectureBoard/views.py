@@ -1,7 +1,6 @@
 from django.http import Http404
-from django.views import generic
-from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Module, LectureDay, SlidePack
 from .forms import ModuleForm, LectureForm
 
@@ -16,6 +15,7 @@ def Overview_StudentModules(request):
     return render(request, 'LectureBoard/Overview.html', context)
     # Needs further work as just shows all modules currently, not what a student is registered to
 
+@login_required
 def Overview_EditModules(request):
     '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
     ModulesEnrolled = Module.objects.all()
@@ -30,7 +30,16 @@ def Overview_EditModules(request):
 
 def Overview_NewModule(request):
     '''Provides the view to allow a Lecturer to add a new module to the DataBase.'''
-    return render(request, 'LectureBoard/OverviewNew.html')
+    if request.method == "POST":
+        form = ModuleForm(request.POST)
+        if form.is_valid():
+            NewModule = form.save(commit=False)
+            NewModule.Module_Tutor = request.user
+            NewModule.save()
+            return redirect('LectureBoard_Edit')
+    else:
+        form = ModuleForm()
+    return render(request, 'LectureBoard/OverviewNew.html', {'form': form})
 
 
 def ModuleBoard_StudentView(request, req_Module_Code):
@@ -65,7 +74,7 @@ def ModuleBoard_EditView(request, req_Module_Code):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            return redirect('Overview_EditModules')
+            return redirect('LectureBoard_Edit')
     else:
         form = ModuleForm()
     return render(request, 'LectureBoard/ModuleBoardEdit.html', {'form': form})
