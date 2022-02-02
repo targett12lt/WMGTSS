@@ -27,7 +27,6 @@ class PPT_Convert():
             deck.SaveAs(online_loc, 32) # formatType = 32 for ppt to pdf
             deck.Close()
             powerpoint.Quit()
-            print('done')
         except:
             print("Could not open the file!")
 
