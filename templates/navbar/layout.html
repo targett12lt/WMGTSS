@@ -46,7 +46,7 @@
       <!-- Collapsible wrapper -->
       <div class="navbar-collapse" id="navbarSupportedContent">
         <!-- Navbar brand -->
-        <a class="navbar-brand mt-2 mt-lg-0 brand_image" href="{% url 'Overview'%}">
+        <a class="navbar-brand mt-2 mt-lg-0 brand_image" href="{% url 'home'%}">
           <img
             src="{% static 'img/wmg_logo_no_bg.png' %}"
             height="60pt"
@@ -104,13 +104,10 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            <img
-              src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-              class="rounded-circle"
-              height="50"
-              alt="User Profile Picture"
-              loading="lazy"
-            />
+          <profile_img class="text-center align-center user_profile">
+            <div style="padding-top: 25%;" >{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
+            </profile_img>
+            <p>{{ user.first_name }} {{ user.last_name }}</p>
           </a>
           <ul
             class="dropdown-menu dropdown-menu-lg-right"
@@ -123,7 +120,7 @@
               <a class="dropdown-item" href="#">Settings</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Logout</a>
+              <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
             </li>
           </ul>
         </div>
