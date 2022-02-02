@@ -1,5 +1,5 @@
 <html>
-  {% extends "LectureBoard/layout.html" %}
+  {% extends "Navbar/layout.html" %}
   
   <!-- Loading static files: -->
   {% load static %}
@@ -34,12 +34,12 @@
           <!-- Creating Gallery items dynamically from LectureList -->
           <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
               {% if LectureDay.LD_Img %}
-              <a href="{% url 'LectureDay_StudentView' Module_Info.Module_Code LectureDay.id %}"><div class="bg-light rounded shadow-sm img-fluid"><img src="{{ LectureDay.LD_Img.url }}" alt="" class="img-fluid card-img-top slide_preview rounded"></a>
+              <a href="{% url 'LectureDay' Module_Info.Module_Code LectureDay.id %}"><div class="bg-light rounded shadow-sm img-fluid"><img src="{{ LectureDay.LD_Img.url }}" alt="" class="img-fluid card-img-top slide_preview rounded"></a>
               {% else %}
-                <a href="{% url 'LectureDay_StudentView' Module_Info.Module_Code LectureDay.id %}"><div class="bg-light rounded shadow-sm img-fluid"><img src="{% static 'img/forgotten_ld_img.jpg' %}" alt="" class="img-fluid card-img-top slide_preview rounded"></a>
+                <a href="{% url 'LectureDay' Module_Info.Module_Code LectureDay.id %}"><div class="bg-light rounded shadow-sm img-fluid"><img src="{% static 'img/forgotten_ld_img.jpg' %}" alt="" class="img-fluid card-img-top slide_preview rounded"></a>
               {% endif %}
               <div class="p-4">
-                <h5> <a href="{% url 'LectureDay_StudentView' Module_Info.Module_Code LectureDay.id %}" class="text-dark">{{ LectureDay.Title}}</a></h5>
+                <h5> <a href="{% url 'LectureDay' Module_Info.Module_Code LectureDay.id %}" class="text-dark">{{ LectureDay.Title}}</a></h5>
                 <p class="small text-muted mb-0 ld_text">{{ LectureDay.Description }}</p>
                 <div class="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">
                   <p class="small mb-0"><i class="fa fa-picture-o mr-2"></i><span class="font-weight-bold">{{ LectureDay.Date }}</span></p>
