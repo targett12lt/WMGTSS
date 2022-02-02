@@ -19,13 +19,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import home
+from .views import home, logoutSuccess
 
 urlpatterns = [
     path('LectureBoard/', include('LectureBoard.urls')),
     path('admin/', admin.site.urls),
     path('', include('django.contrib.auth.urls')),
-    path('', home, name="home")
+    path('', home, name="home"),
+    path('logout_successful/', logoutSuccess, name='logout_successful'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
