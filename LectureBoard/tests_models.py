@@ -2,9 +2,12 @@ from django.forms import ValidationError
 from django.test import TestCase
 from django.utils import timezone
 from django.core.files import File
+from django.contrib.auth.models import User
+
 import mock
-import tempfile
-from sqlalchemy import false
+import os
+import glob
+
 from .models import Module, LectureDay, SlidePack, VersionHistory, Data_Validators
 
 
@@ -15,8 +18,9 @@ class Module_ModelTests(TestCase):
     '''
     @classmethod
     def setUp(object):
+        user_1 = User.objects.create_user('John Smith', 'John@smith.com', 'JSPassword')
         Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
-        Module_Description="Creating a Module with all fields populated", Module_Tutor="Example")
+        Module_Description="Creating a Module with all fields populated", Module_Tutor=user_1)
 
     
     def test_check_Module_with_all_information(self):
@@ -25,7 +29,6 @@ class Module_ModelTests(TestCase):
         self.assertEqual(TestModule.__str__(), "WM001")
         self.assertEqual(TestModule.title(), "TEST 1")
         self.assertEqual(TestModule.description(), "Creating a Module with all fields populated")
-        self.assertEqual(TestModule.tutor(), "Example")
 
     def test_module_code_label(self):
         '''Tests that the module code label hasn't changed'''
@@ -75,18 +78,6 @@ class Module_ModelTests(TestCase):
         field_label = module._meta.get_field('Module_Tutor').verbose_name
         self.assertEqual(field_label, 'Module Tutor')
 
-    def test_module_tutor_length(self):
-        '''Tests the maximum length of the module tutor hasn't changed'''
-        module = Module.objects.get(id=1)
-        max_length = module._meta.get_field('Module_Tutor').max_length
-        self.assertEqual(max_length, 100)
-
-    def test_module_tutor_blank(self):
-        '''Tests that the module description field can be blank'''
-        module = Module.objects.get(id=1)
-        blank = module._meta.get_field('Module_Tutor').blank
-        self.assertEqual(blank, True)
-
     def test_get_absolute_url_view_only(self):
         '''Tests to ensure that the URL has been defined for the Module'''
         module = Module.objects.get(id=1)
@@ -113,14 +104,13 @@ class LectureDay_ModelTests(TestCase):
     
     @classmethod
     def setUp(object):
+        user_1 = User.objects.create_user('John Smith', 'John@smith.com', 'JSPassword')
         module = Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
-        Module_Description="Object to test LD object", Module_Tutor="Example")
+        Module_Description="Object to test LD object", Module_Tutor=user_1)
         
         LectureDay.objects.create(ModuleLectureBoard = module, 
         Title="LectureDay Testing", Description="Object to test LD object",
         Date = LectureDay_ModelTests.current_time)
-
-    
 
     def test_check_Lectureday_with_all_information(self):
         '''Checks that LectureDay object has been created with correct information, using class methods'''
@@ -207,8 +197,9 @@ class SlidePack_ModelTests(TestCase):
 
     @classmethod
     def setUp(object):
+        user_1 = User.objects.create_user('John Smith', 'John@smith.com', 'JSPassword')
         module = Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
-        Module_Description="Object to test SP object", Module_Tutor="Example")
+        Module_Description="Object to test SP object", Module_Tutor=user_1)
         
         lectureday = LectureDay.objects.create(ModuleLectureBoard = module, 
         Title="LectureDay Testing", Description="Object to test SP object",
@@ -328,8 +319,9 @@ class VersionHistory_ModelTests(TestCase):
 
     @classmethod
     def setUp(object):       
+        user_1 = User.objects.create_user('John Smith', 'John@smith.com', 'JSPassword')
         module = Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
-        Module_Description="Object to test SP object", Module_Tutor="Example")
+        Module_Description="Object to test SP object", Module_Tutor=user_1)
         
         lectureday = LectureDay.objects.create(ModuleLectureBoard = module, 
         Title="LectureDay Testing", Description="Object to test SP object",
@@ -363,5 +355,17 @@ class VersionHistory_ModelTests(TestCase):
     #     slidepack = SlidePack.objects.get(SlidePack_id=1)
     #     blank = slidepack._meta.get_field('OriginalFile').blank
     #     self.assertEqual(blank, True)
+
+def tearDownModule():
+    ''' Tidies up any old files from testing'''
+    cwd = os.getcwd()
+    online_folder = os.path.join(cwd, 'media\\SlidePacks\\online\\')
+    original_folder = os.path.join(cwd, 'media\\SlidePacks\\original\\')
+    for filename in os.listdir(original_folder):
+        if filename.startswith('testing'):
+            os.remove(os.path.join(original_folder, filename))
+    for filename in os.listdir(online_folder):
+        if filename.startswith('testing'):
+            os.remove(os.path.join(online_folder, filename))
 
 
