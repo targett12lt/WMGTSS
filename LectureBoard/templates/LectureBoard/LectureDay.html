@@ -1,18 +1,46 @@
 <html>
+    {% extends "Navbar/layout.html" %} 
     <head>
         <title>Module Page</title>
-    </head>
 
-{% extends "Navbar/layout.html" %} 
+        <!-- Loading Static Files:  -->
+        {% load static %}
+
+        <!--  Slide JS Functions -->
+        <script type= "text/javascript" src="{% static 'js/slide_carousel.js' %}"></script>
+
+        <!-- WebPage CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/pages.css' %}">
+    
+    </head>
 
 {% block content %}
 
     <body>
         {% if SlidePackInfo.OriginalFile %}
             <LecturePack>
-                <BrowserSlides>
-                    {{SlidePackInfo.ProcSlidePack}}
+                {% if SlidePackInfo.OnlineSlidePack %}
+                <BrowserSlides role="main">
+                    <div id="carousel" class="carousel" data-ride="carousel">
+                        <div class="carousel-inner">
+                          <div class="carousel-item active">
+                            <canvas id="pdf-canvas" class="d-block w-100" data-file="{{ SlidePackInfo.OnlineSlidePack.url }}"></canvas>
+                            <div class="carousel-caption d-none d-md-block">
+                              <span>Page: <span id="page-num"></span> / <span id="page-count"></span></span>
+                            </div>
+                          </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+                          <i class="fas fa-chevron-left fa-2x"></i>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                        <a class="carousel-control-next" href="#" role="button" data-slide="next">
+                          <i class="fas fa-chevron-right fa-2x"></i>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </div>
                 </BrowserSlides>
+                {% endif %}
                 <DownloadLink>
                     <a href= "{{ SlidePackInfo.OriginalFile.url }}"
                     download = "{{ SlidePackInfo.OriginalFile.url }}"
