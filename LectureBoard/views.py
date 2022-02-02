@@ -1,10 +1,16 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Module, LectureDay, SlidePack
 from .forms import ModuleForm, LectureForm
 
-# Create your views here.
+def check_Tutor_Group(user):
+    print('Checking if in Tutor group now')
+    if user:
+        return user.groups.filter(name='Tutors').exists()
+    return False
+
+@login_required
 def Overview_StudentModules(request):
     '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
     ModulesEnrolled = Module.objects.all()
@@ -16,6 +22,7 @@ def Overview_StudentModules(request):
     # Needs further work as just shows all modules currently, not what a student is registered to
 
 @login_required
+@user_passes_test(check_Tutor_Group)
 def Overview_EditModules(request):
     '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
     ModulesEnrolled = Module.objects.all()
@@ -28,6 +35,8 @@ def Overview_EditModules(request):
     return render(request, 'LectureBoard/OverviewEdit.html', context)
     # Needs further work as just shows all modules currently, not what a student is registered to
 
+@login_required
+@user_passes_test(check_Tutor_Group)
 def Overview_NewModule(request):
     '''Provides the view to allow a Lecturer to add a new module to the DataBase.'''
     if request.method == "POST":
@@ -41,7 +50,7 @@ def Overview_NewModule(request):
         form = ModuleForm()
     return render(request, 'LectureBoard/OverviewNew.html', {'form': form})
 
-
+@login_required
 def ModuleBoard_StudentView(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
     try:
@@ -57,6 +66,8 @@ def ModuleBoard_StudentView(request, req_Module_Code):
     
     return render(request, 'LectureBoard/ModuleBoard.html', context)
 
+@login_required
+@user_passes_test(check_Tutor_Group)
 def ModuleBoard_EditView(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
     # try:
@@ -79,7 +90,7 @@ def ModuleBoard_EditView(request, req_Module_Code):
         form = ModuleForm()
     return render(request, 'LectureBoard/ModuleBoardEdit.html', {'form': form})
 
-
+@login_required
 def LectureDay_StudentView(request, req_Module_Code,lecture_id):
     '''Provides a view for each lecture day.
     
@@ -104,7 +115,9 @@ def LectureDay_StudentView(request, req_Module_Code,lecture_id):
         }
 
     return render(request, 'LectureBoard/LectureDay.html', context)
-        
+
+@login_required
+@user_passes_test(check_Tutor_Group)
 def LectureDay_EditView(request, req_Module_Code, lecture_id):
     '''Provides a view for each lecture day.
     

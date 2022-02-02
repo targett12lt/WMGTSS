@@ -44,7 +44,7 @@ class Module(models.Model):
         return self.Module_Tutor
 
     def get_absolute_url_view_only(self):
-        return reverse('ModuleBoard_StudentView', args=[str(self.Module_Code)])
+        return reverse('ModuleBoard', args=[str(self.Module_Code)])
     
     def get_absolute_url_edit(self):
         return reverse('ModuleBoard_EditView', args=[str(self.Module_Code)])    
@@ -88,7 +88,7 @@ class LectureDay(models.Model):
     
     def get_absolute_url_view_only(self):
         '''For student/view-only site'''
-        return reverse('LectureDay_StudentView', args=[str(self.get_module_code()), int(self.id)])
+        return reverse('LectureDay', args=[str(self.get_module_code()), int(self.id)])
 
     def get_absolute_url_edit(self):
         '''For editing/lecture site'''
@@ -161,7 +161,7 @@ class SlidePack(models.Model):
 
     def get_absolute_url_view_only(self):
         '''For student/view-only site'''
-        return reverse('LectureDay_StudentView', args=[str(self.get_module_code()), int(self.id)])
+        return reverse('LectureDay', args=[str(self.get_module_code()), int(self.id)])
 
     def get_absolute_url_edit(self):
         '''For editing/lecture site'''

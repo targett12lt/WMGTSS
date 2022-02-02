@@ -6,9 +6,9 @@ urlpatterns = [
     # Example: /LectureBoard/, this is for choosing a module but shows all modules
     path('', views.Overview_StudentModules, name='Overview'), 
     # Example: /LectureBoard/WM393/, this is for viewing an individual Module
-    path('<str:req_Module_Code>/', views.ModuleBoard_StudentView, name='ModuleBoard_StudentView'),
+    path('<str:req_Module_Code>/', views.ModuleBoard_StudentView, name='ModuleBoard'),
     # Example: /LectureBoard/WM393/1, this is for viewing an invidual lecture day
-    path('<str:req_Module_Code>/<int:lecture_id>/', views.LectureDay_StudentView, name='LectureDay_StudentView'),
+    path('<str:req_Module_Code>/<int:lecture_id>/', views.LectureDay_StudentView, name='LectureDay'),
 
     # EDITING:
     # Example: LectureBoard/Modules/edit, this is where a lecturer can view/edit/delete all their modules
