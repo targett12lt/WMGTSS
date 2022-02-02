@@ -2,14 +2,15 @@ import win32com.client
 import os
 
 class PPT_Convert():
+    '''Class containing functions to detect and convert PowerPoint files to PDF'''
     root = os.path.dirname(os.path.abspath(__file__))
 
     def detect_file_type(self,file_name):
+        '''Detects the file type and directs file to correct function to convert
+        to PDF. Only accepts PPT or PPTX'''
         if file_name.endswith('.ppt'):
-            print('Filename ends with PPT')
             self.ppt_to_pdf(file_name)
         elif file_name.endswith('.pptx'):
-            print('Filename ends with PPTX')
             self.pptx_to_pdf(file_name)
         else:
             print('incompatible file submitted')
@@ -46,10 +47,3 @@ class PPT_Convert():
         except:
             print("Could not open the file!")
 
-# For development purposes:
-
-file_path = r"C:\Users\ltargett\Documents\Personal_Git_Repository\WMGTSS\media\SlidePacks\original\Example_PPT.pptx"
-file_path_for_ppt = r"C:\Users\ltargett\Documents\Personal_Git_Repository\WMGTSS\media\SlidePacks\original\Example_PPT_normal.ppt"
-
-# Checking file type:
-PPT_Convert.detect_file_type(PPT_Convert(), file_path_for_ppt)
