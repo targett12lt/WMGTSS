@@ -1,18 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
+<!DOCTYPE html>
+<html>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMGTSS - Login</title>
-    
+
     <!-- Loading Static Files:  -->
     {% load static %}
 
+    {% load crispy_forms_tags %}
+
+
     <!-- Bootstrap Icon Library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -25,25 +28,54 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- NavBar CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
-
     <!-- WebPage CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/pages.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wmg_styling.css' %}">
 
-    <!--  NavBar JS Functions -->
-    <script src="{% static 'js/navbar.js' %}"></script>
-
-</head>
+  </head>
+    
   <body>
-    <h1>WMGTSS Authentication</h1>
-    <p><strong>Authentication Required:</strong> Only logged in users can use the WMGTSS System!<br>
-     If you do <strong>not</strong> have an account yet, please contact IT Services for support.</p>
-    <h2>User Login</h2>
-      <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Log In</button>
-    </form>
+    <div class="container h-100">
+      <div class="d-flex justify-content-center h-100">
+        <div class="user_card">
+          <div class="d-flex justify-content-center">
+            <div class="brand_logo_container">
+              <img src="{% static 'img/wmg_logo_no_bg.png' %}" class="brand_logo" alt="Logo">
+            </div>
+          </div>
+          <div class="d-flex align-bottom justify-content-center header_text">
+            <h1>WMGTSS User Login</h1>
+            </div>
+            <div>
+          <p><strong>Authentication Required:</strong> Only logged in users with <em></em> can use the WMGTSS System!<br>
+            <br>If you do <strong>not</strong> have an account yet, please contact IT Services for support.</p></div>
+            <div class="justify-content-center">
+            <form method="post">
+              <div class="input_user">
+                {% csrf_token %}
+                {{ form|crispy }}
+              </div>
+            <form>
+              <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="customControlInline">
+                  <label class="custom-control-label" for="customControlInline">Remember me</label>
+                </div>
+              </div>
+                <div class="d-flex justify-content-center mt-3 login_container">
+            <button type="button submit" name="button" class="btn login_btn">Login</button>
+            </div>
+            </form>
+          </div>
+          <div class="mt-4">
+            <div class="d-flex justify-content-center links">
+              Don't have an account?<a href="https://warwick.ac.uk/services/its/" class="ml-2">Contact IT Services</a>
+            </div>
+            <div class="d-flex justify-content-center links">
+              <a href="https://warwick.ac.uk/services/its/">Forgot your password?</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
