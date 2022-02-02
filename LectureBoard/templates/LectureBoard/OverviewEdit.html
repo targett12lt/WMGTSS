@@ -45,7 +45,7 @@
 
         {% if ModulesOwned %}
           <p>
-            The list below shows modules that already exist, otherwise: <button type="button" class="btn btn-primary" >Create a Module</button>
+            The list below shows modules that already exist, otherwise: <a href="{% url 'LectureBoard_New'%}"><button type="button" class="btn btn-primary">Create a Module</button></a>
             <br><br>If you would like to edit a module that isn't listed below, please contact the Module Owner
           </p>
             {% for Module in ModulesOwned %}
@@ -71,7 +71,7 @@
             {% endfor %}
         {% else %}
           <div class="d-flex p-2">
-            <p class="general_font">You do not own any modules yet - to get started: <button type="button" class="btn btn-primary" href="#">Create a Module</button></p>
+            <p class="general_font">You do not own any modules yet - to get started: <a href="{% url 'LectureBoard_New' %}"><button type="button" class="btn btn-primary">Create a Module</button></a></p>
           </div>
         {% endif %}
         </div>

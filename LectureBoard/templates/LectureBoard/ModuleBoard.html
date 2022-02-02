@@ -16,9 +16,9 @@
         <h1 class="display-4">{{ Module_Info.Module_Code }}: {{Module_Info.Module_Title}}</h1>
         <div class="row">
           <profile_img class="text-center align-center user_profile">
-          <div style="padding-top: 25%;" >{{ Module_Info.Module_Tutor.0 }}</div>
+          <div style="padding-top: 25%;" >{{ Module_Info.Module_Tutor.first_name.0 }}{{ Module_Info.Module_Tutor.last_name.0 }}</div>
           </profile_img>
-          <p class="lead align-center text-center" style="padding:1%;">{{Module_Info.Module_Tutor}}</p>
+          <p class="lead align-center text-center" style="padding:1%;">{{ Module_Info.Module_Tutor.first_name }} {{ Module_Info.Module_Tutor.last_name }}</p>
         </div>
         <p class="lead">{{ Module_Info.Module_Description }}</p> 
       </div>
