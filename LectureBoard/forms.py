@@ -5,6 +5,7 @@ class ModuleForm(forms.ModelForm):
     class Meta:
         model = Module
         fields = "__all__"
+        exclude = ['Module_Tutor']
 
 
 class LectureForm(forms.ModelForm):
