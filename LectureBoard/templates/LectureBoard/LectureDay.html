@@ -1,27 +1,20 @@
 <html>
     {% extends "Navbar/layout.html" %} 
     <head>
-        <title>Module Page</title>
+        <title>Lecture Day</title>
 
         <!-- Loading Static Files:  -->
         {% load static %}
-
-        <!--  Slide JS Functions -->
-        <script type= "text/javascript" src="{% static 'js/slide_carousel.js' %}"></script>
-
-        <!-- WebPage CSS -->
-        <link rel="stylesheet" type="text/css" href="{% static 'css/pages.css' %}">
-    
     </head>
 
 {% block content %}
 
     <body>
-        {% if SlidePackInfo.OriginalFile %}
+        {% if SlidePackInfo.OriginalFile %}     
             <LecturePack>
                 {% if SlidePackInfo.OnlineSlidePack %}
                 <BrowserSlides role="main">
-                    <div id="carousel" class="carousel" data-ride="carousel">
+                    <div id="carousel" class="carousel slide carousel-fade" data-ride="carousel">
                         <div class="carousel-inner">
                           <div class="carousel-item active">
                             <canvas id="pdf-canvas" class="d-block w-100" data-file="{{ SlidePackInfo.OnlineSlidePack.url }}"></canvas>
@@ -41,21 +34,26 @@
                     </div>
                 </BrowserSlides>
                 {% endif %}
+                <button type="button" class="btn btn-labeled btn-success">                    <span class="btn-label">
+                    <i class="bi bi-download"></i>
+                    </span>Download Slide Pack
+                    </button>
                 <DownloadLink>
+                    <DownloadLogo><i class="bi bi-download"></i></DownloadLogo>
                     <a href= "{{ SlidePackInfo.OriginalFile.url }}"
                     download = "{{ SlidePackInfo.OriginalFile.url }}"
                     class="">
                     Download</a>
-                </DownloadLink>  <!-- Download link broken, needs fixing...-->
+                </DownloadLink>
             </LecturePack>
         {% else %}
             <p>The slide pack couldn't be found :(</p>
         {% endif %}
         {% if LectureDayInfo %}
             <ul>
-                <LD_Title>Title: {{LectureDayInfo.Title}}</LD_Title><br>
-                <LD_Date>Date: {{LectureDayInfo.Date}}</LD_Date><br>
-                <LD_Description>Description: {{LectureDayInfo.Description}}</LD_Description><br>
+                <h1>Title: {{LectureDayInfo.Title}}</h1>
+                <h4>Date: {{LectureDayInfo.Date}}</h4>
+                <p>Description: {{LectureDayInfo.Description}}</p>
             </ul>
         {% else %}
             <p>Oh no something went wrong!</p>
