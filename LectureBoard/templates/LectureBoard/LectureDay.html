@@ -34,26 +34,24 @@
                     </div>
                 </BrowserSlides>
                 {% endif %}
-                <button type="button" class="btn btn-labeled btn-success">                    <span class="btn-label">
+                <a href= "{{ SlidePackInfo.OriginalFile.url }}"
+                    download = "{{ SlidePackInfo.OriginalFile.url }}"
+                    class="">
+                    <button type="button" class="btn btn-labeled btn-success">
+                    <span class="btn-label">
                     <i class="bi bi-download"></i>
                     </span>Download Slide Pack
                     </button>
-                <DownloadLink>
-                    <DownloadLogo><i class="bi bi-download"></i></DownloadLogo>
-                    <a href= "{{ SlidePackInfo.OriginalFile.url }}"
-                    download = "{{ SlidePackInfo.OriginalFile.url }}"
-                    class="">
-                    Download</a>
-                </DownloadLink>
+                </a>
             </LecturePack>
         {% else %}
             <p>The slide pack couldn't be found :(</p>
         {% endif %}
         {% if LectureDayInfo %}
             <ul>
-                <h1>Title: {{LectureDayInfo.Title}}</h1>
-                <h4>Date: {{LectureDayInfo.Date}}</h4>
-                <p>Description: {{LectureDayInfo.Description}}</p>
+                <h1>{{LectureDayInfo.Title}}</h1>
+                <h4>{{LectureDayInfo.Date}}</h4>
+                <p>{{LectureDayInfo.Description}}</p>
             </ul>
         {% else %}
             <p>Oh no something went wrong!</p>
