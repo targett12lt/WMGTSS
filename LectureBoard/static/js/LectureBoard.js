@@ -94,4 +94,21 @@ $(function() {
   (function myFunction() {
     alert("Hello world!")
   });
+
+  $(function ChangeDetected(){
+    var totalSteps = pdfDoc.numPages
+    alert("totalSteps");
+
+    $('SlidePackCarousel').carousel();
+    ('SlidePackCarousel').on('slide.bs.carousel', function (e) {
+    
+    // update progress
+    var step = $(e.relatedTarget).data('step');
+    var percent = (parseInt(step) / totalSteps) * 100;
+    alert("updating progress");
+    $('.progress-bar').css({width: percent + '%'});
+    $('.progress-bar').text("Step " + step);
+    
+    })
+  });
 });

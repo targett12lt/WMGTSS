@@ -1,5 +1,6 @@
 body {
     background-color:white;
+    padding-top: 90px;
   }
 
 .slide_preview {
@@ -36,20 +37,16 @@ body {
 }
 
 .general_font {
-  color: black;
+  color: red;
 }
 
 .carousel-control-prev .carousel-control-prev-icon,
 .carousel-control-next .carousel-control-next-icon {
-    outline: black;
-    background-color: rgba(0, 0, 0, 0.3);
+    outline: red;
+    background-color: rgba(255, 0, 0, 0);
 }
 
 .carousel-control-prev .fa-chevron-left,
 .carousel-control-next .fa-chevron-right {
-    color: black;
-}
-
-.carousel-caption {
-  color: black;
+    color: red;
 }

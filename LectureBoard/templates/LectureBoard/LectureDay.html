@@ -9,53 +9,79 @@
 
 {% block content %}
 
-    <body>
-        {% if SlidePackInfo.OriginalFile %}     
-            <LecturePack>
-                {% if SlidePackInfo.OnlineSlidePack %}
-                <BrowserSlides role="main">
-                    <div id="carousel" class="carousel slide carousel-fade" data-ride="carousel">
-                        <div class="carousel-inner">
-                          <div class="carousel-item active">
-                            <canvas id="pdf-canvas" class="d-block w-100" data-file="{{ SlidePackInfo.OnlineSlidePack.url }}"></canvas>
-                            <div class="carousel-caption d-none d-md-block">
-                              <span>Page: <span id="page-num"></span> / <span id="page-count"></span></span>
-                            </div>
-                          </div>
+    <body>        
+        <div class="container-fluid" style="background-color: burlywood;">
+            <div class="row">
+                {% if SlidePackInfo.OriginalFile %}     
+                    {% if SlidePackInfo.OnlineSlidePack %}
+                        <div class="col" style="background-color: coral;">
+                            <RelatedContent>
+                                <item>
+                                    Item 1
+                                </item>
+                                <item>
+                                    <br>Item 2
+                                </item>
+                            </RelatedContent>
                         </div>
-                        <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
-                          <i class="fas fa-chevron-left fa-2x"></i>
-                        <span class="sr-only">Previous</span>
-                      </a>
-                        <a class="carousel-control-next" href="#" role="button" data-slide="next">
-                          <i class="fas fa-chevron-right fa-2x"></i>
-                        <span class="sr-only">Next</span>
-                      </a>
+                        <div class="col-10", style="background-color: yellow; padding:1%">
+                            <BrowserSlides>
+                                <div id="SlidePackCarousel" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <canvas id="pdf-canvas" class="d-block w-100" data-file="{{ SlidePackInfo.OnlineSlidePack.url }}"></canvas>
+                                                <div class="carousel-caption d-none d-md-block">
+                                                    <span>Page: <span id="page-num"></span> / <span id="page-count"></span></span>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                                <div class="progress my-2">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" style="width: 1%;">
+                                    </div>
+                                </div>
+                            </BrowserSlides>
+                        </div>  
+                    {% endif %}
                     </div>
-                </BrowserSlides>
+                {% else %}
+                    <p>The slide pack couldn't be found :(</p>
                 {% endif %}
-                <a href= "{{ SlidePackInfo.OriginalFile.url }}"
-                    download = "{{ SlidePackInfo.OriginalFile.url }}"
-                    class="">
-                    <button type="button" class="btn btn-labeled btn-success">
-                    <span class="btn-label">
-                    <i class="bi bi-download"></i>
-                    </span>Download Slide Pack
-                    </button>
-                </a>
-            </LecturePack>
-        {% else %}
-            <p>The slide pack couldn't be found :(</p>
-        {% endif %}
-        {% if LectureDayInfo %}
-            <ul>
-                <h1>{{LectureDayInfo.Title}}</h1>
-                <h4>{{LectureDayInfo.Date}}</h4>
-                <p>{{LectureDayInfo.Description}}</p>
-            </ul>
-        {% else %}
-            <p>Oh no something went wrong!</p>
-        {% endif %}
+            </div>
+            {% if LectureDayInfo %}
+                <div class="row" style="background-color: blueviolet;">    
+                    <div class="col"></div>
+                    <div class="col-10">
+                    <ul>
+                        <h1>{{LectureDayInfo.Title}}</h1>
+                        <div class="row">
+                        <h4 style="padding-right: 5%;">{{LectureDayInfo.Date}}</h4>
+                        <a href= "{{ SlidePackInfo.OriginalFile.url }}"
+                            download = "{{ SlidePackInfo.OriginalFile.url }}"
+                            class="">
+                            <button type="button" class="btn btn-labeled btn-success">
+                            <span class="btn-label">
+                            <i class="bi bi-download"></i>
+                            </span>Download Slide Pack
+                            </button>
+                        </a>
+                        </div>
+                        <p class="general_font">{{LectureDayInfo.Description}}</p>
+                    </ul>
+                    </div>
+                </div>
+            {% else %}
+                <p>Oh no something went wrong!</p>
+            {% endif %}
+        </div>
     </body>
 
 {% endblock content %}
