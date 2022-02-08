@@ -33,8 +33,5 @@ class VersionHistoryForm(forms.ModelForm):
         fields = [
             'Comment',
             'VersionNum',
-            'ModDate',
         ]
-        widgets = {
-            'ModDate': DateInput(),
-        }
+

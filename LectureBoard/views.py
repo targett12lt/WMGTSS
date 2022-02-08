@@ -1,5 +1,6 @@
 from sys import prefix
 from django.http import Http404
+from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -148,21 +149,32 @@ def Edit_LectureDay(request, req_Module_Code, lecture_id):
 def New_LectureDay(request, req_Module_Code):
     ModuleInfo = get_object_or_404(Module, Module_Code=req_Module_Code)  # Getting information about the lecture day using the ID from URL
     if request.method == "POST":
-        LDform = LectureDayForm(request.POST,prefix='LDForm')
-        SPForm = SlidePackForm(request.POST, prefix='SPForm')
-        VHForm = VersionHistoryForm
+        LDform = LectureDayForm(request.POST, request.FILES, prefix='LDForm')
+        SPForm = SlidePackForm(request.POST, request.FILES, prefix='SPForm')
+        VHForm = VersionHistoryForm(request.POST, request.FILES, prefix='VHForm')
         context = {
             'LDForm': LDform,
             'SPForm': SPForm,
             'VHForm': VHForm,
         }
+        LD_Creation = False
+        
         if LDform.is_valid():
             NewLectureDay = LDform.save(commit=False)
             NewLectureDay.ModuleLectureBoard = ModuleInfo
             NewLectureDay.save()
-            # return redirect('Edit_Module', req_Module_Code)
+            LD_Creation = True
             if SPForm.is_valid():
                 NewSlidePack = SPForm.save(commit=False)
+                NewSlidePack.LectureDay_FK = NewLectureDay
+                NewSlidePack.save()
+                if VHForm.is_valid():
+                    NewVersionHistoryEntry = VHForm.save(commit=False)
+                    NewVersionHistoryEntry.SlidePackFK = NewSlidePack
+                    NewVersionHistoryEntry.ModDate = timezone.now()
+                    NewVersionHistoryEntry.save()
+        if LD_Creation:
+            return redirect('Edit_Module', req_Module_Code)
     else:
         LDform = LectureDayForm()
         SPForm = SlidePackForm()
