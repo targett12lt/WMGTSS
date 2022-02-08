@@ -53,12 +53,13 @@
                     <div class="card">
                       <div class="card-header" id="heading{{forloop.counter}}">
                         <h2 class="mb-0">
-                          <button class="btn text-left" type="button" data-toggle="collapse" data-target="#collapse{{forloop.counter}}" aria-expanded="true" aria-controls="#collapse{{forloop.counter}}">
+                          <button class="btn" type="button" data-toggle="collapse" data-target="#collapse{{forloop.counter}}" aria-expanded="true" aria-controls="#collapse{{forloop.counter}}">
                             {{Module.Module_Code}}: {{Module.Module_Title}}
                           </button>
-                          <a href="{% url 'ModuleBoard' Module.Module_Code %}" type="button" style="float:right" class="btn btn-primary editingButtons">View as a Student</a>
-                          <a href="{% url 'ModuleBoard_EditView' Module.Module_Code %}"type="button" style="float:right; background-color:#e7e7e7; color:black;" class="btn btn-primary">Edit</a>
-                          <a type="button" style="float:right; background-color:#f44336;" class="btn btn-primary">Delete</a>
+                          <a href="{% url 'ModuleBoard' Module.Module_Code %}" type="button" class="btn btn-primary ov-button">View as a Student</a>
+                          <a href="{% url 'ModuleBoard_EditView' Module.Module_Code %}"type="button" class="btn btn-secondary ov-button">Edit Module Details</a>
+                          <a href="{% url 'ModuleBoard_EditView' Module.Module_Code %}"type="button" class="btn btn-light ov-button">Edit Lecture Days</a>
+                          <a type="button" style="background-color:#f44336;" class="btn btn-primary ov-button">Delete</a>
                         </h2>
                       </div>
                       <div id="collapse{{forloop.counter}}" class="collapse hide" aria-labelledby="heading{{forloop.counter}}" data-parent="#accordion">

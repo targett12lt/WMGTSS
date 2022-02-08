@@ -2,10 +2,9 @@ from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Module, LectureDay, SlidePack
-from .forms import ModuleForm, LectureForm
+from .forms import ModuleForm, LectureDayForm
 
 def check_Tutor_Group(user):
-    print('Checking if in Tutor group now')
     if user:
         return user.groups.filter(name='Tutors').exists()
     return False
@@ -70,25 +69,17 @@ def ModuleBoard_StudentView(request, req_Module_Code):
 @user_passes_test(check_Tutor_Group)
 def ModuleBoard_EditView(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
-    # try:
-    #     ModuleCheck = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
-    #     Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
-    #     LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
-    #     output = ', '.join(q.Title for q in LectureList)
-    #     context = {'LectureList': LectureList,
-    #                 'Module_Code': req_Module_Code}
-    # except Module.DoesNotExist:
-    #     raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
-    #     '\n\nPlease contact your system administrator for further support.\n\n')
-    if request.method == "POST":
-        form = ModuleForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-            return redirect('LectureBoard_Edit')
-    else:
-        form = ModuleForm()
-    return render(request, 'LectureBoard/ModuleBoardEdit.html', {'form': form})
+    try:
+        Module_Info = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
+        Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
+        LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
+        context = {'LectureList': LectureList,
+                    'Module_Info': Module_Info}
+        print('Module Code:', req_Module_Code)
+    except Module.DoesNotExist:
+        raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
+        '\n\nPlease contact your system administrator for further support.\n\n')
+    return render(request, 'LectureBoard/ModuleBoardEdit.html', context)
 
 @login_required
 def LectureDay_StudentView(request, req_Module_Code,lecture_id):

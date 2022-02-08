@@ -8,7 +8,7 @@ class ModuleForm(forms.ModelForm):
         exclude = ['Module_Tutor']
 
 
-class LectureForm(forms.ModelForm):
+class LectureDayForm(forms.ModelForm):
     class Meta:
         model = LectureDay
         slidepack_model = SlidePack
