@@ -1,20 +1,74 @@
 <html>
-    <head>
-        <title>Module Page</title>
-    </head>
+  {% extends "Navbar/layout.html" %}
+  
+  <!-- Loading static files: -->
+  {% load static %}
 
-{% extends "Navbar/layout.html" %} 
+  <head>
+    <title>Module Board Edit</title>
+  </head>
 
 {% block content %}
 
-    <body>
-        <h2>Module Edit</h2>
-        <form method="POST">
-            {% csrf_token %}
-            {{form.as_p}}
-            <button type="submit">Save</button>
-        </form>
-    </body>
+<body>
+    <div class="col-lg-12 mx-auto ld_banner" style="padding-bottom: 0%;">
+        <h1>Manage Lecture Board: "{{ Module_Info.Module_Code }}: {{Module_Info.Module_Title}}"</h1>
+        <p>You can <strong>create</strong>, <strong>modify</strong> and <strong>delete</strong> lecture days for your 
+            module. It is also possible to <strong>toggle</strong> the visibility of a Lecture Day on this screen.
+        </p>
+        <div class="row">
+            <div class="col">
+                <a href="{% url 'ModuleBoard' Module_Info.Module_Code %}">
+                    <button type="button" class="btn container-fluid icons-pages lecture_day_lg_buttons"><i class="bi bi-person-circle icons-pages"></i> View as a Student</button>
+                </a>
+            </div>
+            <div class="col">
+                <button type="button" class="btn container-fluid icons-pages lecture_day_lg_buttons"><i class="bi bi-plus icons-pages"></i> New Lecture</button>
+            </div>
+        </div>
+        <h2>Lecture Days:</h2>
+    </div>
+    
+
+  <!-- Creating Bootstrap Fluid container for LectureDay's-->
+  <div class="container-fluid">
+    <div class="px-lg-5">
+    <!-- Checking if LectureList has items in it -->
+        {% if LectureList %}
+        {% for LectureDay in LectureList %}
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="col-auto">
+                        {% if LectureDay.LD_Img %}
+                            <img src="{{ LectureDay.LD_Img.url }}" class="img-fluid" alt="" style="height: 200px;">
+                        {% else %}
+                            <img src="{% static 'img/forgotten_ld_img.jpg' %}" class="img-fluid" alt="" style="height: 200px;">
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <div class="card-block px-2">
+                            <h4 class="card-title">{{ LectureDay.Title}}</h4>
+                            <p class="card-text">{{ LectureDay.Description }}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm- my-auto">
+                        <div class="card-block px-2">
+                            <a href="#"><i class="bi bi-eye-fill icons-pages"></i></a>
+                            <a href="#"><i class="bi bi-pencil-fill icons-pages"></i></a>
+                            <a href="#"><i class="bi bi-trash2-fill icons-pages"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No lectures are available for this module yet :(</p>
+    {% endif %}
+    
+
+</div>  
+</body>
+
 {% endblock content %}
 
 </html>
