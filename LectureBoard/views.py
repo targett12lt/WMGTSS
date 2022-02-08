@@ -1,3 +1,4 @@
+from sys import prefix
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -147,34 +148,29 @@ def Edit_LectureDay(request, req_Module_Code, lecture_id):
 def New_LectureDay(request, req_Module_Code):
     ModuleInfo = get_object_or_404(Module, Module_Code=req_Module_Code)  # Getting information about the lecture day using the ID from URL
     if request.method == "POST":
-        LDform = LectureDayForm(request.POST)
-        SPForm = SlidePackForm(request.POST)
+        LDform = LectureDayForm(request.POST,prefix='LDForm')
+        SPForm = SlidePackForm(request.POST, prefix='SPForm')
         VHForm = VersionHistoryForm
+        context = {
+            'LDForm': LDform,
+            'SPForm': SPForm,
+            'VHForm': VHForm,
+        }
         if LDform.is_valid():
             NewLectureDay = LDform.save(commit=False)
             NewLectureDay.ModuleLectureBoard = ModuleInfo
             NewLectureDay.save()
-            return redirect('Edit_Module', req_Module_Code)
+            # return redirect('Edit_Module', req_Module_Code)
+            if SPForm.is_valid():
+                NewSlidePack = SPForm.save(commit=False)
     else:
         LDform = LectureDayForm()
-    return render(request, 'LectureBoard/LectureDayNew.html', {'form': LDform})
-
-
-
-    # OLD STUFF:
-    
-    # if request.method == "POST":
-    #     LDform = LectureDayForm(request.POST)
-    #     SPForm = SlidePackForm(request)
-    #     VHForm = VersionHistoryForm
-
-    #     if form.is_valid():
-    #         NewModule = form.save(commit=False)
-    #         NewModule.Module_Tutor = request.user
-    #         NewModule.save()
-    #         return redirect('Edit_Modules')
-    # else:
-    #     form = ModuleForm()
-    # return render(request, 'LectureBoard/OverviewNew.html', {'form': form})
-
+        SPForm = SlidePackForm()
+        VHForm = VersionHistoryForm()
+        context = {
+            'LDForm': LDform,
+            'SPForm': SPForm,
+            'VHForm': VHForm,
+        }
+    return render(request, 'LectureBoard/LectureDayNew.html', context)  # {'form': LDform}
 
