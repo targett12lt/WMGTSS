@@ -1,5 +1,6 @@
 <!-- Loading Static Files:  -->
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,119 +46,97 @@
 </head>
 
 <body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
 
-    <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-      <!-- Toggle  -->
+    <!-- Collapsible wrapper -->
+    <div class="navbar-collapse" id="navbarSupportedContent">
+      <!-- Navbar brand -->
+      <a class="navbar-brand mt-2 mt-lg-0 brand_image" href="{% url 'home'%}">
+        <img
+          src="{% static 'img/wmg_logo_no_bg.png' %}"
+          height="60pt"
+          alt="WMGTSS Logo"
+          loading="lazy"
+        />
+      </a>
+      <a href="#" class="bi bi-search icons" style="padding-right: 20px;"></a>
+      <!-- Application Name -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <name class="navbar_appname">WMGTSS</name>
+      </ul>
+    </div>
 
-      <!-- Collapsible wrapper -->
-      <div class="navbar-collapse" id="navbarSupportedContent">
-        <!-- Navbar brand -->
-        <a class="navbar-brand mt-2 mt-lg-0 brand_image" href="{% url 'home'%}">
-          <img
-            src="{% static 'img/wmg_logo_no_bg.png' %}"
-            height="60pt"
-            alt="WMGTSS Logo"
-            loading="lazy"
-          />
-        </a>
-        <a href="#" class="bi bi-search icons" style="padding-right: 20px;"></a>
-        <!-- Application Name -->
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <name class="navbar_appname">WMGTSS</name>
+    <!-- Right elements -->
+  <div class="d-flex align-items-center">
+       
+      <!-- Notifications -->
+      <div class="dropdown">
+        <a
+          class="text-reset"
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          data-toggle="dropdown"
+          aria-expanded="false"
+        >
+      <i class="bi bi-bell-fill icons" style="color: white;"></i> 
+          <span class="badge rounded-pill badge-notification bg-danger"
+          style="font-size: 18pt;">12</span>
+      </a>
+        <ul
+          class="dropdown-menu dropdown-menu-lg-right"
+          aria-labelledby="navbarDropdownMenuLink"
+        >
+          <li>
+            <a class="dropdown-item" href="#">Notification 1</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Notification 2</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Notification 3</a>
+          </li>
         </ul>
       </div>
-      <!-- Collapsible wrapper -->
-  
-      <!-- Right elements -->
-    <div class="d-flex align-items-center">
-         
-        <!-- Notifications -->
-        <div class="dropdown">
-          <a
-            class="text-reset"
-            href="#"
-            id="navbarDropdownMenuLink"
-            role="button"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-        <i class="bi bi-bell-fill icons" style="color: white;"></i> 
-            <span class="badge rounded-pill badge-notification bg-danger"
-            style="font-size: 18pt;">12</span>
+      <!-- Avatar -->
+      <div class="dropdown profile_navbar">
+        <a
+          class="d-flex align-items-center hidden-arrow dropdown_sizing"
+          href="#"
+          id="navbarDropdownMenuAvatar"
+          role="button"
+          data-toggle="dropdown"
+          aria-expanded="false"
+        >
+        <profile_img class="text-center align-center user_profile">
+          <div style="padding-top: 25%;" >{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
+          </profile_img>
+          <p>{{ user.first_name }} {{ user.last_name }}</p>
         </a>
-          <ul
-            class="dropdown-menu dropdown-menu-lg-right"
-            aria-labelledby="navbarDropdownMenuLink"
-          >
-            <li>
-              <a class="dropdown-item" href="#">Notification 1</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Notification 2</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Notification 3</a>
-            </li>
-          </ul>
-        </div>
-        <!-- Avatar -->
-        <div class="dropdown profile_navbar">
-          <a
-            class="d-flex align-items-center hidden-arrow dropdown_sizing"
-            href="#"
-            id="navbarDropdownMenuAvatar"
-            role="button"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-          <profile_img class="text-center align-center user_profile">
-            <div style="padding-top: 25%;" >{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
-            </profile_img>
-            <p>{{ user.first_name }} {{ user.last_name }}</p>
-          </a>
-          <ul
-            class="dropdown-menu dropdown-menu-lg-right"
-            aria-labelledby="navbarDropdownMenuAvatar"
-          >
-            <li>
-              <a class="dropdown-item" href="#">My profile</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Settings</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
-            </li>
-          </ul>
-        </div>
+        <ul
+          class="dropdown-menu dropdown-menu-lg-right"
+          aria-labelledby="navbarDropdownMenuAvatar"
+        >
+          <li>
+            <a class="dropdown-item" href="#">My profile</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Settings</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
+          </li>
+        </ul>
       </div>
-      <!-- Right elements -->
     </div>
-    <!-- Container wrapper -->
-  </nav>
-  <!-- Navbar -->
-
-
-    
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-        <div class="container-fluid">
-            <a href="{% url 'Overview'%}">
-                <img src="{% static 'img/wmg_logo_no_bg.png' %}" alt="" height="75">
-            </a>
-            <search>
-                <img src="{% static 'img/search.png' %}" alt="" height="50">
-            </search>
-            <barTxt class="navbar-text">WMGTSS</barTxt>
-        </div>
-        <logout>User Information</logout>
-    </nav> -->
-                {% block content %}{% endblock content %}
-            </main>
-        </div>
-    </div>
+    <!-- Right elements -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+{% block content %}{% endblock content %}
 </body>
 
 </html>
