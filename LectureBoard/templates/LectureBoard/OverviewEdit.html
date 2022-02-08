@@ -45,7 +45,7 @@
 
         {% if ModulesOwned %}
           <p>
-            The list below shows modules that already exist, otherwise: <a href="{% url 'LectureBoard_New'%}"><button type="button" class="btn btn-primary">Create a Module</button></a>
+            The list below shows modules that already exist, otherwise: <a href="{% url 'New_Module'%}"><button type="button" class="btn btn-primary">Create a Module</button></a>
             <br><br>If you would like to edit a module that isn't listed below, please contact the Module Owner
           </p>
             {% for Module in ModulesOwned %}
@@ -57,8 +57,8 @@
                             {{Module.Module_Code}}: {{Module.Module_Title}}
                           </button>
                           <a href="{% url 'ModuleBoard' Module.Module_Code %}" type="button" class="btn btn-primary ov-button">View as a Student</a>
-                          <a href="{% url 'ModuleBoard_EditView' Module.Module_Code %}"type="button" class="btn btn-secondary ov-button">Edit Module Details</a>
-                          <a href="{% url 'ModuleBoard_EditView' Module.Module_Code %}"type="button" class="btn btn-light ov-button">Edit Lecture Days</a>
+                          <a href="{% url 'Edit_Module' Module.Module_Code %}"type="button" class="btn btn-secondary ov-button">Edit Module Details</a>
+                          <a href="{% url 'Edit_Module' Module.Module_Code %}"type="button" class="btn btn-light ov-button">Edit Lecture Days</a>
                           <a type="button" style="background-color:#f44336;" class="btn btn-primary ov-button">Delete</a>
                         </h2>
                       </div>
@@ -72,7 +72,7 @@
             {% endfor %}
         {% else %}
           <div class="d-flex p-2">
-            <p class="general_font">You do not own any modules yet - to get started: <a href="{% url 'LectureBoard_New' %}"><button type="button" class="btn btn-primary">Create a Module</button></a></p>
+            <p class="general_font">You do not own any modules yet - to get started: <a href="{% url 'New_Module' %}"><button type="button" class="btn btn-primary">Create a Module</button></a></p>
           </div>
         {% endif %}
         </div>

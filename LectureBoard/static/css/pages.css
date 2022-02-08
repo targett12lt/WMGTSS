@@ -29,6 +29,13 @@ body {
   background: linear-gradient(to right, #390e72, #5f65a0, #ee9f6a);
 }
 
+.lb_banner {
+  padding-top: 1%;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-bottom: 1%;
+}
+
 .ld_banner {
   padding-top: 1%;
   padding-left: 3%;
@@ -49,4 +56,20 @@ body {
 .carousel-control-prev .fa-chevron-left,
 .carousel-control-next .fa-chevron-right {
     color: red;
+}
+
+.ov-button{
+  float: right;
+}
+
+.icons-pages{
+  font-size: 25pt;
+  color: #3C3C3C;
+  padding: 5pt;
+}
+
+.lecture_day_lg_buttons{
+  background-color: #AEB701;
+  color: black;
+  height: 80px;
 }

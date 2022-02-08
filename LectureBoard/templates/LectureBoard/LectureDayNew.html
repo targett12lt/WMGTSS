@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>New Lecture Day</title>
+    </head>
+
+{% extends "Navbar/layout.html" %} 
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <body>
+        <h2>Create a New Lecture Day</h2>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">Create Lecture Day</button>
+          </form>
+    </body>
+{% endblock content %}
+
+</html>

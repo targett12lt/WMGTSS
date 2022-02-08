@@ -23,7 +23,9 @@
                 </a>
             </div>
             <div class="col">
-                <button type="button" class="btn container-fluid icons-pages lecture_day_lg_buttons"><i class="bi bi-plus icons-pages"></i> New Lecture</button>
+                <a href="{% url 'New_LectureDay' Module_Info.Module_Code %}">
+                    <button type="button" class="btn container-fluid icons-pages lecture_day_lg_buttons"><i class="bi bi-plus icons-pages"></i> New Lecture</button>
+                </a>
             </div>
         </div>
         <h2>Lecture Days:</h2>
@@ -54,7 +56,7 @@
                     <div class="col-sm- my-auto">
                         <div class="card-block px-2">
                             <a href="#"><i class="bi bi-eye-fill icons-pages"></i></a>
-                            <a href="#"><i class="bi bi-pencil-fill icons-pages"></i></a>
+                            <a href="{% url 'Edit_LectureDay' Module_Info.Module_Code LectureDay.id %}"><i class="bi bi-pencil-fill icons-pages"></i></a>
                             <a href="#"><i class="bi bi-trash2-fill icons-pages"></i></a>
                         </div>
                     </div>

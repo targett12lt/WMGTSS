@@ -12,13 +12,15 @@ urlpatterns = [
 
     # EDITING:
     # Example: LectureBoard/Modules/edit, this is where a lecturer can view/edit/delete all their modules
-    path('Modules/edit/', views.Overview_EditModules, name='LectureBoard_Edit'), 
+    path('Modules/edit/', views.Overview_EditModules, name='Edit_Modules'), 
     # Example: LectureBoard/Modules/new, this is where a lecturer can view/edit/delete all their modules
-    path('Modules/new/edit/', views.Overview_NewModule, name='LectureBoard_New'), 
-    # Example: LectureBoard/Tutor/WM393/, this is to view/edit/delete an invidual Module Board
-    path('<str:req_Module_Code>/edit/', views.ModuleBoard_EditView, name='ModuleBoard_EditView'),
-    # Example: LectureBoard/Tutor/WM393/1, this is to view/edit/delete an invidual lecture day
-    path('<str:req_Module_Code>/<int:lecture_id>/edit/', views.LectureDay_EditView, name='LectureDay_EditView'),
+    path('Modules/new/edit/', views.Overview_NewModule, name='New_Module'), 
+    # Example: LectureBoard/Tutor/WM393/edit, this is to view/delete an invidual Module Board
+    path('<str:req_Module_Code>/edit/', views.Edit_Module, name='Edit_Module'),
+    # Example: LectureBoard/Tutor/WM393/1/edit, this is to edit an invidual lecture day
+    path('<str:req_Module_Code>/<int:lecture_id>/edit/', views.Edit_LectureDay, name='Edit_LectureDay'),
+    # Example: LectureBoard/Tutor/WM393, this is to create an invidual lecture day
+    path('<str:req_Module_Code>/New/edit/', views.New_LectureDay, name='New_LectureDay'),
 
 ]
 

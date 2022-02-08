@@ -46,7 +46,7 @@ class Module(models.Model):
         return reverse('ModuleBoard', args=[str(self.Module_Code)])
     
     def get_absolute_url_edit(self):
-        return reverse('ModuleBoard_EditView', args=[str(self.Module_Code)])    
+        return reverse('Edit_Module', args=[str(self.Module_Code)])    
 
 
 class LectureDay(models.Model):
@@ -91,7 +91,7 @@ class LectureDay(models.Model):
 
     def get_absolute_url_edit(self):
         '''For editing/lecture site'''
-        return reverse('LectureDay_EditView', args=[str(self.get_module_code()), int(self.id)])
+        return reverse('Edit_LectureDay', args=[str(self.get_module_code()), int(self.id)])
 
 
 class Data_Validators():
@@ -164,7 +164,7 @@ class SlidePack(models.Model):
 
     def get_absolute_url_edit(self):
         '''For editing/lecture site'''
-        return reverse('LectureDay_EditView', args=[str(self.get_module_code()), int(self.id)])
+        return reverse('Edit_LectureDay', args=[str(self.get_module_code()), int(self.id)])
 
     def delete(self):
         '''Deletes the original (OriginalFile) PPT/PPTX and processed PDF'''
