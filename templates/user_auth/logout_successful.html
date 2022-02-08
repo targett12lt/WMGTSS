@@ -1,7 +1,51 @@
+<!DOCTYPE html>
 <html>
-    <body>
-        <h1>Successful logout!</h1>
-        <p>To use the WMGTSS System, you must be logged in!<br></p>
-        <button><a href="{% url 'home' %}">Log Back in!</a></button>
-    </body>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMGTSS - Logout Success!</title>
+
+    <!-- Loading Static Files:  -->
+    {% load static %}
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- WebPage CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wmg_styling.css' %}">
+
+  </head>
+    
+  <body>
+    <div class="container h-100">
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card" style="height: 500px;">
+                <div class="d-flex justify-content-center">
+                    <div class="brand_logo_container">
+                    <img src="{% static 'img/wmg_logo_no_bg.png' %}" class="brand_logo" alt="Logo">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center header_text">
+                    <h1>Successful logout!</h1>
+                </div>
+                <div class="text-center">
+                    <p>You can now close this tab.<br><br>To use the WMGTSS System,
+                    you <strong>must</strong> be logged in. Use the button below to log back in:<br></p>
+                </div>
+                <div class="login_container">
+                    <a href="{% url 'home' %}">
+                        <button type="button" class="btn login_btn">Log Back in!</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
 </html>
