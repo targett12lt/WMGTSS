@@ -3,6 +3,13 @@ body {
     padding-top: 90px;
   }
 
+  .container-spacing {
+    padding-top: 2%;
+    padding-right: 5%;
+    padding-left: 5%;
+    background-color: red;
+  }
+
 .slide_preview {
     height: 250px;
     object-fit:contain;
@@ -43,6 +50,13 @@ body {
   padding-bottom: 3%;
 }
 
+.spacing_elements {
+  padding-top: 1%;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-bottom: 0%;
+}
+
 .general_font {
   color: red;
 }
@@ -72,4 +86,7 @@ body {
   background-color: #AEB701;
   color: black;
   height: 80px;
+}
+td {
+  padding: 10px;
 }

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from django.core.files.storage import FileSystemStorage
 from django.forms import ValidationError
 from django.urls import reverse
+from datetime import datetime
 
 # Create your models here.
 
@@ -67,7 +68,7 @@ class LectureDay(models.Model):
     ModuleLectureBoard = models.ForeignKey(Module, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the Module object
     Title = models.CharField(max_length=200)
     Description = models.CharField(max_length=2000, blank=True)
-    Date = models.DateTimeField('Lecture Date', blank=True)  # Not in original design, need to add to report/documentation
+    Date = models.DateTimeField('Lecture Date', blank=True, default=datetime.now)  # Not in original design, need to add to report/documentation
     LD_Img = models.ImageField(upload_to='LectureDayImgs', blank=True) # Changed from a CharField to an Image field
 
     def __str__(self):

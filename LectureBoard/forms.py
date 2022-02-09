@@ -1,7 +1,6 @@
-from attr import attr, attrs
 from django import forms
-from matplotlib import widgets
 from .models import Module, LectureDay, SlidePack, VersionHistory
+from crispy_forms.helper import FormHelper
 
 class ModuleForm(forms.ModelForm):
     class Meta:
@@ -19,6 +18,7 @@ class LectureDayForm(forms.ModelForm):
         exclude = ['ModuleLectureBoard']
         widgets = {
             'Date': DateInput(),
+            'Description': forms.Textarea
         }
 
 class SlidePackForm(forms.ModelForm):
@@ -27,7 +27,7 @@ class SlidePackForm(forms.ModelForm):
         fields= "__all__"
         exclude = ['LectureDay_FK', 'OnlineSlidePack']
 
-class VersionHistoryForm(forms.ModelForm):
+class VersionHistoryForm(forms.ModelForm):   
     class Meta:
         model=VersionHistory
         fields = [

@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from .models import Module, LectureDay, SlidePack
 from .forms import ModuleForm, LectureDayForm, SlidePackForm, VersionHistoryForm
+from datetime import datetime
 
 def check_Tutor_Group(user):
     if user:
@@ -148,6 +149,7 @@ def Edit_LectureDay(request, req_Module_Code, lecture_id):
 @user_passes_test(check_Tutor_Group)
 def New_LectureDay(request, req_Module_Code):
     ModuleInfo = get_object_or_404(Module, Module_Code=req_Module_Code)  # Getting information about the lecture day using the ID from URL
+    current_date = timezone.now()  # Getting current time/date
     if request.method == "POST":
         LDform = LectureDayForm(request.POST, request.FILES, prefix='LDForm')
         SPForm = SlidePackForm(request.POST, request.FILES, prefix='SPForm')
@@ -156,6 +158,7 @@ def New_LectureDay(request, req_Module_Code):
             'LDForm': LDform,
             'SPForm': SPForm,
             'VHForm': VHForm,
+            'current_date': current_date,
         }
         LD_Creation = False
         
@@ -183,6 +186,7 @@ def New_LectureDay(request, req_Module_Code):
             'LDForm': LDform,
             'SPForm': SPForm,
             'VHForm': VHForm,
+            'current_date': current_date,
         }
-    return render(request, 'LectureBoard/LectureDayNew.html', context)  # {'form': LDform}
+    return render(request, 'LectureBoard/LectureDayNew.html', context)
 
