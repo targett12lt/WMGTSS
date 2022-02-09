@@ -1,3 +1,4 @@
+from distutils.version import Version
 from sys import prefix
 from django.http import Http404, HttpResponse
 from django.utils import timezone
@@ -138,44 +139,40 @@ def ModuleBoardTutor(request, req_Module_Code):
 @login_required
 @user_passes_test(check_Tutor_Group)
 def Edit_LectureDay(request, req_Module_Code, lecture_id):  
-    # On this view, need to get LectureDay content: Title, Description and Date
-    # Then need to get the slidepack informaiton, so: DownloadLink, ProcSlidePack
-    # And finally can get the Version history for the slidepack (ModDate, VersionNum - this needs to be updated to autoincrement and the comment)
-    Module_Instance = get_object_or_404(Module, Module_Code = req_Module_Code)
-    print('Module Instance: ', Module_Instance)
-    LD_Instance = get_object_or_404(LectureDay, id=lecture_id)
-    print('LD Instance:', LD_Instance.description())
-    SP_Instance = get_object_or_404(SlidePack, LectureDay_FK = LD_Instance)
-    # VH_Instance = get_object_or_404(VersionHistory, SlidePackFK = SP_Instance)
+    '''Provides the view to allow a Lecturer to modify an existing modify on the Database.'''
+    
+    LDInstance = get_object_or_404(LectureDay, pk=lecture_id)
+    SPInstance = get_object_or_404(SlidePack, LectureDay_FK=LDInstance)
 
+    Previous_Version_History = None
+    
+    # Trying to check if it has any version history
+    try:
+        Previous_Version_History = VersionHistory.objects.filter(SlidePackFK = SPInstance)
+    except Exception as e:
+        pass
 
-    current_date = timezone.now()  # Getting current time/date
-    LDform = LectureDayForm(request.POST, request.FILES, prefix='LDForm', instance=LD_Instance)
-    SPForm = SlidePackForm(request.POST, request.FILES, prefix='SPForm', instance=SP_Instance)
-    VHForm = VersionHistoryForm(request.POST, request.FILES, prefix='VHForm')
+    LDForm = LectureDayForm(request.POST or None, request.FILES or None, instance=LDInstance)
+    SPForm = SlidePackForm(request.POST or None, request.FILES or None, instance=SPInstance)
+    VHForm = VersionHistoryForm(request.POST or None, request.FILES or None)
     context = {
-        'LDForm': LDform,
+        'LDForm': LDForm,
         'SPForm': SPForm,
         'VHForm': VHForm,
-        'current_date': current_date,
+        'Previous_Version_History': Previous_Version_History,
+        'current_date': timezone.now(),
     }
-    LD_Creation = False
-    
-    if LDform.is_valid():
-        NewLectureDay = LDform.save(commit=False)
-        NewLectureDay.ModuleLectureBoard = Module_Instance
-        NewLectureDay.save()
-        LD_Creation = True
+    if LDForm.is_valid():
+        ModifiedLectureDay = LDForm.save(commit=False)
+        ModifiedLectureDay.save()
         if SPForm.is_valid():
-            NewSlidePack = SPForm.save(commit=False)
-            NewSlidePack.LectureDay_FK = NewLectureDay
-            NewSlidePack.save()
+            ModifiedSlidePack = SPForm.save(commit=False)
+            ModifiedSlidePack.save()
             if VHForm.is_valid():
                 NewVersionHistoryEntry = VHForm.save(commit=False)
-                NewVersionHistoryEntry.SlidePackFK = NewSlidePack
+                NewVersionHistoryEntry.SlidePackFK = ModifiedSlidePack
                 NewVersionHistoryEntry.ModDate = timezone.now()
                 NewVersionHistoryEntry.save()
-    if LD_Creation:
         return redirect('ModuleBoardTutor', req_Module_Code)
     return render(request, 'LectureBoard/LectureDayEdit.html', context)
 
@@ -183,12 +180,13 @@ def Edit_LectureDay(request, req_Module_Code, lecture_id):
 @login_required
 @user_passes_test(check_Tutor_Group)
 def New_LectureDay(request, req_Module_Code):
+    '''Allows a Lecturer to be able to create a new Lecture Day for a given module'''
     ModuleInfo = get_object_or_404(Module, Module_Code=req_Module_Code)  # Getting information about the lecture day using the ID from URL
     current_date = timezone.now()  # Getting current time/date
     if request.method == "POST":
-        LDform = LectureDayForm(request.POST, request.FILES, prefix='LDForm')
-        SPForm = SlidePackForm(request.POST, request.FILES, prefix='SPForm')
-        VHForm = VersionHistoryForm(request.POST, request.FILES, prefix='VHForm')
+        LDform = LectureDayForm(request.POST, request.FILES)
+        SPForm = SlidePackForm(request.POST, request.FILES)
+        VHForm = VersionHistoryForm(request.POST, request.FILES)
         context = {
             'LDForm': LDform,
             'SPForm': SPForm,

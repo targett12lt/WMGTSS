@@ -58,7 +58,7 @@ class LectureDay(models.Model):
     
     Attributes:
     * ModuleLectureBoard (int) - Uses FK to create a many-to-one relationship with the Module object
-    * id (int) - Used to identify the LectureDay
+    * id (int) - Used to identify the LectureDay (Primary Key)
     * Title (char) - The title of the LectureDay, has a max length 200
     * Description (char) - This contains the description about the LectureDay, has a max length 2000
     * Date (datetime) - This stores the date/time that a LectureDay was presented
@@ -126,7 +126,7 @@ class SlidePack(models.Model):
     Each Lecture Day has a ONE-TO-ONE relationship with the SlidePack object.
     
     Attributes:
-    * LectureDayFK (int) - Uses FK to create a one-to-one relationship with the Module object.
+    * LectureDayFK (LectureDay object) - Uses FK to create a one-to-one relationship with the Module object.
     * SlidePack_id (int) - Used to identify the SlidePack.
     * OriginalFile (file) - Usees Django file management system to upload and store PPT/PPTX Files in a designated folder 
     (set using the 'upload_to' argument).
@@ -184,7 +184,7 @@ class VersionHistory(models.Model):
     Each SlidePack Day has a ONE-TO-MANY relationship with the Version History objects.
     
     Attributes:
-    * SlidePackFK (int) - Uses FK to create a one-to-one relationship with the Module object.
+    * SlidePackFK (SlidePack object) - Uses FK to create a one-to-one relationship with the Module object.
     * ModDate (date time) - Stores the time when the file was modified/updated.
     * VersionNum (int) - Used to identify a version of the SlidePack, 
     automatically increases by +1 each time a new file is uploaded (used as PK).
@@ -194,8 +194,8 @@ class VersionHistory(models.Model):
     
     SlidePackFK = models.ForeignKey(SlidePack, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the SlidePack object
     ModDate = models.DateTimeField('Modification Date')
-    VersionNum = models.AutoField(primary_key=True)
-    Comment = models.CharField(max_length=300, blank=True)
+    VersionNum = models.PositiveSmallIntegerField('')
+    Comment = models.CharField(max_length=300, blank=True, verbose_name='')
 
     def identifier(self):
         return self.VersionNum
@@ -208,6 +208,9 @@ class VersionHistory(models.Model):
 
     def comment(self):
         return self.Comment
+    
+    def auto_increment_version_num(self):
+        print('This needs to auto-increment the number')
 
     def update_ver_history():
         '''Updates the version history for a given slide pack, allowing the user to provide a description and automatically increments the Version number'''

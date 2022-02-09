@@ -37,8 +37,8 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <th scope="row"><br>1.0</th>
-                        <td><br>{{ current_date }}</td>
+                        <th>{{ VHForm.VersionNum |as_crispy_field}}</th>
+                        <td>{{ current_date }}</td>
                         <td>
                             {{ VHForm.Comment |as_crispy_field}}
                         </td>

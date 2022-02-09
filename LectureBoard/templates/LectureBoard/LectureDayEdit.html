@@ -36,18 +36,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row"><br>1.0</th>
-                        <td><br>{{ current_date }}</td>
+                    {% for Change in Previous_Version_History %}
+                        <tr>
+                            <th scope="row">{{ Change.VersionNum }}</th>
+                            <td>{{ Change.ModDate }}</td>
+                            <td>
+                                {{ Change.Comment }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    
+                        <tr>
+                        <th scope="row">{{ VHForm.VersionNum|as_crispy_field }}</th>
+                        <td>{{ current_date }}</td>
                         <td>
-                            {{ VHForm.Comment |as_crispy_field}}
+                            {{ VHForm.Comment|as_crispy_field }}
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div class="spacing_elements">
-                <button type="submit" class="btn btn-success">Create Lecture Day</button>
+                <button type="submit" class="btn btn-success">Update Lecture Day</button>
             </div>
         </form>
     </div>
