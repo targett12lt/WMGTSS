@@ -47,7 +47,7 @@ class Module(models.Model):
         return reverse('ModuleBoard', args=[str(self.Module_Code)])
     
     def get_absolute_url_edit(self):
-        return reverse('Edit_Module', args=[str(self.Module_Code)])    
+        return reverse('ModuleBoardTutor', args=[str(self.Module_Code)])    
 
 
 class LectureDay(models.Model):

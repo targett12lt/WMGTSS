@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Module Page</title>
+        <title>Edit Module</title>
     </head>
 
 {% extends "Navbar/layout.html" %} 
@@ -10,7 +10,7 @@
 {% block content %}
 
     <body>
-        <h2>Create a New Module</h2>
+        <h2>Edit an existing Module</h2>
         <form method="post" novalidate>
             {% csrf_token %}
             {{ form|crispy }}

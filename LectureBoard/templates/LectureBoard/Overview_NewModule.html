@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Create a new Module</title>
+    </head>
+
+{% extends "Navbar/layout.html" %} 
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <body>
+        <h2>Create a New Module</h2>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">Create Module</button>
+          </form>
+    </body>
+{% endblock content %}
+
+</html>

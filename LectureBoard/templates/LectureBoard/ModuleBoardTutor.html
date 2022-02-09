@@ -11,10 +11,10 @@
 {% block content %}
 
 <body>
-    <div class="col-lg-12 mx-auto ld_banner" style="padding-bottom: 0%;">
+    <div class="col-lg-12 mx-auto spacing_elements" style="padding-bottom: 0%;">
         <h1>Manage Lecture Board: "{{ Module_Info.Module_Code }}: {{Module_Info.Module_Title}}"</h1>
         <p>You can <strong>create</strong>, <strong>modify</strong> and <strong>delete</strong> lecture days for your 
-            module. It is also possible to <strong>toggle</strong> the visibility of a Lecture Day on this screen.
+            module.
         </p>
         <div class="row">
             <div class="col">
@@ -28,7 +28,7 @@
                 </a>
             </div>
         </div>
-        <h2>Lecture Days:</h2>
+        <h2>Lecture Days:<br></h2>
     </div>
     
 
@@ -55,16 +55,17 @@
                     </div>
                     <div class="col-sm- my-auto">
                         <div class="card-block px-2">
-                            <a href="#"><i class="bi bi-eye-fill icons-pages"></i></a>
                             <a href="{% url 'Edit_LectureDay' Module_Info.Module_Code LectureDay.id %}"><i class="bi bi-pencil-fill icons-pages"></i></a>
-                            <a href="#"><i class="bi bi-trash2-fill icons-pages"></i></a>
+                            <a href="{% url 'Delete_LectureDay' Module_Info.Module_Code LectureDay.id %}"><i class="bi bi-trash2-fill icons-pages"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
         {% endfor %}
     {% else %}
-        <p>No lectures are available for this module yet :(</p>
+    <div class="spacing_elements">
+        <h7>You haven't added any Lecture Days for this module yet... Click 'New Lecture' above to get started!</h7>
+    </div>
     {% endif %}
     
 
