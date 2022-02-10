@@ -1,23 +1,105 @@
-<html>
-    <head>
-        <title>Lecture Board - Your Modules</title>
-    </head>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMGTSS - HomePage</title>
+</head>
 
 {% extends "Navbar/layout.html" %} 
+
+<!-- Loading Static Files:  -->
+{% load static %}
 
 {% block content %}
 
     <body>
-        <h1>WMGTSS</h1>
-        <li><a href="LectureBoard/Modules/edit/">Lecture Board</a></li>>
-        <li><a href="#">Quiz Board</a></li>>
-        <li><a href="#">Feedback Board</a></li>>
-        <li><a href="#">Q & A Board</a></li>>
-        <li><a href="#">Notice Board</a></li>>
-        <li><a href="#">Calendar Board</a></li>>
+        <div class="container-fluid">
+            <!-- <div class="container"> -->
+                <div class="row">
+                    <div class="col">
+                        <div class="container app_shortcut">
+                            <a href="LectureBoard/Modules/edit/">
+                                <div class="text-center mx-auto"> 
+                                    <img src="{% static 'img/LectureBoard_Icon.png' %}" class="app_icons"/>
+                                </div>
+                                <div class="badge rounded-pill app_label" style="background-color: #AEB701;">
+                                    <h2>Lecture Board</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="container app_shortcut">
+                            <a href="#">
+                                <div class="text-center mx-auto"> 
+                                    <img src="{% static 'img/QuizBoard_Icon.png' %}" class="app_icons"/>
+                                </div>
+                                <div class="badge rounded-pill app_label" style="background-color: #087E8B;">
+                                    <h2>Quiz Board</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="container app_shortcut">
+                            <a href="#">
+                                <div class="text-center mx-auto"> 
+                                    <img src="{% static 'img/FeedbackBoard_Icon.png' %}" class="app_icons"/>
+                                </div>
+                                <div class="badge rounded-pill app_label" style="background-color: #FAB938;">
+                                    <h2>Feedback Board</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="container app_shortcut">
+                            <a href="#">
+                                <div class="text-center mx-auto"> 
+                                    <img src="{% static 'img/Q&A_Icon.png' %}" class="app_icons"/>
+                                </div>
+                                <div class="badge rounded-pill app_label" style="background-color: #FF5A5F;">
+                                    <h2>Q&A Board</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="container app_shortcut">
+                            <a href="#">
+                                <div class="text-center mx-auto"> 
+                                    <img src="{% static 'img/NoticeBoard_Icon.png' %}" class="app_icons"/>
+                                </div>
+                                <div class="badge rounded-pill app_label" style="background-color: #523249;">
+                                    <h2>Notice Board</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="container app_shortcut">
+                            <a href="#">
+                                <div class="text-center mx-auto"> 
+                                    <img src="{% static 'img/CalendarBoard_Icon.png' %}" class="app_icons"/>
+                                </div>
+                                <div class="badge rounded-pill app_label" style="background-color: #82099A;">
+                                    <h2>Calendar Board</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+        </div>
     </body>
-
 {% endblock content %}
 
 </html>
-

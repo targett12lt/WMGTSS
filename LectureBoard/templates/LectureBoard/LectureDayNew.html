@@ -10,6 +10,9 @@
 {% block content %}
 
 <body>
+    <div class="container-fluid mode-banner">
+        <h4>Edit Mode<h4>
+    </div>
     <div class="container-fluid spacing_elements">
         <h2>Create a New Lecture Day</h2>
         <form enctype= "multipart/form-data" method="post" novalidate>
@@ -47,7 +50,8 @@
                 </table>
             </div>
             <div class="spacing_elements">
-                <button type="submit" class="btn btn-success">Create Lecture Day</button>
+                <button type="submit" class="btn wmg-success-btn">Create Lecture Day</button>
+                <button type="button" onclick="window.history.back()" class="btn wmg-cancel-btn">Cancel</button>
             </div>
         </form>
     </div>

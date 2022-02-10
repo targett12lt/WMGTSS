@@ -9,14 +9,20 @@
 
 {% block content %}
 
-    <body>
+<body>
+    <div class="container-fluid mode-banner">
+        <h4>Edit Mode<h4>
+    </div>
+    <div class="container-fluid spacing_elements">
         <h2>Create a New Module</h2>
         <form method="post" novalidate>
             {% csrf_token %}
             {{ form|crispy }}
-            <button type="submit" class="btn btn-success">Create Module</button>
-          </form>
-    </body>
+            <button type="submit" class="btn wmg-success-btn">Create Module</button>
+            <button type="button" onclick="window.history.back()" class="btn wmg-cancel-btn">Cancel</button>
+        </form>
+    </div>
+</body>
 {% endblock content %}
 
 </html>

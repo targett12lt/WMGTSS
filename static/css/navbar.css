@@ -32,3 +32,28 @@
     font-size: 24;
     color: white;
 }
+
+.app_label{
+	color: white;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    width: 100%;
+  }
+
+  .app_icons{
+    display: inline-block;
+    min-height: 150px;
+    min-width: 150px;
+    max-height: 170px;
+    max-height: 170px;
+    padding-bottom: 2%;
+  }
+
+  .app_shortcut{
+      padding-left: 5%;
+      padding-right: 5%;
+      padding-top: 4%;
+      padding-bottom: 4%;
+  }
