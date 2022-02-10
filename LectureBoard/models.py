@@ -145,7 +145,7 @@ class SlidePack(models.Model):
     
     def original_file(self):
         '''Returns the file that the user originally uploaded'''
-        return self.OriginalFile
+        return os.path.basename(self.OriginalFile.name)
     
     def online_slide_pack(self):
         '''Returns the processed slide pack, which is used for online viewing'''

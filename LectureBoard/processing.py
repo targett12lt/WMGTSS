@@ -8,6 +8,7 @@ class PPT_Convert():
     def detect_file_type(self,file_name):
         '''Detects the file type and directs file to correct function to convert
         to PDF. Only accepts PPT or PPTX'''
+        print('Received: ', file_name, type(file_name))
         if file_name.endswith('.ppt'):
             self.ppt_to_pdf(file_name)
         elif file_name.endswith('.pptx'):
@@ -43,6 +44,8 @@ class PPT_Convert():
             deck.Close()
             powerpoint.Quit()
             print('done')
+            print('saved at:', online_loc)
+            return online_loc
         except:
             print("Could not open the file!")
 
