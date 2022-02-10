@@ -247,6 +247,13 @@ def LectureBoardSearch(request):
     '''Allows a user to be able to use a search term and returns a list of possible results'''
     if request.method == "POST":
         searched = request.POST['searched']
-        return render(request, 'LectureBoard/Search.html', {'searched': searched})
+        lecturedays = LectureDay.objects.filter(Q(Title__contains=searched) | Q(Description__contains=searched) | Q(Date__contains=searched))
+        count = lecturedays.count()
+        context = {
+            'searched': searched,
+            'lecturedays': lecturedays,
+            'num_results': count,
+        }
+        return render(request, 'LectureBoard/Search.html', context)
     else:
-        return render(request, 'LectureBoard/Search.html', {})
+        return render(request, 'LectureBoard/Search.html')

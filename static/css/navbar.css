@@ -66,7 +66,23 @@
 }
 
 .search-bar-icons {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     font-size: 30pt;
+    background-color: #3C3C3C;
+    outline: none;
+    border-style: none;
+    outline-color: #3C3C3C;
+}
+
+.seach-bar {
+    width: 500px;
+}
+
+.permanent-modal {
+    position: absolute;
+    top: 90px;
+    text-align: center;
+    width: 700px;
+    margin-left: 200px;
 }

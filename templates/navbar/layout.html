@@ -52,19 +52,21 @@
     <div class="modal-content">
       <div class="modal-body" style="background-color: #3C3C3C;">
         <div class="input-group rounded">
-          <a data-dismiss="modal" class="icons search-bar-icons" id="minimise-search">
-            <i class="bi bi-chevron-up"></i>
-          </a>
+          
           <form method="POST", action="{% url 'LectureBoardSearch' %}">
 
             {% csrf_token %}
 
-            <input type="search" name="searched" class="form-control rounded shadow-none" placeholder="Search Lecture Board..." aria-label="Search" aria-describedby="search-addon">
-            <!-- <input type="submit"><i class="bi bi-search icons search-bar-icons" id="search"></i></input> -->
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
+            <div class="container">
+              <div class="row">
+                  <a data-dismiss="modal" class="icons search-bar-icons shadow-none" id="minimise-search">
+                  <i class="bi bi-chevron-up"></i></a>
+                  <input type="search" name="searched" class="form-control rounded shadow-none seach-bar" placeholder="Search Lecture Board..." aria-label="Search">
+                  <button type="submit"><i class="bi bi-search icons search-bar-icons"></i></button>
+              </div>
+              
+            </div>
           </form>
-          <!-- <a class="icons search-bar-icons" id="search">
-            <i class="bi bi-search"></i> -->
           </a>
         </div>
       </div>

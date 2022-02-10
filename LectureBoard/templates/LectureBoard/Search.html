@@ -1,26 +1,70 @@
 <html>
+   {% extends "Navbar/layout.html" %}
+  
+   <!-- Loading static files: -->
+   {% load static %}
+ 
    <head>
-      <title>Lecture Board - Search</title>
-    </head>
-
-{% extends "Navbar/layout.html" %}
+     <title>Module Board Edit</title>
+   </head>
 
 {% block content %}
-
-
-<h1>Hello World!</h1>
-
-<p>{% if searched %}
-
-   You searched for.... {{ searched }}.
-
-   {% else %}
-
-   You forgot to put something :/
-
-   {% endif %}
-
-</p>
+<body>
+   <div class="container">
+      <div class="row">
+         <div class="permanent-modal col">
+            <div class="modal-body" style="background-color: #3C3C3C;">
+               <div class="input-group rounded">
+               <form method="POST", action="{% url 'LectureBoardSearch' %}">
+                  {% csrf_token %}
+                  <div class="container">
+                     <div class="row">
+                        <i class="bi bi-chevron-up icons search-bar-icons shadow-none" style="color: #8f8f8f;"></i>
+                        <input type="search" name="searched" class="form-control rounded shadow-none seach-bar" placeholder= "{{ searched }}" aria-label="Search">
+                        <button type="submit"><i class="bi bi-search icons search-bar-icons"></i></button>
+                     </div>
+                  </div>
+               </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="container-fluid spacing_elements" style="padding-top: 130px">
+      {% if searched %}
+         <h1>{{ num_results }} Results for "{{ searched }}" on your Lecture Board:</h1>
+         <div class="container-fluid">
+            {% for result in lecturedays %}
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="col-auto">
+                        {% if LectureDay.LD_Img %}
+                           <a href="{% url 'LectureDay' result.ModuleLectureBoard.Module_Code result.id %}"> 
+                              <img src="{{ result.LD_Img.url }}" class="img-fluid" alt="" style="height: 200px;">
+                           </a>
+                        {% else %}
+                           <a href="{% url 'LectureDay' result.ModuleLectureBoard.Module_Code result.id %}"> 
+                              <img src="{% static 'img/forgotten_ld_img.jpg' %}" class="img-fluid" alt="" style="height: 200px;">
+                           </a>
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <div class="card-block px-2">
+                           <a href="{% url 'LectureDay' result.ModuleLectureBoard.Module_Code result.id %}">  
+                              <h4 class="card-title">{{ result.Title}}</h4>
+                           </a>
+                           <p class="card-text">{{ result.Description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+         </div>
+      {% else %}
+         <h1>No search query inputted. Please try again!</h1>
+      {% endif %}
+   </div>
+</body>
 {% endblock content %}
 
 </html>
