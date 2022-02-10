@@ -40,20 +40,33 @@
     padding-top: 1%;
     padding-bottom: 1%;
     width: 100%;
-  }
+}
 
-  .app_icons{
+.app_icons{
     display: inline-block;
     min-height: 150px;
     min-width: 150px;
     max-height: 170px;
     max-height: 170px;
     padding-bottom: 2%;
-  }
+}
 
-  .app_shortcut{
-      padding-left: 5%;
-      padding-right: 5%;
-      padding-top: 4%;
-      padding-bottom: 4%;
-  }
+.app_shortcut{
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 4%;
+    padding-bottom: 4%;
+}
+
+.modal-content {
+    position: absolute;
+    top: 60px;
+    width: 700px;
+    margin-left: -100px;
+}
+
+.search-bar-icons {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 30pt;
+}

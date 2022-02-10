@@ -82,11 +82,26 @@ body {
   padding: 5pt;
 }
 
-.lecture_day_lg_buttons{
+.wmg-success-btn{
   background-color: #AEB701;
-  color: black;
-  height: 80px;
+  color: white;
 }
+
+.wmg-cancel-btn{
+  background-color: #FF5A5F;
+  color: white;
+}
+
 td {
   padding: 10px;
+}
+
+.mode-banner{
+  background-color: #FF5A5F;
+  color: white;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  font-weight:500;
+  padding-top: 5px;
 }
