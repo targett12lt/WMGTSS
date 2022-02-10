@@ -1,0 +1,26 @@
+<html>
+   <head>
+      <title>Lecture Board - Search</title>
+    </head>
+
+{% extends "Navbar/layout.html" %}
+
+{% block content %}
+
+
+<h1>Hello World!</h1>
+
+<p>{% if searched %}
+
+   You searched for.... {{ searched }}.
+
+   {% else %}
+
+   You forgot to put something :/
+
+   {% endif %}
+
+</p>
+{% endblock content %}
+
+</html>

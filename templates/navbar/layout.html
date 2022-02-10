@@ -46,6 +46,34 @@
 </head>
 
 <body>
+<!-- Search Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body" style="background-color: #3C3C3C;">
+        <div class="input-group rounded">
+          <a data-dismiss="modal" class="icons search-bar-icons" id="minimise-search">
+            <i class="bi bi-chevron-up"></i>
+          </a>
+          <form method="POST", action="{% url 'LectureBoardSearch' %}">
+
+            {% csrf_token %}
+
+            <input type="search" name="searched" class="form-control rounded shadow-none" placeholder="Search Lecture Board..." aria-label="Search" aria-describedby="search-addon">
+            <!-- <input type="submit"><i class="bi bi-search icons search-bar-icons" id="search"></i></input> -->
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+          </form>
+          <!-- <a class="icons search-bar-icons" id="search">
+            <i class="bi bi-search"></i> -->
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search Modal -->
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <!-- Container wrapper -->
@@ -62,7 +90,9 @@
           loading="lazy"
         />
       </a>
-      <a href="#" class="bi bi-search icons" style="padding-right: 20px;"></a>
+      {% if SearchFunctionality %}
+      <a data-toggle="modal" data-target="#searchModal" class="bi bi-search icons search-icon" style="padding-right: 20px;"></a>
+      {% endif %}
       <!-- Application Name -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <name class="navbar_appname">WMGTSS</name>

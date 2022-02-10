@@ -1,13 +1,13 @@
-from distutils.version import Version
-from sys import prefix
 from django.http import Http404, HttpResponse
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View
+from django.views.generic import View, ListView
+from django.db.models import Q
 from .models import Module, LectureDay, SlidePack, VersionHistory
 from .forms import ModuleForm, LectureDayForm, SlidePackForm, VersionHistoryForm
+from .processing import PPT_Convert
 
 def check_Tutor_Group(user):
     if user:
@@ -22,6 +22,7 @@ def Overview_StudentModules(request):
     ModulesEnrolled = Module.objects.all()
     print('ModulesEnrolled:', ModulesEnrolled)
     context = {
+        'SearchFunctionality': True,
         'ModulesEnrolled':ModulesEnrolled
     }
     return render(request, 'LectureBoard/Overview.html', context)
@@ -34,8 +35,10 @@ def ModuleBoard_StudentView(request, req_Module_Code):
         Module_Info = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
         Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
         LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
-        context = {'LectureList': LectureList,
-                    'Module_Info': Module_Info}
+        context = {
+            'SearchFunctionality': True,
+            'LectureList': LectureList,
+            'Module_Info': Module_Info}
         print('Module Code:', req_Module_Code)
     except Module.DoesNotExist:
         raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
@@ -60,6 +63,7 @@ def LectureDay_StudentView(request, req_Module_Code,lecture_id):
     
     # Packaging all data from DB into context to load into HTML template:
     context = {
+        'SearchFunctionality': True,
         'LectureDayInfo': LectureDayInfo,
         'SlidePackInfo': SlidePackInfo
         }
@@ -77,6 +81,7 @@ def Overview_Tutor(request):
     ModulesOwned = Module.objects.filter(Module_Tutor=request.user)  # Shows only modules that they own
     print('ModulesEnrolled:', ModulesEnrolled)
     context = {
+        'SearchFunctionality':True,
         'ModulesEnrolled':ModulesEnrolled,
         'ModulesOwned': ModulesOwned,
     }
@@ -127,8 +132,11 @@ def ModuleBoardTutor(request, req_Module_Code):
         Module_Info = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
         Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
         LectureList = LectureDay.objects.filter(ModuleLectureBoard = Module_PK)
-        context = {'LectureList': LectureList,
-                    'Module_Info': Module_Info}
+        context = {
+                'SearchFunctionality': True,
+                'LectureList': LectureList,
+                'Module_Info': Module_Info
+        }
         print('Module Code:', req_Module_Code)
     except Module.DoesNotExist:
         raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
@@ -202,6 +210,8 @@ def New_LectureDay(request, req_Module_Code):
             LD_Creation = True
             if SPForm.is_valid():
                 NewSlidePack = SPForm.save(commit=False)
+                # online_loc = handle_files(SlidePack.original_file(SlidePack))  # Continue this.... for file uploads
+                # NewSlidePack.online_slide_pack = online_loc
                 NewSlidePack.LectureDay_FK = NewLectureDay
                 NewSlidePack.save()
                 if VHForm.is_valid():
@@ -229,3 +239,14 @@ def Delete_LectureDay(request, req_Module_Code, lecture_id):
     query = LectureDay.objects.get(id=lecture_id)
     query.delete()
     return redirect('ModuleBoardTutor', req_Module_Code)
+
+def handle_files(ppt_file):
+    PPT_Convert.detect_file_type(PPT_Convert(), ppt_file)
+
+def LectureBoardSearch(request):
+    '''Allows a user to be able to use a search term and returns a list of possible results'''
+    if request.method == "POST":
+        searched = request.POST['searched']
+        return render(request, 'LectureBoard/Search.html', {'searched': searched})
+    else:
+        return render(request, 'LectureBoard/Search.html', {})
