@@ -147,6 +147,13 @@ def Edit_LectureDay(request, req_Module_Code, lecture_id):
     
     LDInstance = get_object_or_404(LectureDay, pk=lecture_id)
     SPInstance = get_object_or_404(SlidePack, LectureDay_FK=LDInstance)
+    
+    # Getting the original SP file path, so can be compared with new one: 
+    try:
+        OriginalSP = SPInstance.OriginalFile.path
+        OriginalOnlineSP = SPInstance.OnlineSlidePack.path
+    except Exception:  # If SlidePack wasn't added or PDF conversion failed
+        pass
 
     Previous_Version_History = None
     
@@ -172,6 +179,18 @@ def Edit_LectureDay(request, req_Module_Code, lecture_id):
         if SPForm.is_valid():
             ModifiedSlidePack = SPForm.save(commit=False)
             ModifiedSlidePack.save()
+            slidepack = SlidePack.objects.get(LectureDay_FK=ModifiedLectureDay)
+            ModifiedSP = slidepack.OriginalFile.path
+            # Checking if slidepack has been changed:
+            if ModifiedSP != OriginalSP:
+                try:
+                    os.remove(OriginalSP)
+                    os.remove(OriginalOnlineSP)
+                    online_file = PPT_Convert.detect_file_type(PPT_Convert(), slidepack.OriginalFile.path)
+                    slidepack.OnlineSlidePack.name = online_file
+                    slidepack.save()
+                except Exception:  # Passes os.remove if files do not exist
+                    pass
             if VHForm.is_valid():
                 NewVersionHistoryEntry = VHForm.save(commit=False)
                 NewVersionHistoryEntry.SlidePackFK = ModifiedSlidePack
@@ -238,7 +257,6 @@ def Delete_LectureDay(request, req_Module_Code, lecture_id):
         os.remove(slidepackQuery.OriginalFile.path)
         os.remove(slidepackQuery.OnlineSlidePack.path)
     except Exception as e:
-        print('Error occurred:', e)
         pass
     query.delete()
     return redirect('ModuleBoardTutor', req_Module_Code)
