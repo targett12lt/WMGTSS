@@ -1,13 +1,17 @@
-from django.http import Http404, HttpResponse
-from django.utils import timezone
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View, ListView
-from django.db.models import Q
+import os
+
+# Importing objects from other modules:
 from .models import Module, LectureDay, SlidePack, VersionHistory
 from .forms import ModuleForm, LectureDayForm, SlidePackForm, VersionHistoryForm
 from .processing import PPT_Convert
+
+# Importing required django modules:
+from django.http import Http404
+from django.utils import timezone
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Q
+
 
 def check_Tutor_Group(user):
     if user:
@@ -20,7 +24,6 @@ def check_Tutor_Group(user):
 def Overview_StudentModules(request):
     '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
     ModulesEnrolled = Module.objects.all()
-    print('ModulesEnrolled:', ModulesEnrolled)
     context = {
         'SearchFunctionality': True,
         'ModulesEnrolled':ModulesEnrolled
@@ -39,7 +42,6 @@ def ModuleBoard_StudentView(request, req_Module_Code):
             'SearchFunctionality': True,
             'LectureList': LectureList,
             'Module_Info': Module_Info}
-        print('Module Code:', req_Module_Code)
     except Module.DoesNotExist:
         raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
         '\n\nPlease contact your system administrator for further support.\n\n')
@@ -73,13 +75,11 @@ def LectureDay_StudentView(request, req_Module_Code,lecture_id):
 # Tutor/edit views:
 
 # --- Module Management (multiple) ---
-@login_required
 @user_passes_test(check_Tutor_Group)
 def Overview_Tutor(request):
     '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
     ModulesEnrolled = Module.objects.all()
     ModulesOwned = Module.objects.filter(Module_Tutor=request.user)  # Shows only modules that they own
-    print('ModulesEnrolled:', ModulesEnrolled)
     context = {
         'SearchFunctionality':True,
         'ModulesEnrolled':ModulesEnrolled,
@@ -88,7 +88,6 @@ def Overview_Tutor(request):
     return render(request, 'LectureBoard/OverviewTutor.html', context)
     # Needs further work as just shows all modules currently, not what a student is registered to
 
-@login_required
 @user_passes_test(check_Tutor_Group)
 def New_Module(request):
     '''Provides the view to allow a Lecturer to add a new module to the Database.'''
@@ -103,7 +102,7 @@ def New_Module(request):
         form = ModuleForm()
     return render(request, 'LectureBoard/Overview_NewModule.html', {'form': form})
 
-@login_required
+
 @user_passes_test(check_Tutor_Group)
 def Edit_Module(request, req_Module_Code):
     '''Provides the view to allow a Lecturer to add a new module to the Database.'''
@@ -124,7 +123,6 @@ def Delete_Module(request, req_Module_Code):
 
 
 # --- Individual Module Management --- 
-@login_required
 @user_passes_test(check_Tutor_Group)
 def ModuleBoardTutor(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
@@ -137,14 +135,12 @@ def ModuleBoardTutor(request, req_Module_Code):
                 'LectureList': LectureList,
                 'Module_Info': Module_Info
         }
-        print('Module Code:', req_Module_Code)
     except Module.DoesNotExist:
         raise Http404('The module requested: "' + req_Module_Code + '" does not exist.'
         '\n\nPlease contact your system administrator for further support.\n\n')
     return render(request, 'LectureBoard/ModuleBoardTutor.html', context)
 
 # --- Lecture Day Management ---
-@login_required
 @user_passes_test(check_Tutor_Group)
 def Edit_LectureDay(request, req_Module_Code, lecture_id):  
     '''Provides the view to allow a Lecturer to modify an existing modify on the Database.'''
@@ -185,7 +181,6 @@ def Edit_LectureDay(request, req_Module_Code, lecture_id):
     return render(request, 'LectureBoard/LectureDayEdit.html', context)
 
 
-@login_required
 @user_passes_test(check_Tutor_Group)
 def New_LectureDay(request, req_Module_Code):
     '''Allows a Lecturer to be able to create a new Lecture Day for a given module'''
@@ -210,10 +205,12 @@ def New_LectureDay(request, req_Module_Code):
             LD_Creation = True
             if SPForm.is_valid():
                 NewSlidePack = SPForm.save(commit=False)
-                # online_loc = handle_files(SlidePack.original_file(SlidePack))  # Continue this.... for file uploads
-                # NewSlidePack.online_slide_pack = online_loc
                 NewSlidePack.LectureDay_FK = NewLectureDay
                 NewSlidePack.save()
+                slidepack = SlidePack.objects.get(LectureDay_FK=NewLectureDay)
+                online_file = PPT_Convert.detect_file_type(PPT_Convert(), slidepack.OriginalFile.path)
+                slidepack.OnlineSlidePack.name = online_file
+                slidepack.save()
                 if VHForm.is_valid():
                     NewVersionHistoryEntry = VHForm.save(commit=False)
                     NewVersionHistoryEntry.SlidePackFK = NewSlidePack
@@ -233,16 +230,20 @@ def New_LectureDay(request, req_Module_Code):
         }
     return render(request, 'LectureBoard/LectureDayNew.html', context)
 
-@login_required
 @user_passes_test(check_Tutor_Group)
 def Delete_LectureDay(request, req_Module_Code, lecture_id):
     query = LectureDay.objects.get(id=lecture_id)
+    try:
+        slidepackQuery = SlidePack.objects.get(LectureDay_FK=query)
+        os.remove(slidepackQuery.OriginalFile.path)
+        os.remove(slidepackQuery.OnlineSlidePack.path)
+    except Exception as e:
+        print('Error occurred:', e)
+        pass
     query.delete()
     return redirect('ModuleBoardTutor', req_Module_Code)
 
-def handle_files(ppt_file):
-    PPT_Convert.detect_file_type(PPT_Convert(), ppt_file)
-
+@login_required
 def LectureBoardSearch(request):
     '''Allows a user to be able to use a search term and returns a list of possible results'''
     if request.method == "POST":
@@ -257,3 +258,4 @@ def LectureBoardSearch(request):
         return render(request, 'LectureBoard/Search.html', context)
     else:
         return render(request, 'LectureBoard/Search.html')
+
