@@ -1,6 +1,5 @@
 from django import forms
-from matplotlib import widgets
-from .models import Module, LectureDay, SlidePack, VersionHistory
+from .models import Module, ModuleAccess, LectureDay, SlidePack, VersionHistory
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -14,7 +13,6 @@ class ModuleForm(forms.ModelForm):
         widgets = {
             'Module_Description': forms.Textarea
         }
-
 
 class LectureDayForm(forms.ModelForm):
     class Meta:

@@ -18,6 +18,15 @@
         <form method="post" novalidate>
             {% csrf_token %}
             {{ form|crispy }}
+            <h1>Access to Module</h1>
+            <div class="container-fluid" style="padding-bottom: 1%;">
+                {% for group, bools in permission_groups %}
+                    <div class="form-check">
+                        <input class="form-check-input" name="item_checkbox" type="checkbox" value="{{ group.name }}" {{ bools }}/>
+                        <label class="form-check-label" for="{{ group.name }}">{{ group.name }}</label>
+                    </div>
+                {% endfor %}
+            </div>
             <button type="submit" class="btn wmg-success-btn">Create Module</button>
             <button type="button" onclick="window.history.back()" class="btn wmg-cancel-btn">Cancel</button>
         </form>

@@ -49,6 +49,25 @@ class Module(models.Model):
     def get_absolute_url_edit(self):
         return reverse('ModuleBoardTutor', args=[str(self.Module_Code)])    
 
+class ModuleAccess(models.Model):
+    '''
+    This class stores the data about the user groups who can access a given university module
+    
+    Attributes:
+    * id (int) - Used to uniquely identify the Module Access Model
+    * Module_Identifier (Module) - Used to identify the parent model that the Module Access item relates to. 
+      A FK is used to create a ONE-TO-MANY relationship with the Module object.
+    * UserGroup (char) - String of user group name
+    '''
+    Module_Identifier = models.ForeignKey(Module, on_delete=models.CASCADE)
+    UserGroupName = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.UserGroupName
+    
+    def Module_Given_Access_To(self):
+        return self.Module_Identifier
+
 
 class LectureDay(models.Model):
     '''
@@ -57,7 +76,7 @@ class LectureDay(models.Model):
     Each University Module has a MANY-TO-ONE relationship with the LectureDay object.
     
     Attributes:
-    * ModuleLectureBoard (int) - Uses FK to create a many-to-one relationship with the Module object
+    * ModuleLectureBoard (int) - Uses FK to create a ONE-TO-MANY relationship with the Module object
     * id (int) - Used to identify the LectureDay (Primary Key)
     * Title (char) - The title of the LectureDay, has a max length 200
     * Description (char) - This contains the description about the LectureDay, has a max length 2000

@@ -1,7 +1,7 @@
 import os
 
 # Importing objects from other modules:
-from .models import Module, LectureDay, SlidePack, VersionHistory
+from .models import Module, ModuleAccess, LectureDay, SlidePack, VersionHistory
 from .forms import ModuleForm, LectureDayForm, SlidePackForm, VersionHistoryForm
 from .processing import PPT_Convert
 
@@ -11,6 +11,7 @@ from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
+from django.contrib.auth.models import Group
 
 
 def check_Tutor_Group(user):
@@ -18,15 +19,21 @@ def check_Tutor_Group(user):
         return user.groups.filter(name='Tutors').exists()
     return False
 
+def get_subscribed_modules(request):
+    list_of_users_groups = list(request.user.groups.values_list('name', flat=True))
+    Permission_To_Access = list(ModuleAccess.objects.filter(UserGroupName__in=list_of_users_groups).values_list('Module_Identifier', flat=True))
+    return Permission_To_Access
+
 # Student Views:
 
 @login_required
 def Overview_StudentModules(request):
     '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
-    ModulesEnrolled = Module.objects.all()
+    Permission_To_Access = get_subscribed_modules(request)
+    ModulesEnrolled = Module.objects.filter(id__in=Permission_To_Access)
     context = {
         'SearchFunctionality': True,
-        'ModulesEnrolled':ModulesEnrolled
+        'ModulesEnrolled': ModulesEnrolled
     }
     return render(request, 'LectureBoard/Overview.html', context)
     # Needs further work as just shows all modules currently, not what a student is registered to
@@ -78,7 +85,8 @@ def LectureDay_StudentView(request, req_Module_Code,lecture_id):
 @user_passes_test(check_Tutor_Group)
 def Overview_Tutor(request):
     '''Generates a list of modules available to the user (currently shows all modules as it doesn't use a filter)'''
-    ModulesEnrolled = Module.objects.all()
+    Permission_To_Access = get_subscribed_modules(request)
+    ModulesEnrolled = Module.objects.filter(id__in=Permission_To_Access)
     ModulesOwned = Module.objects.filter(Module_Tutor=request.user)  # Shows only modules that they own
     context = {
         'SearchFunctionality':True,
@@ -91,29 +99,50 @@ def Overview_Tutor(request):
 @user_passes_test(check_Tutor_Group)
 def New_Module(request):
     '''Provides the view to allow a Lecturer to add a new module to the Database.'''
+    permission_groups = Group.objects.all()
+    # permission_groups_names = list(permission_groups.values_list('name', flat=True))
     if request.method == "POST":
         form = ModuleForm(request.POST)
         if form.is_valid():
             NewModule = form.save(commit=False)
             NewModule.Module_Tutor = request.user
             NewModule.save()
+            checked_items = request.POST.getlist("item_checkbox")
+            for i in checked_items:
+                ModuleAccess.objects.create(Module_Identifier = NewModule, UserGroupName=i)
             return redirect('Overview_Tutor')
     else:
         form = ModuleForm()
-    return render(request, 'LectureBoard/Overview_NewModule.html', {'form': form})
+    return render(request, 'LectureBoard/Overview_NewModule.html', {'form': form, 'permission_groups': permission_groups})
 
 
 @user_passes_test(check_Tutor_Group)
 def Edit_Module(request, req_Module_Code):
     '''Provides the view to allow a Lecturer to add a new module to the Database.'''
+    permission_groups = Group.objects.all()
+    permission_groups_names = list(permission_groups.values_list('name', flat=True))
     ModuleInstance = Module.objects.get(Module_Code = req_Module_Code)
+    permission_groups_access = list(ModuleAccess.objects.filter(Module_Identifier=ModuleInstance).values_list('UserGroupName', flat=True))
+    bools = []
+    for i in permission_groups_names:
+        if i in permission_groups_access:
+            bools.append("checked")
+        else:
+            bools.append("")
     form = ModuleForm(request.POST or None, instance=ModuleInstance)
     if form.is_valid():
-        NewModule = form.save(commit=False)
-        NewModule.Module_Tutor = request.user
-        NewModule.save()
+        EditModule = form.save(commit=False)
+        EditModule.Module_Tutor = request.user
+        EditModule.save()
+        query = ModuleAccess.objects.filter(Module_Identifier = EditModule)
+        query.delete()
+        checked_items = request.POST.getlist("item_checkbox")
+        for i in checked_items:
+            ModuleAccess.objects.create(Module_Identifier = EditModule, UserGroupName=i)
         return redirect('Overview_Tutor')
-    return render(request, 'LectureBoard/Overview_EditModule.html', {'form': form})
+    print(permission_groups_names)
+    print(bools)
+    return render(request, 'LectureBoard/Overview_EditModule.html', {'form': form, 'permission_groups': zip(permission_groups, bools)})
 
 
 def Delete_Module(request, req_Module_Code):
