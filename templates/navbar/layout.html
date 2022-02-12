@@ -42,17 +42,24 @@
     <!-- LectureBoard JS Functions -->
     <script src="{% static 'js/LectureBoard.js' %}"></script>
 
+  <script type="text/javascript">
+    var clockElement = document.getElementById('clock');
 
+    function clock() {
+        clockElement.textContent = new Date().toString();
+    }
+
+    setInterval(clock, 1000);
+  </script>
 </head>
 
 <body>
 <!-- Search Modal -->
-<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModallabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content search-modal-content">
       <div class="modal-body" style="background-color: #3C3C3C;">
         <div class="input-group rounded">
-          
           <form method="POST", action="{% url 'LectureBoardSearch' %}">
 
             {% csrf_token %}
@@ -64,7 +71,6 @@
                   <input type="search" name="searched" class="form-control rounded shadow-none seach-bar" placeholder="Search Lecture Board..." aria-label="Search">
                   <button type="submit"><i class="bi bi-search icons search-bar-icons"></i></button>
               </div>
-              
             </div>
           </form>
           </a>
@@ -73,8 +79,50 @@
     </div>
   </div>
 </div>
-
 <!-- Search Modal -->
+
+<!-- User Profile Modal -->
+<div class="modal fade" id="UserProfileModal" tabindex="-1" role="dialog" aria-labelledby="UserProfileModallabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content userprofile-modal-content">
+      <div class="modal-body rounded">
+          <div class="container" style="padding-top: 10px;">
+            <div class="row">
+              <div class="col-sm">
+                <div style="padding-bottom: 10px;">
+                  <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                  <h4>{{ user.username }}</h4>
+                </div>
+                <button type="button" class="btn btn-secondary profile-modal-elements">Logout</button>
+              </div>
+              <div class="col-sm-">
+                <div class="text-center align-center user-profile-lrg">
+                  <div>{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container time-banner">
+          <div class="row">
+            <div class="col-sm">
+              <a href="#"><i class="bi bi-chevron-up time-banner-icons"></i></a>
+              <a href="#"><i class="bi bi-gear time-banner-icons"></i></a>
+              <a href="#"><i class="bi bi-three-dots time-banner-icons"></i></a>
+            </div>
+            <div class="col-sm">
+              <span id="clock"> 18:52 13/02/2022 </span>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- User Profile Modal -->
+
+<!-- Notification Panel Modal -->
+
+<!-- Notification Panel Modal -->
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -84,7 +132,7 @@
     <!-- Collapsible wrapper -->
     <div class="navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0 brand_image" href="{% url 'home'%}">
+      <a class="navbar-brand brand_image" href="{% url 'home'%}">
         <img
           src="{% static 'img/wmg_logo_no_bg.png' %}"
           height="60pt"
@@ -96,19 +144,16 @@
       <a data-toggle="modal" data-target="#searchModal" class="bi bi-search icons search-icon" style="padding-right: 20px;"></a>
       {% endif %}
       <!-- Application Name -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <name class="navbar_appname">WMGTSS</name>
+      <ul class="navbar-nav">
+        <div class="navbar_appname">WMGTSS</div>
       </ul>
     </div>
 
     <!-- Right elements -->
   <div class="d-flex align-items-center">
-       
       <!-- Notifications -->
       <div class="dropdown">
         <a
-          class="text-reset"
-          href="#"
           id="navbarDropdownMenuLink"
           role="button"
           data-toggle="dropdown"
@@ -116,7 +161,7 @@
         >
       <i class="bi bi-bell-fill icons" style="color: white;"></i> 
           <span class="badge rounded-pill badge-notification"
-          style="font-size: 18pt; background-color: #FF5A5F;">12</span>
+          style="font-size: 18pt; background-color: #FF5A5F;">2</span>
       </a>
         <ul
           class="dropdown-menu dropdown-menu-lg-right"
@@ -134,34 +179,20 @@
         </ul>
       </div>
       <!-- Avatar -->
-      <div class="dropdown profile_navbar">
+      <div class="profile_navbar">
         <a
           class="d-flex align-items-center hidden-arrow dropdown_sizing"
-          href="#"
           id="navbarDropdownMenuAvatar"
           role="button"
-          data-toggle="dropdown"
+          data-toggle="modal" 
+          data-target="#UserProfileModal"
           aria-expanded="false"
         >
-        <profile_img class="text-center align-center user_profile">
-          <div style="padding-top: 25%;" >{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
-          </profile_img>
-          <p>{{ user.first_name }} {{ user.last_name }}</p>
+        <div class="text-center user-profile">
+          <div>{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
+        </div>
+          <p style="padding-left: 10pt;">{{ user.first_name }} {{ user.last_name }}</p>
         </a>
-        <ul
-          class="dropdown-menu dropdown-menu-lg-right"
-          aria-labelledby="navbarDropdownMenuAvatar"
-        >
-          <li>
-            <a class="dropdown-item" href="#">My profile</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">Settings</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
-          </li>
-        </ul>
       </div>
     </div>
     <!-- Right elements -->
