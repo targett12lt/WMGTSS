@@ -105,21 +105,32 @@
 <!-- Notification Panel Modal -->
 <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="NotificationModallabel" aria-hidden="true">
   <div class="modal-position modal-dialog" role="document">
-    <div class="modal-content userprofile-modal-content">
+    <div class="modal-content notification-modal-content">
       <div class="modal-body rounded">
-        <i class="bi bi-bell-fill icons" style="color: white;"><h4>Notifications</h4></i>
-        <i class="bi bi-chevron-up"></i>
-        <button type="button" class="btn btn-secondary profile-modal-elements" style="background-color: #969696;">Clear</button>
+        <div class="container" style="padding-bottom: 10pt;">
+          <div class="row">
+            <div class="col-sm-">
+              <i class="bi bi-bell-fill icons" style="color: white; font-size: 20pt; padding: 0%;"></i>
+            </div>
+            <div class="col-sm-" style="padding-right: 70pt;">
+              <h4 class="">Notifications</h4>
+            </div>
+            <div class="col-lrg">
+              <button type="button" class="btn btn-secondary profile-modal-elements float-right" style="background-color: #969696;">Clear</button>
+              <a data-dismiss="modal"><i class="bi bi-chevron-up time-banner-icons" style="padding-right: 10pt; padding-bottom: 5pt;"></i></a>
+            </div>
+          </div>
+        </div>
           <notification class="notification">
-            <div class="container">
-              <div class="row">
-                <div class="col-sm">
-                  Application picture
-                </div>
-                <div class="col-md">
-                  Notification information
-                </div>
-              </div>
+            <div class="alert alert-info border-light">
+              <strong class="default"><img src="{% static 'img/notice-notification.png' %}"> John Smith posted to WM321:</strong><br>John Smith posted to WM321: ‘All resources required for tomorrow’s...’
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="color: white">×</button>
+            </div>
+          </notification>
+          <notification class="notification">
+            <div class="alert alert-info border-light">
+              <strong class="default"><img src="{% static 'img/feedback-notification.png' %}"> New Feedback Board</strong><br>U123456 reacted to your notice on 'WM321'
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="color: white">×</button>
             </div>
           </notification>
         </div>

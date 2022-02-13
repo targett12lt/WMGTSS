@@ -182,6 +182,14 @@ a:active {
     justify-content: center;
 }
 
-.notification{
+.notification-modal-content {
+    width: 425px;
+    height: min-content;
+    color: white;
+    background-color: #3C3C3C;
+}
 
+.alert-info{
+    background-color: #3C3C3C;
+    color: white;
 }
