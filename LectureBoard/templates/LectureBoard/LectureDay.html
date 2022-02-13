@@ -51,6 +51,7 @@
     </div>
 </div>
 
+<!-- Lecture Day Main Body: -->
 <div class="container-fluid container-spacing">
     <div class="row">
         {% if SlidePackInfo.OriginalFile %}     
@@ -58,10 +59,12 @@
                 <div class="col-xl-2" style="padding-top: 1%;">
                     <button class="btn wmg-success-btn btn-block" onclick="history.back()" style="font-size: 20pt;">Back</button>
                     <button class="btn wmg-success-btn btn-block" style="font-size: 20pt;" data-toggle="modal" data-target="#versionHistoryModal">Version History</button>
+                    <!-- Related Lecture Day SideBar: -->
                     {% if RelatedLDs%}
                     <RelatedContent>
                         <h2 style="padding-top:2%">Related Content:</h2>
                         {% for item in RelatedLDs%}
+                        <!-- Creating Lecture Day cards with image, title and description -->
                             <div class="card" style="padding-top: 10px; margin-top: 10px;">
                                 {% if item.LD_Img %}
                                     <img src="{{ item.LD_Img.url }}" alt="" class="card-img-top">
@@ -79,6 +82,7 @@
                     {% endif %}
                 </div>
                 <div class="col", style="padding:1%;">
+                    <!-- Slide Pack Carousel: -->
                     <BrowserSlides>
                         <div id="SlidePackCarousel" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
@@ -103,9 +107,11 @@
             {% endif %}
             </div>
         {% else %}
+        <!-- In case a slide pack hasn't been attached: -->
             <h1 style="padding-left: 19%; padding-bottom: 5%;">The Slide Pack doesn't exists! :(</h1>
         {% endif %}
     </div>
+    <!-- Information about Slide Pack and Lecture Day underneath Carousel: -->
         {% if LectureDayInfo %}
             <div class="row">    
                 <div class="col"></div>

@@ -11,6 +11,7 @@
 </head>
 
 {% block content %}
+<!-- Putting Modal object into body of template, pre-populated with previous search term -->
 <body>
    <div class="container">
       <div class="row">
@@ -32,6 +33,7 @@
          </div>
       </div>
    </div>
+   <!-- Showing results to the user: -->
    <div class="container-fluid spacing_elements" style="padding-top: 130px">
       {% if searched %}
          <h1>{{ num_results }} Results for "{{ searched }}" on your Lecture Board:</h1>

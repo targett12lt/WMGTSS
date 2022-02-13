@@ -6,6 +6,7 @@ class DateInput(forms.DateInput):
 
 
 class ModuleForm(forms.ModelForm):
+    '''Form to allow Modules to be modified and created'''
     class Meta:
         model = Module
         fields = "__all__"
@@ -15,6 +16,7 @@ class ModuleForm(forms.ModelForm):
         }
 
 class LectureDayForm(forms.ModelForm):
+    '''Form to allow Lecture Day's to be modified and created'''
     class Meta:
         model = LectureDay
         fields = "__all__"
@@ -26,6 +28,7 @@ class LectureDayForm(forms.ModelForm):
 
 
 class SlidePackForm(forms.ModelForm):
+    '''Form to allow Slide Pack's to be modified and created'''
     class Meta:
         model = SlidePack
         fields= "__all__"
@@ -35,7 +38,8 @@ class SlidePackForm(forms.ModelForm):
         }
 
 
-class VersionHistoryForm(forms.ModelForm):   
+class VersionHistoryForm(forms.ModelForm):
+    '''Form to allow Version History objects to be modified and created'''
     class Meta:
         model=VersionHistory
         fields = [

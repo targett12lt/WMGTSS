@@ -18,6 +18,7 @@ class Module_ModelTests(TestCase):
     '''
     @classmethod
     def setUp(object):
+        user_1 = User()  # Creating user object using builder design pattern
         user_1 = User.objects.create_user('John Smith', 'John@smith.com', 'JSPassword')
         Module.objects.create(Module_Code="WM001", Module_Title="TEST 1",
         Module_Description="Creating a Module with all fields populated", Module_Tutor=user_1)

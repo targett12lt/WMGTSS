@@ -1,19 +1,20 @@
 from django.urls import reverse
 from django.test import TestCase, Client
+from django.contrib.auth.models import Group, User
 
 # Creating Client object:
 client = Client()
 
 
-class ModuleOverviewViewTests(TestCase):
-    
-    def tbc_test_no_modules(self):
-        '''
-        If no modules exist, an appropriate message is displayed.
-        '''
-        response = self.client.get(reverse('LectureBoard:Overview_StudentModules'))  # There is an issue with the namespace in reverse
+class LectureBoardViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.dts_grp = Group.objects.get(name='Tutors')
+        self.user = User.objects.create_user('test_user', 'test@user.com', 'test_password')
+        self.dts_grp.user_set.add(self.user)
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/LectureBoard/')
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'You have not been enrolled into any modules yet, please contact your Apprentice Tutor for support on this :(')
-        self.assertQuerysetEqual(response.context['ModulesEnrolled', []])
 
 

@@ -2,11 +2,12 @@
 <html lang="en">
     
 <head>
-    <title>Edit an existing Lecture Day</title>
+    <title>Edit existing Lecture Day</title>
 </head>
 
 {% extends "Navbar/layout.html" %} 
 
+<!-- Using Crispy Tags to render Django form with Bootstrap elements -->
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -50,7 +51,6 @@
                             </td>
                         </tr>
                     {% endfor %}
-                    
                         <tr>
                         <th scope="row">{{ VHForm.VersionNum|as_crispy_field }}</th>
                         <td>{{ current_date }}</td>

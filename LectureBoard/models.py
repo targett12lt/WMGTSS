@@ -6,6 +6,37 @@ from django.urls import reverse
 from datetime import datetime
 
 
+# Data Validation Method Class:
+
+class Data_Validators():
+    '''
+    Stores the SlidePack methods, includes the following methods:
+    * validate_file_extension - Ensures that only the correct file types are uploaded
+    * validate_file_size - Ensures that the file is under the desired limit (50 MB)
+    '''
+
+    def validate_file_extension(value):
+        '''
+        Ensures that only the correct file types are uploaded by validating the file is a PPTX or PPT File format.
+        The file should be passed to the fuction using the 'value' parameter.
+        '''
+        ext = os.path.splitext(value.name)[1]
+        allowed_extensions = ['.pptx', '.ppt']
+        if not ext in allowed_extensions:
+            raise ValidationError(u'File type not allowed - Please choose another file!')
+
+    def validate_file_size(value):
+        '''
+        Validates that the file is under 50 MB - this is the maximum file size which can be uploaded.
+        The file is passed to the function using the 'value' parameter.
+        '''
+        file_size = value.size
+
+        if file_size > 52428800:  # 50MB in Bytes
+            raise ValidationError(u"This file has exceeded the 50MB size limit - Please choose another file!")
+
+# Django Model Class's: 
+
 class Module(models.Model):
     '''
     This class represents a given (university) Module.
@@ -40,6 +71,7 @@ class Module(models.Model):
     
     def get_absolute_url_edit(self):
         return reverse('ModuleBoardTutor', args=[str(self.Module_Code)])    
+
 
 class ModuleAccess(models.Model):
     '''
@@ -79,8 +111,8 @@ class LectureDay(models.Model):
     ModuleLectureBoard = models.ForeignKey(Module, on_delete=models.CASCADE)  # Creating a many-to-one relationship with the Module object
     Title = models.CharField(max_length=200)
     Description = models.CharField(max_length=2000, blank=True)
-    Date = models.DateTimeField('Lecture Date', blank=True, default=datetime.now)  # Not in original design, need to add to report/documentation
-    LD_Img = models.ImageField(upload_to='LectureDayImgs', blank=True) # Changed from a CharField to an Image field
+    Date = models.DateTimeField('Lecture Date', blank=True, default=datetime.now)
+    LD_Img = models.ImageField(upload_to='LectureDayImgs', blank=True)
 
     def __str__(self):
         return self.Title   #Returns the title of the Lecture Day
@@ -106,34 +138,6 @@ class LectureDay(models.Model):
         return reverse('Edit_LectureDay', args=[str(self.get_module_code()), int(self.id)])
 
 
-class Data_Validators():
-    '''
-    Stores the SlidePack methods, includes the following methods:
-    * validate_file_extension - Ensures that only the correct file types are uploaded
-    * validate_file_size - Ensures that the file is under the desired limit (50 MB)
-    '''
-
-    def validate_file_extension(value):
-        '''
-        Ensures that only the correct file types are uploaded by validating the file is a PPTX or PPT File format.
-        The file should be passed to the fuction using the 'value' parameter.
-        '''
-        ext = os.path.splitext(value.name)[1]
-        allowed_extensions = ['.pptx', '.ppt']
-        if not ext in allowed_extensions:
-            raise ValidationError(u'File type not allowed - Please choose another file!')
-
-    def validate_file_size(value):
-        '''
-        Validates that the file is under 50 MB - this is the maximum file size which can be uploaded.
-        The file is passed to the function using the 'value' parameter.
-        '''
-        file_size = value.size
-
-        if file_size > 52428800:  # 50MB in Bytes
-            raise ValidationError(u"This file has exceeded the 50MB size limit - Please choose another file!")
-
-
 class SlidePack(models.Model):
     '''
     This class represents a given SlidePack for a LectureDay (relationship can be identified using the FK).
@@ -150,8 +154,9 @@ class SlidePack(models.Model):
     '''
     
     LectureDay_FK = models.OneToOneField(LectureDay, on_delete=models.CASCADE)  # Creating a one-to-one relationship with the LectureDay object
-    OriginalFile = models.FileField(upload_to='SlidePacks/original', blank=True, validators=[Data_Validators.validate_file_extension, Data_Validators.validate_file_size])  # Original .PPT, .PPTX file - NEED TO MAKE THIS DYNAMIC FILE PATH IN LATER ITERATION
-    OnlineSlidePack = models.FileField(upload_to='SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser - AGAIN THIS NEEDS TO BE MADE DYNAMIC TOO
+    OriginalFile = models.FileField(upload_to='SlidePacks/original', blank=True,
+    validators=[Data_Validators.validate_file_extension, Data_Validators.validate_file_size])  # Original .PPT, .PPTX file
+    OnlineSlidePack = models.FileField(upload_to='SlidePacks/online', blank=True)  # Converted slidepack in .PDF format to view in browser
     SlidePack_id = models.AutoField(verbose_name="ID", primary_key=True)
 
     def identifier(self):

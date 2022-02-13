@@ -19,6 +19,7 @@
     <p>This page allows you to see the modules that you are enrolled on, a brief description about each of them and the link to the module's 'Lecture Board' so you can view the slides from all your lecture days!</p>
     <h1>Your Enrolled Modules:</h1>
     {% if ModulesEnrolled %}
+        <!-- Creating an Accordion populated dynamically with Modules enrolled on: -->
       {% for Module in ModulesEnrolled %}
         <div class="accordion" id="accordion">
           <div class="card">
@@ -48,6 +49,7 @@
         type="button" class="btn btn-primary">Create a Module</button></a><br><br>If you would like to edit 
         a module that isn't listed below, please contact the Module Owner
       </p>
+        <!-- Creating an Accordion populated dynamically with Modules Owned by Tutor: -->
         {% for Module in ModulesOwned %}
             <div class="accordion" id="accordion">
                 <div class="card">

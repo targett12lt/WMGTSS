@@ -5,7 +5,6 @@
   
 <!-- Loading static files: -->
 {% load static %}
-{% load check_new %}
 
 <head>
   <title>Module Board</title>
@@ -34,7 +33,7 @@
       {% if LectureList %}
       <div class="row">
       {% for LectureDay in LectureList %}
-          <!-- Creating Gallery items dynamically from LectureList -->
+          <!-- Creating Gallery of cards dynamically from LectureList -->
           <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
               {% if LectureDay.LD_Img %}
               <a href="{% url 'LectureDay' Module_Info.Module_Code LectureDay.id %}"><div class="bg-light rounded shadow-sm img-fluid"><img src="{{ LectureDay.LD_Img.url }}" alt="" class="img-fluid card-img-top slide_preview rounded"></a>
