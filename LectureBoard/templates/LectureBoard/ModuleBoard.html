@@ -15,9 +15,9 @@
       <div class="text-white p-5 shadow-sm rounded gradient">
         <h1 class="display-4">{{ Module_Info.Module_Code }}: {{Module_Info.Module_Title}}</h1>
         <div class="row">
-          <profile_img class="text-center align-center user_profile">
-          <div style="padding-top: 25%;" >{{ Module_Info.Module_Tutor.first_name.0 }}{{ Module_Info.Module_Tutor.last_name.0 }}</div>
-          </profile_img>
+          <div class="align-center text-center user-profile">
+            <div>{{ Module_Info.Module_Tutor.first_name.0 }}{{ Module_Info.Module_Tutor.last_name.0 }}</div>
+          </div>
           <p class="lead align-center text-center" style="padding:1%;">{{ Module_Info.Module_Tutor.first_name }} {{ Module_Info.Module_Tutor.last_name }}</p>
         </div>
         <p class="lead">{{ Module_Info.Module_Description }}</p> 
@@ -42,7 +42,7 @@
                 <h5> <a href="{% url 'LectureDay' Module_Info.Module_Code LectureDay.id %}" class="text-dark">{{ LectureDay.Title}}</a></h5>
                 <p class="small text-muted mb-0 ld_text">{{ LectureDay.Description }}</p>
                 <div class="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">
-                  <p class="small mb-0"><i class="fa fa-picture-o mr-2"></i><span class="font-weight-bold">{{ LectureDay.Date }}</span></p>
+                  <p class="small mb-0"><i class="fa fa-picture-o mr-2"></i><span class="font-weight-bold">{{ LectureDay.Date.date }}</span></p>
                   <div class="badge badge-danger px-3 rounded-pill font-weight-normal">New</div>
                 </div>
               </div>

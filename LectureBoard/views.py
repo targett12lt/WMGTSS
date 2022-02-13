@@ -68,13 +68,23 @@ def LectureDay_StudentView(request, req_Module_Code,lecture_id):
     
     # Checking if LectureDay exists and getting data:
     LectureDayInfo = get_object_or_404(LectureDay, id=lecture_id)  # Getting information about the lecture day using the ID from URL
-    SlidePackInfo = get_object_or_404(SlidePack, LectureDay_FK = lecture_id)  # Getting slidepack info using lecture_id from URL as Foreign Key
-    
+    Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
+    Module_Info = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
+
+    try:
+        RelatedLDs = LectureDay.objects.filter(Q(ModuleLectureBoard = Module_PK) & ~Q(id=lecture_id))[:2]
+        print(Module_Info)
+        SlidePackInfo = SlidePack.objects.get(LectureDay_FK = lecture_id)
+    except Exception:
+        pass  # No slidepack associated    
+
     # Packaging all data from DB into context to load into HTML template:
     context = {
         'SearchFunctionality': True,
         'LectureDayInfo': LectureDayInfo,
-        'SlidePackInfo': SlidePackInfo
+        'SlidePackInfo': SlidePackInfo,
+        'RelatedLDs': RelatedLDs,
+        'Module_Info': Module_Info,
         }
 
     return render(request, 'LectureBoard/LectureDay.html', context)

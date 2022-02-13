@@ -36,21 +36,8 @@
     <!-- WebPage CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/pages.css' %}">
 
-    <!--  NavBar JS Functions -->
-    <script src="{% static 'js/navbar.js' %}"></script>
-
     <!-- LectureBoard JS Functions -->
     <script src="{% static 'js/LectureBoard.js' %}"></script>
-
-  <script type="text/javascript">
-    var clockElement = document.getElementById('clock');
-
-    function clock() {
-        clockElement.textContent = new Date().toString();
-    }
-
-    setInterval(clock, 1000);
-  </script>
 </head>
 
 <body>
@@ -186,7 +173,7 @@
     <!-- UserProfile -->
     <div class="profile_navbar">
       <a class="d-flex dropdown_sizing" role="button" data-toggle="modal" data-target="#UserProfileModal">
-      <div class="text-center user-profile">
+      <div class="user-profile text-center" style="padding-top:2%">
         <div>{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
       </div>
       <div class="container">

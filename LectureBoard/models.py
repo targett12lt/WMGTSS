@@ -1,17 +1,9 @@
 import os
 from django.db import models
-from django.contrib.auth.models import User, Group
-from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.models import User
 from django.forms import ValidationError
 from django.urls import reverse
 from datetime import datetime
-
-# Create your models here.
-
-# class LectureBoard(models.Model):  # Add this later, as this is dependent on what modules the student does
-# Need to add a new requirement that the LectureBoard MUST be able to provide functionality to view more than one module's lectures 
-# The lecture board must be able to show the appropriate modules to a student based upon their course.
-#     Modules = models.  # Need to have a list of modules that the student does
 
 
 class Module(models.Model):
@@ -19,7 +11,7 @@ class Module(models.Model):
     This class represents a given (university) Module.
     
     Attributes:
-    * id (int) - Used to identify the Module
+    * id (int) - Used to uniquely identify the Module (Primary Key)
     * Module_Code (char) - The code of the University Module, has a max length of 10.
     * Module_Title (char) - The title of the Module, has a max length 50.
     * Module_Description (char) - This contains the description about the Module, has a max length 2000.
@@ -54,7 +46,7 @@ class ModuleAccess(models.Model):
     This class stores the data about the user groups who can access a given university module
     
     Attributes:
-    * id (int) - Used to uniquely identify the Module Access Model
+    * id (int) - Used to uniquely identify the Module Access Model (Primary Key)
     * Module_Identifier (Module) - Used to identify the parent model that the Module Access item relates to. 
       A FK is used to create a ONE-TO-MANY relationship with the Module object.
     * UserGroup (char) - String of user group name
@@ -65,7 +57,7 @@ class ModuleAccess(models.Model):
     def __str__(self):
         return self.UserGroupName
     
-    def Module_Given_Access_To(self):
+    def ModuleGivenAccessTo(self):
         return self.Module_Identifier
 
 
@@ -76,8 +68,8 @@ class LectureDay(models.Model):
     Each University Module has a MANY-TO-ONE relationship with the LectureDay object.
     
     Attributes:
-    * ModuleLectureBoard (int) - Uses FK to create a ONE-TO-MANY relationship with the Module object
     * id (int) - Used to identify the LectureDay (Primary Key)
+    * ModuleLectureBoard (int) - Uses FK to create a ONE-TO-MANY relationship with the Module object
     * Title (char) - The title of the LectureDay, has a max length 200
     * Description (char) - This contains the description about the LectureDay, has a max length 2000
     * Date (datetime) - This stores the date/time that a LectureDay was presented
@@ -115,23 +107,27 @@ class LectureDay(models.Model):
 
 
 class Data_Validators():
-#    This could be changed to this location: http://www.learningaboutelectronics.com/Articles/How-to-restrict-the-size-of-file-uploads-with-Python-in-Django.php
     '''
     Stores the SlidePack methods, includes the following methods:
     * validate_file_extension - Ensures that only the correct file types are uploaded
-    * convert_file_to_pdf - Converts the PPTX/PPT to PDF so file can be viewed in Browser
-    * update_ver_history - Updates the Version History of a Slide Pack when a new version of a slide pack is uploaded to the LectureBoard.
+    * validate_file_size - Ensures that the file is under the desired limit (50 MB)
     '''
 
     def validate_file_extension(value):
-        '''Validates the file is a PPTX or PPT File format. The file should be passed to the fuction using the 'value' parameter.'''
+        '''
+        Ensures that only the correct file types are uploaded by validating the file is a PPTX or PPT File format.
+        The file should be passed to the fuction using the 'value' parameter.
+        '''
         ext = os.path.splitext(value.name)[1]
         allowed_extensions = ['.pptx', '.ppt']
         if not ext in allowed_extensions:
             raise ValidationError(u'File type not allowed - Please choose another file!')
 
     def validate_file_size(value):
-        '''Validates that the file is under 50 MB - this is the maximum file size which can be uploaded. The file is passed to the function using the 'value' parameter.'''
+        '''
+        Validates that the file is under 50 MB - this is the maximum file size which can be uploaded.
+        The file is passed to the function using the 'value' parameter.
+        '''
         file_size = value.size
 
         if file_size > 52428800:  # 50MB in Bytes
@@ -145,8 +141,8 @@ class SlidePack(models.Model):
     Each Lecture Day has a ONE-TO-ONE relationship with the SlidePack object.
     
     Attributes:
-    * LectureDayFK (LectureDay object) - Uses FK to create a one-to-one relationship with the Module object.
-    * SlidePack_id (int) - Used to identify the SlidePack.
+    * id (int) - Used to identify the SlidePack (Primary Key)
+    * LectureDayFK (LectureDay object) - Uses FK to create a ONE-TO-ONE relationship with the Module object.
     * OriginalFile (file) - Usees Django file management system to upload and store PPT/PPTX Files in a designated folder 
     (set using the 'upload_to' argument).
     * OnlineSlidePack (file) - Usees Django file management system to store PDF Files in a designated folder 
@@ -190,10 +186,6 @@ class SlidePack(models.Model):
         '''Deletes the original (OriginalFile) PPT/PPTX and processed PDF'''
         self.OriginalFile.delete()
         self.OnlineSlidePack.delete()
-        
-    def convert_file_to_pdf():
-        '''Converts the PPT/PPTX file to PDF format so that it can be viewed in the BootStrap Browser Front-end'''
-        print ('Hello World!')
 
 
 class VersionHistory(models.Model):
@@ -203,7 +195,8 @@ class VersionHistory(models.Model):
     Each SlidePack Day has a ONE-TO-MANY relationship with the Version History objects.
     
     Attributes:
-    * SlidePackFK (SlidePack object) - Uses FK to create a one-to-one relationship with the Module object.
+    * id (int) - Used to identify the VersionHistory (Primary Key)
+    * SlidePackFK (SlidePack object) - Uses FK to create a ONE-TO-ONE relationship with the Module object.
     * ModDate (date time) - Stores the time when the file was modified/updated.
     * VersionNum (int) - Used to identify a version of the SlidePack, 
     automatically increases by +1 each time a new file is uploaded (used as PK).
@@ -227,11 +220,4 @@ class VersionHistory(models.Model):
 
     def comment(self):
         return self.Comment
-    
-    def auto_increment_version_num(self):
-        print('This needs to auto-increment the number')
-
-    def update_ver_history():
-        '''Updates the version history for a given slide pack, allowing the user to provide a description and automatically increments the Version number'''
-        print("Hello again from the version history :)")
 

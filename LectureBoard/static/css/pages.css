@@ -1,14 +1,13 @@
 body {
-    background-color:white;
-    padding-top: 90px;
-  }
+  background-color:white;
+  padding-top: 90px;
+}
 
-  .container-spacing {
-    padding-top: 2%;
-    padding-right: 5%;
-    padding-left: 5%;
-    background-color: red;
-  }
+.container-spacing {
+  padding-top: 2%;
+  padding-right: 5%;
+  padding-left: 5%;
+}
 
 .slide_preview {
     height: 250px;
@@ -22,16 +21,6 @@ body {
   text-align: justify;
   white-space: nowrap;
 }
-
-.user_profile {
-  align-items:center !important;
-  justify-content:center !important;
-  background-color: #FF5A5F;
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-}
-
 .gradient {
   background: linear-gradient(to right, #390e72, #5f65a0, #ee9f6a);
 }
@@ -58,22 +47,13 @@ body {
 }
 
 .general_font {
-  color: red;
-}
-
-.carousel-control-prev .carousel-control-prev-icon,
-.carousel-control-next .carousel-control-next-icon {
-    outline: red;
-    background-color: rgba(255, 0, 0, 0);
-}
-
-.carousel-control-prev .fa-chevron-left,
-.carousel-control-next .fa-chevron-right {
-    color: red;
+  color: black;
+  font-size: 14pt;
 }
 
 .ov-button{
   float: right;
+  margin: 5px;
 }
 
 .icons-pages{

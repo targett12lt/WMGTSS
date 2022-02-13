@@ -10,17 +10,14 @@
     text-align: right;
 }
 
-.brand_image{
-    height: 100%;
-}
-
 .icons {
     font-size: 45pt;
     padding-left: 10px;
     padding-right: 0px;
     padding-top: 0px;
-    padding-bottom: 0px;
+    padding-bottom: 20px;
     color: white;
+    vertical-align: center;
 }
 
 .profile_navbar {
@@ -58,7 +55,7 @@
     padding-bottom: 4%;
 }
 
-.modal-content {
+.search-modal-content {
     position: absolute;
     top: 60px;
     width: 700px;
@@ -85,4 +82,106 @@
     text-align: center;
     width: 700px;
     margin-left: 200px;
+}
+
+.profile-modal-elements{
+    color: white;
+}
+
+.user-profile {
+    align-items:center !important;
+    justify-content:center !important;
+    background-color: #FF5A5F;
+    width: 55px;
+    height: 55px;
+    border-radius: 55px;
+    font-size: 23pt;
+    padding-top: 0.2%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.user-profile-lrg {
+    align-items:center !important;
+    justify-content:center !important;
+    background-color: #FF5A5F;
+    width: 140px;
+    height: 140px;
+    border-radius: 100%;
+    font-size: 70pt;
+}
+
+.modal-position {
+    position: fixed;
+    margin: auto;
+    width: 320px;
+    height: 100%;
+    right: 100px !important;
+    top: 0px !important;
+
+}
+
+.userprofile-modal-content {
+    width: 425px;
+    height: 220px;
+    color: white;
+    background-color: #3C3C3C;
+}
+
+.time-banner{
+    background-color: #969696;
+    height: 45px;
+    font-size: 16pt;
+    text-decoration: none !important;
+}
+
+.time-banner-icons{
+    padding-left: 3pt;
+    padding-right: 3pt;
+    font-size: 20pt;
+}
+
+a:link {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+.vertical-align-icon{
+    display: flex;
+    align-items:center;
+    padding-top: 15pt;
+}
+
+.search-bar-sizing{
+    background-color: #3C3C3C;
+    height: 80px; 
+    width: 670px;
+}
+
+.search-button{
+    background-color: #3C3C3C;
+    box-shadow: none;
+    height: 45pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification{
+
 }

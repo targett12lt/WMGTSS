@@ -332,7 +332,7 @@ class VersionHistory_ModelTests(TestCase):
         OnlineSlidePack= VersionHistory_ModelTests.processed_mock_file)
 
         VersionHistory.objects.create(SlidePackFK = slidepack, 
-        ModDate = VersionHistory_ModelTests.current_time, 
+        ModDate = VersionHistory_ModelTests.current_time, VersionNum = int(1),
         Comment = "Testing Comment")
 
 
@@ -340,21 +340,10 @@ class VersionHistory_ModelTests(TestCase):
         '''Checks that the VersionHistory object has been created with correct 
         information, using the class method'''
         TestVersionHistory = VersionHistory.objects.get(SlidePackFK = SlidePack.objects.get(SlidePack_id=1))
-        self.assertEqual(TestVersionHistory.identifier(), 1)
+        self.assertEqual(TestVersionHistory.identifier(), int(1))
         self.assertEqual(TestVersionHistory.date_modified(), self.current_time)
         self.assertEqual(TestVersionHistory.comment(), "Testing Comment")
 
-    # def test_OriginalFile_label(self):
-    #     '''Tests that the OriginalFile label hasn't changed'''
-    #     slidepack = SlidePack.objects.get(SlidePack_id=1)
-    #     field_label = slidepack._meta.get_field('OriginalFile').verbose_name
-    #     self.assertEqual(field_label, 'OriginalFile')
-      
-    # def test_OriginalFile_blank(self):
-    #     '''Tests that the OriginalFile field can be blank'''
-    #     slidepack = SlidePack.objects.get(SlidePack_id=1)
-    #     blank = slidepack._meta.get_field('OriginalFile').blank
-    #     self.assertEqual(blank, True)
 
 def tearDownModule():
     ''' Tidies up any old files from testing'''

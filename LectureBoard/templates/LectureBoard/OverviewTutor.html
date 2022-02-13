@@ -57,9 +57,9 @@
                             {{Module.Module_Code}}: {{Module.Module_Title}}
                           </button>
                           <a href="{% url 'ModuleBoard' Module.Module_Code %}" type="button" class="btn btn-primary ov-button">View as a Student</a>
-                          <a href="{% url 'Edit_Module' Module.Module_Code %}"type="button" class="btn btn-secondary ov-button">Edit Module Details</a>
-                          <a href="{% url 'ModuleBoardTutor' Module.Module_Code %}"type="button" class="btn btn-light ov-button">Edit Lecture Days</a>
-                          <a href="{% url 'Delete_Module' Module.Module_Code %}" type="button" style="background-color:#FF5A5F;" class="btn btn-primary ov-button">Delete</a>
+                          <a href="{% url 'Edit_Module' Module.Module_Code %}"type="button" class="btn btn-secondary ov-button">Edit Module Details</a> 
+                          <a href="{% url 'ModuleBoardTutor' Module.Module_Code %}"type="button" class="btn btn-light ov-button">Edit Lecture Days</a> 
+                          <a href="{% url 'Delete_Module' Module.Module_Code %}" type="button" style="background-color:#FF5A5F;" class="btn ov-button">Delete</a>
                         </h2>
                       </div>
                       <div id="collapse{{forloop.counter}}" class="collapse hide" aria-labelledby="heading{{forloop.counter}}" data-parent="#accordion">
