@@ -46,66 +46,66 @@
                     </tbody>
                 </table>
                 </div>
-    </div>
+            </div>
         </div>
     </div>
 </div>
 
-    <div class="container-fluid container-spacing">
-        <div class="row">
-            {% if SlidePackInfo.OriginalFile %}     
-                {% if SlidePackInfo.OnlineSlidePack %}
-                    <div class="col" style="padding-top: 1%;">
-                        <button class="btn wmg-success-btn btn-block" onclick="history.back()" style="font-size: 20pt;">Back</button>
-                        <button class="btn wmg-success-btn btn-block" style="font-size: 20pt;" data-toggle="modal" data-target="#versionHistoryModal">Version History</button>
-                        {% if RelatedLDs%}
-                        <RelatedContent>
-                            <h2 style="padding-top:2%">Related Content:</h2>
-                            {% for item in RelatedLDs%}
-                                <div class="card" style="padding-top: 10px; margin-top: 10px;">
-                                    {% if item.LD_Img %}
-                                        <img src="{{ item.LD_Img.url }}" alt="" class="card-img-top">
-                                    {% else %}
-                                        <img src="{% static 'img/forgotten_ld_img.jpg' %}" alt="" class="card-img-top">
-                                    {% endif %}
-                                    <div class="card-body">
-                                        <a href="{% url 'LectureDay' Module_Info item.id %}"><h5 class="card-title">{{ item.Title }}</h5></a>
-                                        {{ item.Date.date }}
-                                        <p class="small text-muted mb-0 ld_text">{{ item.Description }}</p>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </RelatedContent>
-                        {% endif %}
-                    </div>
-                    <div class="col-10", style="padding:1%;">
-                        <BrowserSlides>
-                            <div id="SlidePackCarousel" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <canvas id="pdf-canvas" class="d-block w-100" data-file="{{ SlidePackInfo.OnlineSlidePack.url }}"></canvas>
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <span style="color: black;">Slide: <span id="page-num"></span> / <span id="page-count"></span></span>
-                                            </div>
-                                    </div>
+<div class="container-fluid container-spacing">
+    <div class="row">
+        {% if SlidePackInfo.OriginalFile %}     
+            {% if SlidePackInfo.OnlineSlidePack %}
+                <div class="col-xl-2" style="padding-top: 1%;">
+                    <button class="btn wmg-success-btn btn-block" onclick="history.back()" style="font-size: 20pt;">Back</button>
+                    <button class="btn wmg-success-btn btn-block" style="font-size: 20pt;" data-toggle="modal" data-target="#versionHistoryModal">Version History</button>
+                    {% if RelatedLDs%}
+                    <RelatedContent>
+                        <h2 style="padding-top:2%">Related Content:</h2>
+                        {% for item in RelatedLDs%}
+                            <div class="card" style="padding-top: 10px; margin-top: 10px;">
+                                {% if item.LD_Img %}
+                                    <img src="{{ item.LD_Img.url }}" alt="" class="card-img-top">
+                                {% else %}
+                                    <img src="{% static 'img/forgotten_ld_img.jpg' %}" alt="" class="card-img-top">
+                                {% endif %}
+                                <div class="card-body">
+                                    <a href="{% url 'LectureDay' Module_Info item.id %}"><h5 class="card-title">{{ item.Title }}</h5></a>
+                                    {{ item.Date.date }}
+                                    <p class="small text-muted mb-0 ld_text">{{ item.Description }}</p>
                                 </div>
                             </div>
-                            <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </BrowserSlides>
-                    </div>  
-                {% endif %}
+                        {% endfor %}
+                    </RelatedContent>
+                    {% endif %}
                 </div>
-            {% else %}
-                <h1 style="padding-left: 19%; padding-bottom: 5%;">The Slide Pack doesn't exists! :(</h1>
+                <div class="col", style="padding:1%;">
+                    <BrowserSlides>
+                        <div id="SlidePackCarousel" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <canvas id="pdf-canvas" class="d-block w-100" data-file="{{ SlidePackInfo.OnlineSlidePack.url }}"></canvas>
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <span style="color: black;">Slide: <span id="page-num"></span> / <span id="page-count"></span></span>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </BrowserSlides>
+                </div>  
             {% endif %}
-        </div>
+            </div>
+        {% else %}
+            <h1 style="padding-left: 19%; padding-bottom: 5%;">The Slide Pack doesn't exists! :(</h1>
+        {% endif %}
+    </div>
         {% if LectureDayInfo %}
             <div class="row">    
                 <div class="col"></div>
