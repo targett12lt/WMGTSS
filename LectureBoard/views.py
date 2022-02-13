@@ -38,6 +38,7 @@ def Overview_StudentModules(request):
     return render(request, 'LectureBoard/Overview.html', context)
     # Needs further work as just shows all modules currently, not what a student is registered to
 
+
 @login_required
 def ModuleBoard_StudentView(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
@@ -55,6 +56,7 @@ def ModuleBoard_StudentView(request, req_Module_Code):
     
     return render(request, 'LectureBoard/ModuleBoard.html', context)
 
+
 @login_required
 def LectureDay_StudentView(request, req_Module_Code,lecture_id):
     '''Provides a view for each lecture day.
@@ -64,19 +66,24 @@ def LectureDay_StudentView(request, req_Module_Code,lecture_id):
     * req_Module_Code - This is the University Academic Module (i.e. WM393).
     * lecture_id = Auto-incrementing integer ID, PK for the lecture days, used to locate the lecture day and slidepack info
     '''
-    # And finally can get the Version history for the slidepack (ModDate, VersionNum - this needs to be updated to autoincrement and the comment)
-    
+
     # Checking if LectureDay exists and getting data:
     LectureDayInfo = get_object_or_404(LectureDay, id=lecture_id)  # Getting information about the lecture day using the ID from URL
     Module_PK = list(Module.objects.filter(Module_Code = req_Module_Code).values_list('id', flat=True))[0]
     Module_Info = Module.objects.get(Module_Code = req_Module_Code)  # Checking module exists
+    Version_History = None
 
     try:
         RelatedLDs = LectureDay.objects.filter(Q(ModuleLectureBoard = Module_PK) & ~Q(id=lecture_id))[:2]
-        print(Module_Info)
         SlidePackInfo = SlidePack.objects.get(LectureDay_FK = lecture_id)
     except Exception:
-        pass  # No slidepack associated    
+        pass  # No slidepack associated   
+
+    # Trying to check if it has any version history:
+    try:
+        Version_History = VersionHistory.objects.filter(SlidePackFK = SlidePackInfo)
+    except Exception as e:
+        pass 
 
     # Packaging all data from DB into context to load into HTML template:
     context = {
@@ -85,9 +92,10 @@ def LectureDay_StudentView(request, req_Module_Code,lecture_id):
         'SlidePackInfo': SlidePackInfo,
         'RelatedLDs': RelatedLDs,
         'Module_Info': Module_Info,
+        'Version_History': Version_History,
         }
-
     return render(request, 'LectureBoard/LectureDay.html', context)
+
 
 # Tutor/edit views:
 
@@ -104,13 +112,12 @@ def Overview_Tutor(request):
         'ModulesOwned': ModulesOwned,
     }
     return render(request, 'LectureBoard/OverviewTutor.html', context)
-    # Needs further work as just shows all modules currently, not what a student is registered to
+
 
 @user_passes_test(check_Tutor_Group)
 def New_Module(request):
     '''Provides the view to allow a Lecturer to add a new module to the Database.'''
     permission_groups = Group.objects.all()
-    # permission_groups_names = list(permission_groups.values_list('name', flat=True))
     if request.method == "POST":
         form = ModuleForm(request.POST)
         if form.is_valid():
@@ -162,6 +169,8 @@ def Delete_Module(request, req_Module_Code):
 
 
 # --- Individual Module Management --- 
+
+
 @user_passes_test(check_Tutor_Group)
 def ModuleBoardTutor(request, req_Module_Code):
     '''Generates the Module Board View - requires the ModuleCode'''
@@ -180,12 +189,14 @@ def ModuleBoardTutor(request, req_Module_Code):
     return render(request, 'LectureBoard/ModuleBoardTutor.html', context)
 
 # --- Lecture Day Management ---
+
+
 @user_passes_test(check_Tutor_Group)
 def Edit_LectureDay(request, req_Module_Code, lecture_id):  
     '''Provides the view to allow a Lecturer to modify an existing modify on the Database.'''
-    
     LDInstance = get_object_or_404(LectureDay, pk=lecture_id)
     SPInstance = get_object_or_404(SlidePack, LectureDay_FK=LDInstance)
+    Previous_Version_History = None
     
     # Getting the original SP file path, so can be compared with new one: 
     try:
@@ -194,9 +205,7 @@ def Edit_LectureDay(request, req_Module_Code, lecture_id):
     except Exception:  # If SlidePack wasn't added or PDF conversion failed
         pass
 
-    Previous_Version_History = None
-    
-    # Trying to check if it has any version history
+        # Trying to check if it has any version history
     try:
         Previous_Version_History = VersionHistory.objects.filter(SlidePackFK = SPInstance)
     except Exception as e:
@@ -288,6 +297,7 @@ def New_LectureDay(request, req_Module_Code):
         }
     return render(request, 'LectureBoard/LectureDayNew.html', context)
 
+
 @user_passes_test(check_Tutor_Group)
 def Delete_LectureDay(request, req_Module_Code, lecture_id):
     query = LectureDay.objects.get(id=lecture_id)
@@ -299,6 +309,7 @@ def Delete_LectureDay(request, req_Module_Code, lecture_id):
         pass
     query.delete()
     return redirect('ModuleBoardTutor', req_Module_Code)
+
 
 @login_required
 def LectureBoardSearch(request):

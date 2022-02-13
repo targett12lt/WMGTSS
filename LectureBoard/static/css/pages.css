@@ -85,3 +85,10 @@ td {
   font-weight:500;
   padding-top: 5px;
 }
+
+.version-history-modal-content {
+  width: 600px;
+  height: min-content;
+  color: white;
+  background-color: #3C3C3C;
+}

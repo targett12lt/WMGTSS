@@ -193,3 +193,10 @@ a:active {
     background-color: #3C3C3C;
     color: white;
 }
+
+.center {
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+}

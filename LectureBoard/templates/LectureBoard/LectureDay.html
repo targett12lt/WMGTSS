@@ -12,14 +12,52 @@
 
 {% block content %}
 
-<body>        
+<body>
+<!-- Version History Modal: -->
+<div class="modal fade" id="versionHistoryModal" tabindex="-1" role="dialog" aria-labelledby="versionHistoryModal" aria-hidden="true">
+    <div class="modal-position-vh modal-dialog" role="document">
+        <div class="modal-content version-history-modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title">Version History</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12 spacing_elements">
+                <table class="table table-striped">
+                    <thead class="thread" style="background-color: #969696; color: white;">
+                        <tr>
+                            <th scope="col">Version Number</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for Change in Version_History %}
+                        <tr class="text-light">
+                            <th scope="row">{{ Change.VersionNum }}</th>
+                            <td>{{ Change.ModDate }}</td>
+                            <td>
+                                {{ Change.Comment }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+    </div>
+        </div>
+    </div>
+</div>
+
     <div class="container-fluid container-spacing">
         <div class="row">
             {% if SlidePackInfo.OriginalFile %}     
                 {% if SlidePackInfo.OnlineSlidePack %}
                     <div class="col" style="padding-top: 1%;">
                         <button class="btn wmg-success-btn btn-block" onclick="history.back()" style="font-size: 20pt;">Back</button>
-                        <button class="btn wmg-success-btn btn-block" style="font-size: 20pt;">Version History</button>
+                        <button class="btn wmg-success-btn btn-block" style="font-size: 20pt;" data-toggle="modal" data-target="#versionHistoryModal">Version History</button>
                         {% if RelatedLDs%}
                         <RelatedContent>
                             <h2 style="padding-top:2%">Related Content:</h2>
@@ -92,7 +130,7 @@
                     </a>
                     {% endif %}
                     </div>
-                    <p class="general_font">{{LectureDayInfo.Description}}</p>
+                    <p class="general_font container-spacing">{{LectureDayInfo.Description}}</p>
                 </ul>
                 </div>
             </div>
