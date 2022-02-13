@@ -57,9 +57,9 @@
 <!-- Search Modal -->
 <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModallabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content search-modal-content">
-      <div class="modal-body" style="background-color: #3C3C3C;">
-        <div class="input-group rounded">
+    <div class="modal-content search-modal-content search-bar-sizing">
+      <div class="modal-body d-block search-bar-sizing">
+        <div class="input-group">
           <form method="POST", action="{% url 'LectureBoardSearch' %}">
             {% csrf_token %}
             <div class="container">
@@ -67,17 +67,15 @@
                   <a data-dismiss="modal" class="icons search-bar-icons shadow-none" id="minimise-search">
                   <i class="bi bi-chevron-up"></i></a>
                   <input type="search" name="searched" class="form-control rounded shadow-none seach-bar" placeholder="Search Lecture Board..." aria-label="Search">
-                  <button type="submit"><i class="bi bi-search icons search-bar-icons"></i></button>
+                  <button type="submit" class="btn search-button"><i class="bi bi-search icons" style="font-size: 25pt;"></i></button>
               </div>
             </div>
           </form>
-          </a>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- Search Modal -->
 
 <!-- User Profile Modal -->
 <div class="modal fade" id="UserProfileModal" tabindex="-1" role="dialog" aria-labelledby="UserProfileModallabel" aria-hidden="true">
@@ -116,11 +114,31 @@
     </div>
   </div>
 </div>
-<!-- User Profile Modal -->
 
 <!-- Notification Panel Modal -->
-
-<!-- Notification Panel Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="NotificationModallabel" aria-hidden="true">
+  <div class="modal-position modal-dialog" role="document">
+    <div class="modal-content userprofile-modal-content">
+      <div class="modal-body rounded">
+        <i class="bi bi-bell-fill icons" style="color: white;"><h4>Notifications</h4></i>
+        <i class="bi bi-chevron-up"></i>
+        <button type="button" class="btn btn-secondary profile-modal-elements" style="background-color: #969696;">Clear</button>
+          <notification class="notification">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm">
+                  Application picture
+                </div>
+                <div class="col-md">
+                  Notification information
+                </div>
+              </div>
+            </div>
+          </notification>
+        </div>
+    </div>
+  </div>
+</div>
 
 <!-- Hidden Content: -->
 <div class="pos-f-t">
@@ -156,27 +174,14 @@
       </li>
     </ul>
     <!-- Notifications -->
-    <div class="dropdown">
-      <a role="button" data-toggle="dropdown" aria-expanded="false">
-    <div class="vertical-align-icon">
-      <i class="bi bi-bell-fill icons" style="color: white;"></i> 
-      <span class="badge rounded-pill badge-notification"
-      style="font-size: 18pt; background-color: #FF5A5F;">2</span>
-    </div>
-    </a>
-      <ul
-        class="dropdown-menu dropdown-menu-lg-right"
-        aria-labelledby="navbarDropdownMenuLink">
-        <li>
-          <a class="dropdown-item" href="#">Notification 1</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#">Notification 2</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#">Notification 3</a>
-        </li>
-      </ul>
+    <div>
+      <a role="button" data-toggle="modal" data-target="#notificationModal" aria-expanded="false">
+        <div class="vertical-align-icon">
+          <i class="bi bi-bell-fill icons" style="color: white;"></i> 
+          <span class="badge rounded-pill badge-notification"
+          style="font-size: 18pt; background-color: #FF5A5F;">2</span>
+        </div>
+      </a>
     </div>
     <!-- UserProfile -->
     <div class="profile_navbar">
