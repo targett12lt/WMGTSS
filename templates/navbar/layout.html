@@ -61,9 +61,7 @@
       <div class="modal-body" style="background-color: #3C3C3C;">
         <div class="input-group rounded">
           <form method="POST", action="{% url 'LectureBoardSearch' %}">
-
             {% csrf_token %}
-
             <div class="container">
               <div class="row">
                   <a data-dismiss="modal" class="icons search-bar-icons shadow-none" id="minimise-search">
@@ -83,7 +81,7 @@
 
 <!-- User Profile Modal -->
 <div class="modal fade" id="UserProfileModal" tabindex="-1" role="dialog" aria-labelledby="UserProfileModallabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-position modal-dialog" role="document">
     <div class="modal-content userprofile-modal-content">
       <div class="modal-body rounded">
           <div class="container" style="padding-top: 10px;">
@@ -93,7 +91,7 @@
                   <h3>{{ user.first_name }} {{ user.last_name }}</h3>
                   <h4>{{ user.username }}</h4>
                 </div>
-                <button type="button" class="btn btn-secondary profile-modal-elements">Logout</button>
+                <a href="{% url 'logout' %}"><button type="button" class="btn btn-secondary profile-modal-elements" style="background-color: #969696;">Logout</button></a>
               </div>
               <div class="col-sm-">
                 <div class="text-center align-center user-profile-lrg">
@@ -105,8 +103,8 @@
         </div>
         <div class="container time-banner">
           <div class="row">
-            <div class="col-sm">
-              <a href="#"><i class="bi bi-chevron-up time-banner-icons"></i></a>
+            <div class="col-sm" style="padding-bottom: 18pt;">
+              <a data-dismiss="modal"><i class="bi bi-chevron-up time-banner-icons"></i></a>
               <a href="#"><i class="bi bi-gear time-banner-icons"></i></a>
               <a href="#"><i class="bi bi-three-dots time-banner-icons"></i></a>
             </div>
@@ -124,81 +122,77 @@
 
 <!-- Notification Panel Modal -->
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <!-- Container wrapper -->
-  <div class="container-fluid">
-
-    <!-- Collapsible wrapper -->
-    <div class="navbar-collapse" id="navbarSupportedContent">
-      <!-- Navbar brand -->
-      <a class="navbar-brand brand_image" href="{% url 'home'%}">
-        <img
-          src="{% static 'img/wmg_logo_no_bg.png' %}"
-          height="60pt"
-          alt="WMGTSS Logo"
-          loading="lazy"
-        />
-      </a>
+<!-- Hidden Content: -->
+<div class="pos-f-t">
+  <div class="collapse" id="navbarToggleHiddenContent">
+    <div class="bg-dark p-4">
       {% if SearchFunctionality %}
-      <a data-toggle="modal" data-target="#searchModal" class="bi bi-search icons search-icon" style="padding-right: 20px;"></a>
-      {% endif %}
-      <!-- Application Name -->
-      <ul class="navbar-nav">
-        <div class="navbar_appname">WMGTSS</div>
+        <h4 class="text-white"><a data-toggle="modal" data-target="#searchModal">Search</a></h4>
+      {% endif %} 
+      <a data-toggle="modal" data-target="#notiifcationModal"><h4 class="text-white">Notifications</h4></a>
+      <a href="{% url 'logout' %}"><h4 class="text-white">Logout</h4></a>
+    </div>
+  </div>
+
+
+<!-- NavBar  -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleHiddenContent" aria-controls="navbarToggleHiddenContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="{% url 'home'%}"><img src="{% static 'img/wmg_logo_no_bg.png' %}" height="60pt" alt="WMGTSS Logo" loading="lazy"/></a>
+
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+        <div class="vertical-align-icon">
+          {% if SearchFunctionality %}
+            <a data-toggle="modal" data-target="#searchModal" class="bi bi-search icons" style="padding-right: 20px;"></a>
+          {% endif %}
+        </div>    
+      </li>
+      <li class="nav-item container">
+        <a class="nav-item navbar_appname">WMGTSS</a>
+      </li>
+    </ul>
+    <!-- Notifications -->
+    <div class="dropdown">
+      <a role="button" data-toggle="dropdown" aria-expanded="false">
+    <div class="vertical-align-icon">
+      <i class="bi bi-bell-fill icons" style="color: white;"></i> 
+      <span class="badge rounded-pill badge-notification"
+      style="font-size: 18pt; background-color: #FF5A5F;">2</span>
+    </div>
+    </a>
+      <ul
+        class="dropdown-menu dropdown-menu-lg-right"
+        aria-labelledby="navbarDropdownMenuLink">
+        <li>
+          <a class="dropdown-item" href="#">Notification 1</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#">Notification 2</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#">Notification 3</a>
+        </li>
       </ul>
     </div>
-
-    <!-- Right elements -->
-  <div class="d-flex align-items-center">
-      <!-- Notifications -->
-      <div class="dropdown">
-        <a
-          id="navbarDropdownMenuLink"
-          role="button"
-          data-toggle="dropdown"
-          aria-expanded="false"
-        >
-      <i class="bi bi-bell-fill icons" style="color: white;"></i> 
-          <span class="badge rounded-pill badge-notification"
-          style="font-size: 18pt; background-color: #FF5A5F;">2</span>
+    <!-- UserProfile -->
+    <div class="profile_navbar">
+      <a class="d-flex dropdown_sizing" role="button" data-toggle="modal" data-target="#UserProfileModal">
+      <div class="text-center user-profile">
+        <div>{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
+      </div>
+      <div class="container">
+        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+      </div>
       </a>
-        <ul
-          class="dropdown-menu dropdown-menu-lg-right"
-          aria-labelledby="navbarDropdownMenuLink"
-        >
-          <li>
-            <a class="dropdown-item" href="#">Notification 1</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">Notification 2</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">Notification 3</a>
-          </li>
-        </ul>
-      </div>
-      <!-- Avatar -->
-      <div class="profile_navbar">
-        <a
-          class="d-flex align-items-center hidden-arrow dropdown_sizing"
-          id="navbarDropdownMenuAvatar"
-          role="button"
-          data-toggle="modal" 
-          data-target="#UserProfileModal"
-          aria-expanded="false"
-        >
-        <div class="text-center user-profile">
-          <div>{{ user.first_name.0 }}{{ user.last_name.0 }}</div>
-        </div>
-          <p style="padding-left: 10pt;">{{ user.first_name }} {{ user.last_name }}</p>
-        </a>
-      </div>
     </div>
-    <!-- Right elements -->
   </div>
-  <!-- Container wrapper -->
 </nav>
+<!-- NavBar -->
+
 {% block content %}{% endblock content %}
 </body>
 
