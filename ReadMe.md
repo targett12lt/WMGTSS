@@ -3,8 +3,7 @@
 ## About The Project
 WMGTSS is a cross-functional system that has been designed to support WMG students and tutors by providing the functionality required in a  post-pandemic environment.  This report focuses on the requirements, architecture and development of the core WMGTSS system functionality and one  board specifically: the Lecture Board. It has been assumed when designing this system, that Warwick University’s SSL service is not available, hence  requiring user identification and authentication functionality to also be required. The Lecture Board must allow users to access content for any  given lecture day, navigate through the slide pack, in addition to allowing the user to store it locally. 
 
-This project has been built using Python 3 and BootStrap 4. All external modules and dependencies are listed below and a set-up guide is also  
-available in this ReadMe file.  
+This project has been built using Python 3 and BootStrap 4. All external modules and dependencies are listed below and a set-up guide is also available in this ReadMe file.  
 
 ## Built With: 
 * Python 3.7.6 
@@ -21,7 +20,7 @@ available in this ReadMe file.
 ### Prerequisites:
 * All libraries previously listed are installed on your machine - use 'pip' install to install libraries as required.  
 * Project must be ran on a Windows machine with Microsoft PowerPoint installed, to allow the PPT/PPTX -> PDF conversion to work.  
-* Machine MUST have a connection to the internet
+* Machine MUST have a connection to the internet (to access BootStrap JS).
 
 ### Set-Up
 1. Source Code can be downloaded from the Source Code submission on Tabula or cloned from the Source Code Version Control Repository:
