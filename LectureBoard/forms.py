@@ -1,5 +1,5 @@
 from django import forms
-from .models import Module, ModuleAccess, LectureDay, SlidePack, VersionHistory
+from .models import Module, LectureDay, SlidePack, VersionHistory
 
 class DateInput(forms.DateInput):
     input_type = 'date'

@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 
 import mock
 import os
-import glob
 
 from .models import Module, LectureDay, SlidePack, VersionHistory, Data_Validators
 
@@ -284,13 +283,6 @@ class SlidePack_ModelTests(TestCase):
             wrong_file_type = True
         self.assertTrue(wrong_file_type)
 
-    def wip_test_check_file_size(self):
-        '''Checking that the validator only allows files under 50 MB to be 
-        uploaded
-        
-        NOT SURE HOW TO DO THIS YET, NEEDS TO BE FIXED
-        '''
-        pass
 
     def test_delete__slidepacks(self):
         '''Deletes both the original slidepack and the processed slidepack created for testing'''
@@ -357,5 +349,4 @@ def tearDownModule():
     for filename in os.listdir(online_folder):
         if filename.startswith('testing'):
             os.remove(os.path.join(online_folder, filename))
-
 

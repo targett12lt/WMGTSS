@@ -1,34 +1,40 @@
-# Project Title
+# WMGTSS LectureBoard
 
 ## About The Project
-Description of the project. When editing this template - ensure that there are two spaces at the end of each line where you want a newline!  
+WMGTSS is a cross-functional system that has been designed to support WMG students and tutors by providing the functionality required in a  post-pandemic environment.  This report focuses on the requirements, architecture and development of the core WMGTSS system functionality and one  board specifically: the Lecture Board. It has been assumed when designing this system, that Warwick University’s SSL service is not available, hence  requiring user identification and authentication functionality to also be required. The Lecture Board must allow users to access content for any  given lecture day, navigate through the slide pack, in addition to allowing the user to store it locally. 
 
-## Built With:
-* Item - Requires Installation (Include this where necessary)
-* Item
-* Item
+This project has been built using Python 3 and BootStrap 4. All external modules and dependencies are listed below and a set-up guide is also  
+available in this ReadMe file.  
 
-## Usage
-Description of potential usages for application or tool  
-
-## Getting Started
-Notes where necessary on getting started with the tool (Link to Executable can be provided here if relevant).  
+## Built With: 
+* Python 3.7.6 
+* Django 3.2.8 - Requires Installation  
+* crispy_forms 1.14.0 - Requires Installation  
+* pathlib - Requires Installation  
+* pywin32 303 - Requires Installation  
+* mock 4.03 - Requires Installation  
+* os  
+* datetime  
+* sys  
+* BootStrap 4.5.2
 
 ### Prerequisites:
-* All libraries previously listed are installed on the end-user machine - use 'pip' install to install libraries as required.  
+* All libraries previously listed are installed on your machine - use 'pip' install to install libraries as required.  
+* Project must be ran on a Windows machine with Microsoft PowerPoint installed, to allow the PPT/PPTX -> PDF conversion to work.  
+* Machine MUST have a connection to the internet
 
-### Installation
-1.  Clone the repository on to local machine using:  
-`git clone https://bitbucket.devops.jlr-apps.com/scm/via/repo_name.git`
+### Set-Up
+1. Source Code can be downloaded from the Source Code submission on Tabula or cloned from the Source Code Version Control Repository:
+`git clone https://github.com/targett12lt/WMGTSS.git`  
+It is recommended to used the Source Code submmited to Tabula, as this also includes some sample data and files to test the functionality of the system.  
 2. Launch Project Folder and Run in local IDE (e.g. Microsoft Visual Studio Code)  
-
-## Contact
-Project Lead: ID1 
-Development: ID2
+3. Launch 'Windows Powershell' Terminal Window in IDE  
+4. Set Working Directiory of Terminal to 'WMGTSS'
+5. Run the following command: 
+`python manage.py runserver`  
+This will start a development server on your local machine, a message will be returned containing the address for the local server. This was:  
+`http://127.0.0.1:8000/`
 
 ## GIT
 To download the latest release of this source code please visit:  
-https://bitbucket.devops.jlr-apps.com/scm/via/repo_name
-
-## License
-This application/tool and associated source code is strictly limted to internal use only and should not be distributed without permission from the owner.  
+https://github.com/targett12lt/WMGTSS
