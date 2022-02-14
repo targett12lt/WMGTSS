@@ -35,6 +35,32 @@ It is recommended to used the Source Code submmited to Tabula, as this also incl
 This will start a development server on your local machine, a message will be returned containing the address for the local server. This was:  
 `http://127.0.0.1:8000/`
 
+### Adressing Scheme
+Adressing information can be found in the project and App (LectureBoard) `urls.py`.  
+  
+To access:  
+* Core WMGTSS system: Base URL e.g. `http://127.0.0.1:8000/`, will be redirected to `http://127.0.0.1:8000/login/?next=/`. Use the Student or Tutor account details below to test the functionality required
+* Admin Functionality: Navigate to Base URL + `/admin/` e.g. `http://127.0.0.1:8000/admin/`. Use the Admin account to test User and Group Permissions.
+
+
+### Login Details
+* Student Access:
+    John Smith: 
+    * Username: jsmith  
+    * Password: JohnPassword  
+
+* Tutor Access:
+    Young Park:  
+    * Username: ypark  
+    * Password: YoungPassword  
+    Sherri Sankey:  
+    * Username: ssankey  
+    * Password: SherriPassword  
+
+* Admin Access:  
+    * Username: admin  
+    * Password: LectureBoard1  
+
 ## GIT
 To download the latest release of this source code please visit:  
 https://github.com/targett12lt/WMGTSS
