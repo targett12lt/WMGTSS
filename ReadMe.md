@@ -8,9 +8,10 @@ This project has been built using Python 3 and BootStrap 4. All external modules
 ## Built With: 
 * Python 3.7.6 
 * Django 3.2.8 - Requires Installation  
-* crispy_forms 1.14.0 - Requires Installation  
+* django-crispy-forms 1.14.0 - Requires Installation  
 * pathlib - Requires Installation  
 * pywin32 303 - Requires Installation  
+* comtypes 1.1.7 - Required Installation  
 * mock 4.03 - Requires Installation  
 * os  
 * datetime  
